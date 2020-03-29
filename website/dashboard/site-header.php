@@ -93,9 +93,79 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" style="width: 30rem">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search">
+              <div class="input-group-append">
+                <script type="text/javascript">
+                  $('.dropdown-menu','dropdown').click(function(e) {
+                      e.stopPropagation();
+                  });
+                </script>
+                <div class="dropdown dropdown-lg">
+                  <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+                    <i class="fas fa-filter fa-sm"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" style="width: 450px">
+                    <div class="dropdown-header text-<?php echo $theme_color; ?>"><b>Advanced Search Features</b></div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-header form-horizontal">
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <label for="filter">Show preselected option:</label>
+                            <select class="form-control" name="show">
+                                <option value="" selected>...</option>
+                                <option value="all">All Tasks</option>
+                                <option value="week">This week</option>
+                                <option value="passed">Passed Deadlines</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <label>Or use more specific search options (leave above empty!):</label><br><br>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-4">
+                          <label for="filter">Priority</label>
+                            <select class="form-control" name="priority">
+                                <option value="" selected>...</option>
+                                <option value="high">High Priority</option>
+                                <option value="medium">Medium Priority</option>
+                                <option value="low">Low Priority</option>
+                                <option value="none">None</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="filter">Label</label>
+                            <select class="form-control" name="label">
+                              <option value="" selected>...</option>
+                              <?php include '../_inc/dbconn.php';
+                                $sql3 = "SELECT * FROM UKeepDAT.label_$user_code";
+                                $result3 = mysql_query($sql3) or die(mysql_error());
+                                  
+                                while($rws3 = mysql_fetch_array($result3)){
+                                  // displaying labels
+                                  echo "<option value='".$rws3[1]."'>".$rws3[1]." (".strtolower($rws3[2]).")</option>";
+                                } 
+                              ?>
+                            </select>
+                          </div>
+                          <div class="col-sm-4">
+                            <label for="filter">Status</label>
+                              <select class="form-control" name="status">
+                                  <option value="" selected>...</option>
+                                  <option value="active">Active</option>
+                                  <option value="archived">Archived</option>
+                              </select>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary" name="advanced_search"><i class="fas fa-search"></i> Advanced Search</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="input-group-append">
                 <button class="btn btn-<?php echo $theme_color; ?>" type="button">
                   <i class="fas fa-search fa-sm"></i>
@@ -237,7 +307,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">John Johnson</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user_name; ?></span>
                 <img class="img-profile rounded-circle" src="../usericons/<?php echo $user_code; ?>.png">
               </a>
               <!-- Dropdown - User Information -->

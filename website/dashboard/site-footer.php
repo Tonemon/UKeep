@@ -17,7 +17,7 @@
   </a>
 
   <div class="btn-group dropleft">
-    <a href="#" class="btn btn-<?php echo $theme_color; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="position: fixed;right:0rem; bottom: 10rem; box-shadow: 0 4px 8px rgba(0,0,0,.05);border-radius: 10px 0px 0px 10px; font-size: 12px;padding: 0.8rem 0.5rem;" class="bg-<?php echo $theme_color; ?> shadow-lg no-arrow">
+    <a href="#" class="btn btn-<?php echo $theme_color; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="position: fixed;right:0rem; bottom: 10rem; box-shadow: 0 4px 8px rgba(0,0,0,.05);border-radius: 10px 0px 0px 10px; font-size: 12px;padding: 0.8rem 0.5rem;" class="bg-<?php echo $theme_color; ?> shadow-lg">
         <i class="fas fa-fw fa-3x fa-plus-square text-white"></i>
     </a>
     <div class="dropdown-menu">

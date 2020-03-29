@@ -8,19 +8,19 @@
   $rws = mysql_fetch_array($result);
                 
   // logged in account id & users name and surname
-  /*$user_id = $rws[0];
-  $userdat_name = $rws[1];
-  $userdat_username = $rws[11];
-  $userdat_lastlogin = $rws[9];
-  $userdat_accstatus = $rws[10];
-  $status = $rws[12];
+  #$user_id = $rws[0];
+  $user_name = $rws[1];
+  #$userdat_username = $rws[11];
+  #$userdat_lastlogin = $rws[9];
+  #$userdat_accstatus = $rws[10];
+  #$status = $rws[12];
                 
-  $userdat_address = $rws[5];
-  $userdat_acctype = $rws[4];
-  $userdat_gender = $rws[2];
-  $userdat_mobile = $rws[6];
-  $userdat_email = $_SESSION['session_tasks_email'];
-  $userdat_dob = $rws[3]; */
+  #$userdat_address = $rws[5];
+  #$userdat_acctype = $rws[4];
+  #$userdat_gender = $rws[2];
+  #$userdat_mobile = $rws[6];
+  #$userdat_email = $_SESSION['session_tasks_email'];
+  #$userdat_dob = $rws[3];
 
   $theme_color = $rws[14];
   $user_code = $rws[16];
