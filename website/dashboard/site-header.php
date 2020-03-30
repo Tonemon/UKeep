@@ -18,7 +18,7 @@
       </li>
 
       <hr class="sidebar-divider">
-      <div class="sidebar-heading">Interface</div>
+      <div class="sidebar-heading">General</div>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNewItems" aria-expanded="true" aria-controls="collapseNewItems">
@@ -38,14 +38,23 @@
       <li class="nav-item">
         <a class="nav-link" href="items?view=all">
           <i class="fas fa-fw fa-book"></i>
-          <span>View Items</span></a>
+          <span>Notes/Tasks</span></a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="labels">
           <i class="fas fa-fw fa-folder"></i>
-          <span>View Labels</span></a>
+          <span>Labels</span></a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="trash">
+          <i class="fas fa-fw fa-trash-alt"></i>
+          <span>Trash</span></a>
+      </li>
+
+      <hr class="sidebar-divider">
+      <div class="sidebar-heading">Features</div>
 
       <li class="nav-item">
         <a class="nav-link" href="teams">
@@ -56,10 +65,18 @@
       <li class="nav-item">
         <a class="nav-link" href="friends">
           <i class="fas fa-fw fa-user-friends"></i>
-          <span>Friends</span></a>
+          <span>Contacts</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="support">
+          <i class="fas fa-fw fa-life-ring"></i>
+          <span>Support</span></a>
       </li>
 
       <hr class="sidebar-divider">
+      <div class="sidebar-heading">Other</div>
+
       <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-fw fa-sign-out-alt"></i>

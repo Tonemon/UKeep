@@ -80,11 +80,11 @@ include 'essentials.php';
             <!-- 'Active / Total' card -->
             <div class="col-xl-3 col-md-6 mb-4">
               <?php
-                $widget_active_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE status='ACTIVE' AND type='task'";
+                $widget_active_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE status='ACTIVE' AND type='task' AND `status`!='TRASH'";
                 $widget_active_result = mysql_query($widget_active_sql) or die(mysql_error());
                 $widget_active_total = mysql_num_rows($widget_active_result);
 
-                $widget_count_sql = "SELECT title FROM UKeepDAT.items_$user_code";
+                $widget_count_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE `status`!='TRASH'";
                 $widget_count_result = mysql_query($widget_count_sql) or die(mysql_error());
                 $widget_count_total = mysql_num_rows($widget_count_result);
 
@@ -117,7 +117,7 @@ include 'essentials.php';
             <!-- 'Bookmarked / Total' card -->
             <div class="col-xl-3 col-md-6 mb-4">
               <?php
-                $widget_bookmarked_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE bookmark='1'";
+                $widget_bookmarked_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE bookmark='1' AND `status`!='TRASH'";
                 $widget_bookmarked_result = mysql_query($widget_bookmarked_sql) or die(mysql_error());
                 $widget_bookmarked_total = mysql_num_rows($widget_bookmarked_result);
 
@@ -150,7 +150,7 @@ include 'essentials.php';
           </div>
 
           <div class="row">
-            
+
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">

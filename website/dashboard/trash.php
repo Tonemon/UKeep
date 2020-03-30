@@ -12,7 +12,7 @@ include 'essentials.php';  // $user_code from essentials.php
 <head>
 
   <?php include 'addons/metadata.php'; ?>
-  <title>Trash &bull; UKeep</title>
+  <title>Trashed Items &bull; UKeep</title>
 
 </head>
 
@@ -43,15 +43,12 @@ include 'essentials.php';  // $user_code from essentials.php
       <h1 class="h3 mb-4 text-gray-800">Viewing category: 
         <div class="dropdown no-arrow" style="display:inline-block;">
           <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-            <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trash
+            <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trashed Items
           </a>
           <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header text-<?php echo $theme_color; ?>">View Items by Type:</div>
             <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-clipboard"></i> All Items</a>
             <a class="dropdown-item" href="#"><i class="fas fa-fw fa-trash-alt"></i> Trash</a>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View:</div>
-            <a class="dropdown-item" href="labels"><i class="fas fa-fw fa-folder"></i> Labels</a>
           </div>
         </div>
       </h1>
@@ -62,7 +59,7 @@ include 'essentials.php';  // $user_code from essentials.php
             $result = mysql_query($final_sql) or die(mysql_error());
             $num_rows = mysql_num_rows($result);
 
-            $counttotal_sql = "SELECT title FROM UKeepDAT.items_$user_code";
+            $counttotal_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE `status`='TRASH'";
             $counttotal_result = mysql_query($counttotal_sql) or die(mysql_error());
             $counttotal = mysql_num_rows($counttotal_result);
           ?>
@@ -74,18 +71,13 @@ include 'essentials.php';  // $user_code from essentials.php
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">
                     <?php 
-                      if ($num_rows == "1"){
-                        $total_results = $num_rows." result / ".$counttotal." total items";
-                      } else {
-                        $total_results = $num_rows." results / ".$counttotal." total items";
-                      }
-
-                      echo $search_text_output.$total_results; // first variable in search-engine.php
+                      $total_results = $num_rows."/".$counttotal." items";
+                      echo "Notes and Tasks in the trash &bull; ".$total_results; // first variable in search-engine.php
                     ?>
                   </h6>
                   <div class="dropdown dropdown-lg no-arrow">
                     <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="items?view=all" style="text-decoration:none">
-                      <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trash
+                      <i class="fas fa-clipboard fa-sm fa-fw"></i> All Items
                     </a>
                   </div>
                   
@@ -113,14 +105,10 @@ include 'essentials.php';  // $user_code from essentials.php
                           $priority_color = "danger";
                         }
 
-                        if ($rws[10] == "1"){ // bookmarked
-                          $icon = "fas fa-star";
-                        } elseif ($rws[2] == "task" AND $rws[12] == "ACTIVE"){ // task and active
-                          $icon = "fas fa-calendar-alt";
-                        } elseif ($rws[2] == "note"){ // note
-                          $icon = "fas fa-sticky-note";
+                        if ($rws[12] == "TRASH"){ // task and active
+                          $icon = "fas fa-trash-alt";
                         } else { // means it is a note/task, but archived
-                          $icon = "fas fa-archive";
+                          $icon = "fas fa-question";
                         }
 
                         // making date readable

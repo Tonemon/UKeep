@@ -66,6 +66,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
             <a class="dropdown-item" href="items?status=active&advanced_search"><i class="fas fa-fw fa-calendar"></i> Active</a>
             <a class="dropdown-item" href="items?view=bookmarked&advanced_search"><i class="fas fa-fw fa-star"></i> Bookmarked</a>
             <a class="dropdown-item" href="items?status=archived&advanced_search"><i class="fas fa-fw fa-archive"></i> Archived</a>
+            <a class="dropdown-item" href="trash"><i class="fas fa-fw fa-trash-alt"></i> Trash</a>
             <div class="dropdown-divider"></div>
             <div class="dropdown-header text-<?php echo $theme_color; ?>">View Advanced:</div>
             <a class="dropdown-item" href="items?view=week&advanced_search"><i class="fas fa-fw fa-calendar-alt"></i> This week</a>
@@ -79,11 +80,11 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
       </h1>
 
       <!-- Content Row -->
-          <?php include '../_inc/dbconn.php';
+          <?php
             $result = mysql_query($final_sql) or die(mysql_error());
             $num_rows = mysql_num_rows($result);
 
-            $counttotal_sql = "SELECT title FROM UKeepDAT.items_$user_code";
+            $counttotal_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE `status`!='TRASH'";
             $counttotal_result = mysql_query($counttotal_sql) or die(mysql_error());
             $counttotal = mysql_num_rows($counttotal_result);
           ?>
