@@ -149,8 +149,9 @@ include 'essentials.php';
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                       <div class="dropdown-header text-<?php echo $theme_color; ?>">Label Actions:</div>
+                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#newLabelModal"><i class="fas fa-fw fa-plus"></i> New Label</a>
                       <button class="dropdown-item" type="submit" name="label_edit"><i class="fas fa-pencil-alt"></i> Edit Label</button>
-                      <a class="dropdown-item" href="#"><i class="fas fa-trash-alt"></i> Delete Label</a>
+                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteLabelModal"><i class="fas fa-trash-alt"></i> Delete Label</a>
                     </div>
                   </div>
                 </div>
@@ -186,6 +187,7 @@ include 'essentials.php';
                   <div class="float-right">
                     <a class="btn btn-dark" href="#" data-toggle="modal" data-target="#deleteLabelModal"><i class="fas fa-trash-alt"></i> Delete Label</a>
                     <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="label_edit"><i class="fas fa-pencil-alt"></i> Edit Label</button>
+                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#newLabelModal"><i class="fas fa-fw fa-plus"></i> New Label</a>
                   </div>
 
                   <!-- Delete Label Modal-->

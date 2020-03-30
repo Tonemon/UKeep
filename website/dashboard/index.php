@@ -33,37 +33,75 @@ include 'essentials.php';
           <!-- Content Row -->
           <div class="row">
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- 'Items to do this week' card -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+              <?php
+                $widget_week_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE `dateon` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY) AND `type`='task'";
+                $widget_week_result = mysql_query($widget_week_sql) or die(mysql_error());
+                $widget_week_total = mysql_num_rows($widget_week_result);
+              ?>
+              <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Imporant &bull; Bookmarked</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">10 &bull; 5</div>
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks todo this week</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $widget_week_total; ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-star fa-2x text-gray-300"></i>
+                      <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- 'Deadlines passed' card -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
+              <?php
+                $widget_passed_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE `dateon` < CURRENT_DATE() AND `type`='task'";
+                $widget_passed_result = mysql_query($widget_passed_sql) or die(mysql_error());
+                $widget_passed_total = mysql_num_rows($widget_passed_result);
+              ?>
+              <div class="card border-left-danger shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1"><b>Active / total</b> <i>Items</i></div>
+                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Task Deadlines missed</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $widget_passed_total; ?></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar-times fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 'Active / Total' card -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <?php
+                $widget_active_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE status='ACTIVE' AND type='task'";
+                $widget_active_result = mysql_query($widget_active_sql) or die(mysql_error());
+                $widget_active_total = mysql_num_rows($widget_active_result);
+
+                $widget_count_sql = "SELECT title FROM UKeepDAT.items_$user_code";
+                $widget_count_result = mysql_query($widget_count_sql) or die(mysql_error());
+                $widget_count_total = mysql_num_rows($widget_count_result);
+
+                $wiget_active_percentage = ($widget_active_total/$widget_count_total)*100;
+              ?>
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1"><b>Active / total</b> Tasks</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">3/100</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $widget_active_total; ?>/<?php echo $widget_count_total; ?></div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 97%" aria-valuenow="3" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $wiget_active_percentage; ?>%"></div>
                           </div>
                         </div>
                       </div>
@@ -76,42 +114,43 @@ include 'essentials.php';
               </div>
             </div>
 
-            <!-- Earnings (Monthly) Card Example -->
+            <!-- 'Bookmarked / Total' card -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-danger shadow h-100 py-2">
+              <?php
+                $widget_bookmarked_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE bookmark='1'";
+                $widget_bookmarked_result = mysql_query($widget_bookmarked_sql) or die(mysql_error());
+                $widget_bookmarked_total = mysql_num_rows($widget_bookmarked_result);
+
+                $wiget_bookmarked_percentage = ($widget_bookmarked_total/$widget_count_total)*100;
+              ?>
+              <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deadlines passed</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><b>Bookmarked / Total</b> Items</div>
+                      <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?php echo $widget_bookmarked_total; ?>/<?php echo $widget_count_total; ?></div>
+                        </div>
+                        <div class="col">
+                          <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo $wiget_bookmarked_percentage; ?>%"></div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-calendar-times fa-2x text-gray-300"></i>
+                      <i class="fas fa-star fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Items todo this week</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div class="row">
+            
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
@@ -166,13 +205,13 @@ include 'essentials.php';
                   </div>
                   <div class="mt-4 text-center small">
                     <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Direct
+                      <i class="fas fa-circle text-primary"></i> Tasks
                     </span>
                     <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Social
+                      <i class="fas fa-circle text-success"></i> Notes
                     </span>
                     <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
+                      <i class="fas fa-circle text-info"></i> Other
                     </span>
                   </div>
                 </div>
@@ -355,10 +394,10 @@ include 'essentials.php';
                 </div>
                 <div class="card-body">
                   <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="">
+                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="../vendor/img/loginbackground.jpg" alt="">
                   </div>
-                  <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
-                  <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on unDraw &rarr;</a>
+                  <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" href="#">unDraw</a>, a constantly updated collection of beautiful svg images that you can use completely free and without attribution!</p>
+                  <a target="_blank" href="#">Browse Illustrations on unDraw &rarr;</a>
                 </div>
               </div>
 
@@ -382,7 +421,13 @@ include 'essentials.php';
       </div>
       <!-- End of Main Content -->
 
-      <?php include 'site-footer.php'; ?>
+  <?php include 'site-footer.php'; ?>
+  
+
+  <!-- Page level plugins / custom scripts for charts -->
+  <script src="../vendor/js/chart.js/Chart.min.js"></script>
+  <script src="../vendor/js/demo/chart-area-demo.js"></script>
+  <script src="../vendor/js/demo/chart-pie-demo.js"></script>
 
 </body>
 </html>

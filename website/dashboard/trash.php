@@ -4,10 +4,6 @@ if (!isset($_SESSION['session_keep_start']))
   header('location:../login?notice=2');
 
 include 'essentials.php';  // $user_code from essentials.php
-include 'addons/search-engine.php'; // Custom made search engine for items + advanced search
-
-
-// Note/Tasks creation mechanism redirect to: items?view=all&success=1 when successfull (dont forget ?view=all)
 
 ?>
 
@@ -16,7 +12,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
 <head>
 
   <?php include 'addons/metadata.php'; ?>
-  <title>Items Overview &bull; UKeep</title>
+  <title>Trash &bull; UKeep</title>
 
 </head>
 
@@ -29,18 +25,10 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
     <!-- Begin Page Content -->
     <div class="container-fluid">
       <?php
-        if ($_GET['success'] == "1") { // successfully created task
+        if ($_GET['success'] == "1") { // permanently deleted item
           echo "<div class='alert alert-success alert-dismissible'>
             <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-            <i class='fas fa-check'></i> New task created. </div>";
-        } elseif ($_GET['success'] == "2") { // successfully created note
-          echo "<div class='alert alert-success alert-dismissible'>
-            <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-            <i class='fas fa-check'></i> New note created. </div>";
-        } elseif ($_GET['success'] == "3") { // successfully deleted item
-          echo "<div class='alert alert-success alert-dismissible'>
-            <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-            <i class='fas fa-trash-alt'></i> Item removed. </div>";
+            <i class='fas fa-trash-alt'></i> Item permanently removed. </div>";
         } elseif ($_GET['error'] == "1") { // error: something wrong
           echo "<div class='alert alert-warning alert-dismissible'>
             <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
@@ -55,22 +43,12 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
       <h1 class="h3 mb-4 text-gray-800">Viewing category: 
         <div class="dropdown no-arrow" style="display:inline-block;">
           <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-            <i class="fas fa-clipboard fa-sm fa-fw"></i> Items
+            <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trash
           </a>
           <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
             <div class="dropdown-header text-<?php echo $theme_color; ?>">View Items by Type:</div>
             <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-clipboard"></i> All Items</a>
-            <a class="dropdown-item" href="items?view=notes&advanced_search"><i class="fas fa-fw fa-sticky-note"></i> Notes only</a>
-            <a class="dropdown-item" href="items?view=tasks&advanced_search"><i class="fas fa-fw fa-calendar-check"></i> Tasks only</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="items?status=active&advanced_search"><i class="fas fa-fw fa-calendar"></i> Active</a>
-            <a class="dropdown-item" href="items?view=bookmarked&advanced_search"><i class="fas fa-fw fa-star"></i> Bookmarked</a>
-            <a class="dropdown-item" href="items?status=archived&advanced_search"><i class="fas fa-fw fa-archive"></i> Archived</a>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View Advanced:</div>
-            <a class="dropdown-item" href="items?view=week&advanced_search"><i class="fas fa-fw fa-calendar-alt"></i> This week</a>
-            <a class="dropdown-item" href="items?view=passed&advanced_search"><i class="fas fa-fw fa-calendar-times"></i> Passed Deadlines</a>
-            <a class="dropdown-item" href="items?view=future&advanced_search"><i class="fas fa-fw fa-plane-departure"></i> Future</a>
+            <a class="dropdown-item" href="#"><i class="fas fa-fw fa-trash-alt"></i> Trash</a>
             <div class="dropdown-divider"></div>
             <div class="dropdown-header text-<?php echo $theme_color; ?>">View:</div>
             <a class="dropdown-item" href="labels"><i class="fas fa-fw fa-folder"></i> Labels</a>
@@ -80,6 +58,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
 
       <!-- Content Row -->
           <?php include '../_inc/dbconn.php';
+            $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE status='TRASH'";
             $result = mysql_query($final_sql) or die(mysql_error());
             $num_rows = mysql_num_rows($result);
 
@@ -105,56 +84,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                     ?>
                   </h6>
                   <div class="dropdown dropdown-lg no-arrow">
-                    <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-                      <i class="fas fa-filter fa-sm fa-fw"></i> Filter
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" style="width: 450px">
-                      <form action="items" class="form-horizontal" role="form">
-                        <div class="dropdown-header text-<?php echo $theme_color; ?>"><b>Filtered Search:</b></div>
-                        <div class="dropdown-divider"></div>
-                        <div class="dropdown-header form-horizontal">
-                          <div class="form-group">
-                            <div class="row">
-                              <div class="col-sm-4">
-                              <label for="filter" class="text-<?php echo $theme_color; ?>">Priority</label>
-                                <select class="form-control" name="priority">
-                                    <option value="" selected>...</option>
-                                    <option value="high">High Priority</option>
-                                    <option value="medium">Medium Priority</option>
-                                    <option value="low">Low Priority</option>
-                                    <option value="none">None</option>
-                                </select>
-                              </div>
-                              <div class="col-sm-4">
-                                <label for="filter" class="text-<?php echo $theme_color; ?>">Label</label>
-                                <select class="form-control" name="label">
-                                  <option value="" selected>...</option>
-                                  <?php include '../_inc/dbconn.php';
-                                    $sql3 = "SELECT * FROM UKeepDAT.label_$user_code";
-                                    $result3 = mysql_query($sql3) or die(mysql_error());
-                                      
-                                    while($rws3 = mysql_fetch_array($result3)){
-                                      // displaying labels
-                                      echo "<option value='".$rws3[1]."'>".$rws3[1]." (".strtolower($rws3[2]).")</option>";
-                                    } 
-                                  ?>
-                                </select>
-                              </div>
-                              <div class="col-sm-4">
-                                <label for="filter" class="text-<?php echo $theme_color; ?>">Status</label>
-                                  <select class="form-control" name="status">
-                                      <option value="" selected>...</option>
-                                      <option value="active">Active</option>
-                                      <option value="archived">Archived</option>
-                                  </select>
-                              </div>
-                            </div>
-                          </div><br>
-                          <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="advanced_search"><i class="fas fa-search"></i> Filtered Search</button>
-                        </div>
-                      </form>
-                    </div>
-                    <a class="dropdown-toggle text-dark" href="trash" style="text-decoration:none">
+                    <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="items?view=all" style="text-decoration:none">
                       <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trash
                     </a>
                   </div>

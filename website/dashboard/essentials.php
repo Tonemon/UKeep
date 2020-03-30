@@ -10,11 +10,10 @@
   $result = mysql_query($sql) or die(mysql_error());
   $rws = mysql_fetch_array($result);
   
-
   $user_name = $rws[1]; // used for header (top right)
-  $theme_color = $rws[14]; // used for page theme
-  $user_code = $rws[16]; // used for storing personal information
-  $user_acctype = ""; // used to allow people to access admin & support page or not
+  $theme_color = $rws[10]; // used for page theme
+  $user_code = $rws[8]; // used for storing personal information
+  $user_acctype = $rws[9]; // used to allow people to access admin & support page or not
 
   // logged in account id & users name and surname
   #$user_id = $rws[0];
@@ -32,21 +31,19 @@
   #$userdat_dob = $rws[3];
         
   // checking for corrupted sessions
-  /*if ($userdat_email = ""){ // often happends when user is deleted and still logged in or corrupted session
+  if ($query_id = ""){ // often happends when user is deleted and still logged in or corrupted session
     session_destroy();
-    header('location:login?notice=1');
+    header('location:../login?notice=1');
 
-  } elseif ($rws[10] == "DISABLED"){ // logs users out when they are disabled and still logged in
+  } elseif ($rws[4] == "DISABLED"){ // accstatus: logs users out when account status is set to 'disabled' and they are still logged in
     $date = date('Y-m-d h:i:s');
-    $exitsql = "UPDATE UTasksMAIN.users SET lastlogin='$date' WHERE id='$userdat_id'"; // last login
-    mysql_query($exitsql) or die("Could not set your lastlogin time.");
-    $exitsql2 = "UPDATE UTasksMAIN.users SET status='offline' WHERE id='$userdat_id'"; // set user status to offline
-    mysql_query($exitsql2) or die("Could not set your status to offline.");
+    $exitsql = "UPDATE UKeepMAIN.users SET lastlogin='$date',status='offline' WHERE id='$query_id'"; // last login
+    mysql_query($exitsql) or die("Could not set your lastlogin time & status. Please delete all your cookies and login again.");
 
     session_destroy();
-    header('location:login?error=3');
-  } elseif ($status == "offline"){ // cookies cleared, but no official logout
+    header('location:../login?error=3');
+  } elseif ($rws[5] == "offline"){ // cookies cleared, but no official logout
     session_destroy();
-    header('location:login?error=2');
-  } */
+    header('location:../login?error=2');
+  }
 ?>

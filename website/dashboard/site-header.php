@@ -1,5 +1,3 @@
-<?php include 'essentials.php'; ?> <!-- Place to store user variables -->
-
 <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-<?php echo $theme_color; ?> sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 

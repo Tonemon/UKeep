@@ -18,14 +18,14 @@
       $addon_sql = "";
 
     } elseif ($func_view == "week"){
-      $addon_sql = " WHERE `dateon` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY)";
+      $addon_sql = " WHERE `dateon` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY) AND `type`='task'";
 
     } elseif ($func_view == "passed"){
-      $addon_sql = " WHERE `dateon` < CURRENT_DATE()";
+      $addon_sql = " WHERE `dateon` < CURRENT_DATE() AND `type`='task'";
       $final_sql = $startsql.$addon_sql;
 
     } elseif ($func_view == "future"){
-      $addon_sql = " WHERE `dateon` > CURRENT_DATE()";
+      $addon_sql = " WHERE `dateon` > DATE_ADD(NOW(), INTERVAL 7 DAY) AND `type`='task'";
       $final_sql = $startsql.$addon_sql;
 
     } elseif ($func_view == "notes"){
@@ -91,7 +91,18 @@
 
     $search_text = 'Advanced search results ';
 
-  } else { // no search yet, display all tasks (url: tasks?view=all)
+  } else { // no search yet, display all items (url: items?view=all)
     $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id";
+    $search_text = "All Items (Notes and Tasks)";
+  }
+
+  if ($_GET['view'] == "all"){
+    $search_text_output = 'All Items (Notes and Tasks) &bull; ';
+  } elseif ($_GET['view'] == "notes"){
+    $search_text_output = 'All Notes (Notes only) &bull; ';
+  } elseif ($_GET['view'] == "tasks"){
+    $search_text_output = 'All Tasks (Tasks only) &bull; ';
+  } else {
+    $search_text_output = $search_text.' &bull; ';
   }
 ?>
