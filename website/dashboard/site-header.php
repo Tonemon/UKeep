@@ -38,19 +38,15 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseItems" aria-expanded="true" aria-controls="collapseItems">
+        <a class="nav-link" href="items?view=all">
           <i class="fas fa-fw fa-book"></i>
-          <span>View Items</span>
-        </a>
-        <div id="collapseItems" class="collapse" aria-labelledby="headingItems" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header text-<?php echo $theme_color; ?>">View Items:</h6>
-            <a class="collapse-item" href="items?view=all"><i class="fas fa-fw fa-clipboard"></i> All Items</a>
-            <a class="collapse-item" href="items?view=notes"><i class="fas fa-fw fa-sticky-note"></i> Notes only</a>
-            <a class="collapse-item" href="items?view=tasks"><i class="fas fa-fw fa-calendar-check"></i> Tasks only</a>
-            <a class="collapse-item" href="items?view=labels"><i class="fas fa-fw fa-folder"></i> My Labels</a>
-          </div>
-        </div>
+          <span>View Items</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="labels">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>View Labels</span></a>
       </li>
 
       <li class="nav-item">
@@ -60,9 +56,9 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="search">
-          <i class="fas fa-fw fa-search"></i>
-          <span>Search</span></a>
+        <a class="nav-link" href="friends">
+          <i class="fas fa-fw fa-user-friends"></i>
+          <span>Friends</span></a>
       </li>
 
       <hr class="sidebar-divider">
@@ -93,81 +89,11 @@
           </button>
 
           <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" style="width: 30rem">
+          <form action="items" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search">
+              <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" required>
               <div class="input-group-append">
-                <script type="text/javascript">
-                  $('.dropdown-menu','dropdown').click(function(e) {
-                      e.stopPropagation();
-                  });
-                </script>
-                <div class="dropdown dropdown-lg">
-                  <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
-                    <i class="fas fa-filter fa-sm"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right" style="width: 450px">
-                    <div class="dropdown-header text-<?php echo $theme_color; ?>"><b>Advanced Search Features</b></div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-header form-horizontal">
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <label for="filter">Show preselected option:</label>
-                            <select class="form-control" name="show">
-                                <option value="" selected>...</option>
-                                <option value="all">All Tasks</option>
-                                <option value="week">This week</option>
-                                <option value="passed">Passed Deadlines</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <label>Or use more specific search options (leave above empty!):</label><br><br>
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-sm-4">
-                          <label for="filter">Priority</label>
-                            <select class="form-control" name="priority">
-                                <option value="" selected>...</option>
-                                <option value="high">High Priority</option>
-                                <option value="medium">Medium Priority</option>
-                                <option value="low">Low Priority</option>
-                                <option value="none">None</option>
-                            </select>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="filter">Label</label>
-                            <select class="form-control" name="label">
-                              <option value="" selected>...</option>
-                              <?php include '../_inc/dbconn.php';
-                                $sql3 = "SELECT * FROM UKeepDAT.label_$user_code";
-                                $result3 = mysql_query($sql3) or die(mysql_error());
-                                  
-                                while($rws3 = mysql_fetch_array($result3)){
-                                  // displaying labels
-                                  echo "<option value='".$rws3[1]."'>".$rws3[1]." (".strtolower($rws3[2]).")</option>";
-                                } 
-                              ?>
-                            </select>
-                          </div>
-                          <div class="col-sm-4">
-                            <label for="filter">Status</label>
-                              <select class="form-control" name="status">
-                                  <option value="" selected>...</option>
-                                  <option value="active">Active</option>
-                                  <option value="archived">Archived</option>
-                              </select>
-                          </div>
-                        </div>
-                      </div>
-                      <button type="submit" class="btn btn-primary" name="advanced_search"><i class="fas fa-search"></i> Advanced Search</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="input-group-append">
-                <button class="btn btn-<?php echo $theme_color; ?>" type="button">
+                <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="normal_search">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
@@ -184,11 +110,11 @@
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
+                <form action="items" class="form-inline mr-auto w-100 navbar-search">
                   <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" required>
                     <div class="input-group-append">
-                      <button class="btn btn-<?php echo $theme_color; ?>" type="button">
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="normal_search">
                         <i class="fas fa-search fa-sm"></i>
                       </button>
                     </div>
