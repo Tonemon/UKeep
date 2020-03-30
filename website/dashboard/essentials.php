@@ -1,4 +1,7 @@
 <?php
+  
+  // Essential Variables and information is stored here for quick retrieval
+  // This file is always present in the header of a page
 
   $query_id = $_SESSION['session_keep_id'];
 
@@ -6,10 +9,15 @@
   $sql = "SELECT * FROM UKeepMAIN.users WHERE id='$query_id'";
   $result = mysql_query($sql) or die(mysql_error());
   $rws = mysql_fetch_array($result);
-                
+  
+
+  $user_name = $rws[1]; // used for header (top right)
+  $theme_color = $rws[14]; // used for page theme
+  $user_code = $rws[16]; // used for storing personal information
+
   // logged in account id & users name and surname
   #$user_id = $rws[0];
-  $user_name = $rws[1];
+  
   #$userdat_username = $rws[11];
   #$userdat_lastlogin = $rws[9];
   #$userdat_accstatus = $rws[10];
@@ -21,9 +29,6 @@
   #$userdat_mobile = $rws[6];
   #$userdat_email = $_SESSION['session_tasks_email'];
   #$userdat_dob = $rws[3];
-
-  $theme_color = $rws[14];
-  $user_code = $rws[16];
         
   // checking for corrupted sessions
   /*if ($userdat_email = ""){ // often happends when user is deleted and still logged in or corrupted session

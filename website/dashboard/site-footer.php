@@ -93,7 +93,7 @@
       </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="note_create"><i class="fas fa-save"></i> Save Note</button>
+            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="note_create">Create Note</button>
           </div>
         </div>
      </form>
@@ -164,7 +164,7 @@
       </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="task_create"><i class="fas fa-save"></i> Save task</button>
+            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="task_create">Create task</button>
           </div>
         </div>
      </form>
@@ -175,47 +175,53 @@
     <div class="modal fade" id="newLabelModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title text-<?php echo $theme_color; ?>" id="exampleModalLabel"><i class="fas fa-folder"></i> New Label</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action="edit.php" method="POST">
-              <div class="row">
-                <div class="col-xl-7 form-group">
-                  <small id="taskHelp" class="form-text">Label Name</small>
-                  <input type="text" class="form-control" name="label_name" placeholder="Example: Really Important">
+          <form action="labels" method="POST">
+            <div class="modal-header">
+              <h5 class="modal-title text-<?php echo $theme_color; ?>" id="exampleModalLabel"><i class="fas fa-folder"></i> New Label</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                  <div class="col-xl-7 form-group">
+                    <small id="taskHelp" class="form-text">Label Title</small>
+                    <input type="text" class="form-control" name="label_title" placeholder="Example: Really Important">
+                  </div>
+                  <div class="col-xl-5 form-group">
+                    <small id="taskHelp" class="form-text">Label Color</small>
+                    <select class="form-control" name="label_color">
+                      <option value="primary">Blue</option>
+                      <option value="secondary">Gray</option>
+                      <option value="success">Green</option>
+                      <option value="danger">Red</option>
+                      <option value="warning">Yellow</option>
+                      <option value="info">Lightblue</option>
+                      <option value="dark">Black</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="col-xl-5 form-group">
-                  <small id="taskHelp" class="form-text">Label Color</small>
-                  <select class="form-control" name="task_label">
-                    <option value="primary">Blue</option>
-                    <option value="secondary">Gray</option>
-                    <option value="success">Green</option>
-                    <option value="danger">Red</option>
-                    <option value="warning">Yellow</option>
-                    <option value="info">Lightblue</option>
-                    <option value="dark">Black</option>
-                  </select>
+                <div class="row">
+                  <div class="col-xl-12 form-group">
+                    <small class="form-text">Label Description</small>
+                    <textarea class="form-control" name="label_description" rows="1" placeholder="Example: This label is for business only..."></textarea>
+                  </div>
                 </div>
-              </div>
-            </form>
 
-            <p>The following colors are supported:<br>
-              <span class="badge badge-primary">Blue</span>
-              <span class="badge badge-secondary">Gray</span>
-              <span class="badge badge-success">Green</span>
-              <span class="badge badge-danger">Red</span>
-              <span class="badge badge-warning">Yellow</span>
-              <span class="badge badge-info">Lightblue</span>
-              <span class="badge badge-dark">Black</span>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="task_create"><i class="fas fa-save"></i> Save Label</button>
-          </div>
+                <p>The following colors are supported:<br>
+                  <span class="badge badge-primary">Blue</span>
+                  <span class="badge badge-secondary">Gray</span>
+                  <span class="badge badge-success">Green</span>
+                  <span class="badge badge-danger">Red</span>
+                  <span class="badge badge-warning">Yellow</span>
+                  <span class="badge badge-info">Lightblue</span>
+                  <span class="badge badge-dark">Black</span>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
+              <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="label_create">Create Label</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

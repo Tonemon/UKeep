@@ -3,107 +3,16 @@ session_start();
 if (!isset($_SESSION['session_keep_start']))
   header('location:../login?notice=2');
 
-include 'essentials.php';
-// $user_code from essentials.php
+include 'essentials.php';  // $user_code from essentials.php
+include 'addons/search-engine.php'; // Custom made search engine for items + advanced search
 
-if (isset($_REQUEST['normal_search'])){ // user presses the normal search button at the top of the page
-  $startsql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_".$user_code.".label_id";
-
-  $searchbar_input = $_GET['search'];
-  $continuesql = " WHERE title LIKE '%".$searchbar_input."%' OR description LIKE '%".$searchbar_input."%' OR location LIKE '%".$searchbar_input."%' OR people LIKE '%".$searchbar_input."%' OR name LIKE '%".$searchbar_input."%'";
-
-  $final_sql = $startsql.$continuesql;
-  $search_text = "Search results for: '".$searchbar_input."'";
-
-} elseif (isset ($_REQUEST['advanced_search'])){ // user presses the advanced search button
-  // add check if normal or premium user
-
-  $startsql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id";
-  
-  $func_view = $_GET['view'];
-  if ($func_view == "all"){
-    $addon_sql = "";
-
-  } elseif ($func_view == "week"){
-    $addon_sql = " WHERE `dateon` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY)";
-
-  } elseif ($func_view == "passed"){
-    $addon_sql = " WHERE `dateon` < CURRENT_DATE()";
-    $final_sql = $startsql.$addon_sql;
-
-  } elseif ($func_view == "future"){
-    $addon_sql = " WHERE `dateon` > CURRENT_DATE()";
-    $final_sql = $startsql.$addon_sql;
-
-  } elseif ($func_view == "notes"){
-    $addon_sql = " WHERE type='note'";
-    $final_sql = $startsql.$addon_sql;
-
-  } elseif ($func_view == "tasks"){
-    $addon_sql = " WHERE type='task'";
-    $final_sql = $startsql.$addon_sql;
-
-  } else { // (... selected) means 'view' dropdown is not being used, continueing with priority and labels.
-    $func_priority = $_GET['priority'];
-    if ($func_priority == "high"){
-      $addon_sql1 = " WHERE priority=3";
-    } elseif ($func_priority == "medium"){
-      $addon_sql1 = " WHERE priority=2";
-    } elseif ($func_priority == "low") { 
-      $addon_sql1 = " WHERE priority=1";
-    } elseif ($func_priority == "none"){
-      $addon_sql1 = " WHERE priority=0";
-    } else { // priority dropdown is not used (...)
-      $addon_sql1 = "";
-    }
-    
-    $func_label = $_GET['label'];
-    if ($func_priority != "" AND $func_label != ""){ // 'priority' dropdown is being used
-      $addon_sql2 = " AND name='".$func_label."'";
-    } elseif ($func_priority == "" AND $func_label != ""){ // 'priority' dropdown is not being used
-      $addon_sql2 = " WHERE name='".$func_label."'";
-    } else { 
-      $addon_sql2 = "";
-    }
-
-    $func_status = $_GET['status'];
-    if ($func_status == "active"){ // priority and label is used, active
-      if ($func_label == "" AND $func_priority == ""){
-        $addon_sql3 = " WHERE status='ACTIVE'";
-      } else {
-        $addon_sql3 = " AND status='ACTIVE'";
-      }
-    } elseif ($func_status == "archived") { // $func_status == "ARCHIVED"
-      if ($func_label == "" AND $func_priority == ""){ 
-        $addon_sql3 = " WHERE status='ARCHIVED'";
-      } else {
-        $addon_sql3 = " AND status='ARCHIVED'";
-      }
-    } else {
-      $addon_sql3 = "";
-    }
-  }
-
-  if ($func_view == "" AND $func_priority == "" AND $func_label == "" AND $func_status == ""){ // no advanced options selected, but advanced search pressed
-    $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE id='0'";
-  } elseif ($func_view == ""){ // 'view' dropdown empty and 
-    $final_sql = $startsql.$addon_sql1.$addon_sql2.$addon_sql3;
-  } elseif ($func_view != ""){
-    $final_sql = $startsql.$addon_sql;
-  }
-
-  $search_text = 'Advanced search results ';
-
-} else { // no search yet, display all tasks (url: tasks?view=all)
-  $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id";
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
-  <?php include 'extra/metadata.php'; ?>
+  <?php include 'addons/metadata.php'; ?>
   <title>Items Overview &bull; UKeep</title>
 
 </head>
@@ -122,18 +31,21 @@ if (isset($_REQUEST['normal_search'])){ // user presses the normal search button
             <i class="fas fa-clipboard fa-sm fa-fw"></i> Items
           </a>
           <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">Filter Items by Type:</div>
+            <div class="dropdown-header text-<?php echo $theme_color; ?>">View Items by Type:</div>
             <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-clipboard"></i> All Items</a>
             <a class="dropdown-item" href="items?view=notes&advanced_search"><i class="fas fa-fw fa-sticky-note"></i> Notes only</a>
             <a class="dropdown-item" href="items?view=tasks&advanced_search"><i class="fas fa-fw fa-calendar-check"></i> Tasks only</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="items?status=active&advanced_search"><i class="fas fa-fw fa-calendar"></i> Active</a>
+            <a class="dropdown-item" href="items?view=bookmarked&advanced_search"><i class="fas fa-fw fa-star"></i> Bookmarked</a>
             <a class="dropdown-item" href="items?status=archived&advanced_search"><i class="fas fa-fw fa-archive"></i> Archived</a>
             <div class="dropdown-divider"></div>
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">Advanced:</div>
+            <div class="dropdown-header text-<?php echo $theme_color; ?>">View Advanced:</div>
             <a class="dropdown-item" href="items?view=week&advanced_search"><i class="fas fa-fw fa-calendar-alt"></i> This week</a>
             <a class="dropdown-item" href="items?view=passed&advanced_search"><i class="fas fa-fw fa-calendar-times"></i> Passed Deadlines</a>
             <a class="dropdown-item" href="items?view=future&advanced_search"><i class="fas fa-fw fa-plane-departure"></i> Future</a>
             <div class="dropdown-divider"></div>
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View Labels:</div>
+            <div class="dropdown-header text-<?php echo $theme_color; ?>">View:</div>
             <a class="dropdown-item" href="labels"><i class="fas fa-fw fa-folder"></i> Labels</a>
           </div>
         </div>
@@ -276,6 +188,11 @@ if (isset($_REQUEST['normal_search'])){ // user presses the normal search button
                             <div class="card-body">
                               <h4><i class="<?php echo $icon; ?>"></i> 
                                 <?php
+
+                                  if ($rws[10] == "1"){
+                                    echo '<i class="fas fa-star"></i> ';
+                                  }
+
                                   echo $rws[3];
 
                                   if ($rws[12] == "ARCHIVED"){ // add '[archived]' text if item is archived
