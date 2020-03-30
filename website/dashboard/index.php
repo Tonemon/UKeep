@@ -240,24 +240,6 @@ include 'essentials.php';
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-scroll"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-scroll"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -285,24 +267,6 @@ include 'essentials.php';
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-bookmark"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-bookmark"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
                     <div class="col-lg-6 mb-4">
                       <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
                         <div class="card-body">
@@ -376,58 +340,6 @@ include 'essentials.php';
                   <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
                   <div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Color System -->
-              <div class="row">
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-primary text-white shadow">
-                    <div class="card-body">
-                      Primary
-                      <div class="text-white-50 small">#4e73df</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-success text-white shadow">
-                    <div class="card-body">
-                      Success
-                      <div class="text-white-50 small">#1cc88a</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-info text-white shadow">
-                    <div class="card-body">
-                      Info
-                      <div class="text-white-50 small">#36b9cc</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-warning text-white shadow">
-                    <div class="card-body">
-                      Warning
-                      <div class="text-white-50 small">#f6c23e</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-danger text-white shadow">
-                    <div class="card-body">
-                      Danger
-                      <div class="text-white-50 small">#e74a3b</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-secondary text-white shadow">
-                    <div class="card-body">
-                      Secondary
-                      <div class="text-white-50 small">#858796</div>
-                    </div>
                   </div>
                 </div>
               </div>
