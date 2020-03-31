@@ -100,7 +100,7 @@ include 'essentials.php';
         </div>
       </h1>
 
-          <?php include '../_inc/dbconn.php';
+          <?php
             $viewlabel_sql = "SELECT * FROM UKeepDAT.label_$user_code";
             $label_result = mysql_query($viewlabel_sql) or die(mysql_error());
             $label_num_rows = mysql_num_rows($label_result);                    

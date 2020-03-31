@@ -1,11 +1,17 @@
 <?php
-  
+  $serverName = "localhost";
+  $db_username = "UKeepUser";
+  $db_password = "UKeepPassword";
+  mysql_connect($serverName,$db_username,$db_password)/* or die('the website is down for maintainance')*/;
+  // no mysql_select_db($dbname), because two databases are connected to the same user (UNotesDAT & UNotesMAIN)
+
+  // New salt location (variable in one place only)
+  $salt = "@3hRziJK**&KO&2D";
   // Essential Variables and information is stored here for quick retrieval
   // This file is always present in the header of a page
 
   $query_id = $_SESSION['session_keep_id'];
 
-  include '../_inc/dbconn.php';
   $sql = "SELECT * FROM UKeepMAIN.users WHERE id='$query_id'";
   $result = mysql_query($sql) or die(mysql_error());
   $rws = mysql_fetch_array($result);

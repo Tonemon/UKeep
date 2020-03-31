@@ -150,7 +150,6 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                                 <label for="filter" class="text-<?php echo $theme_color; ?>">Label</label>
                                 <select class="form-control" name="label">
                                   <option value="" selected>...</option>
-                                  <?php include '../_inc/dbconn.php';
                                   <?php
                                     $sql3 = "SELECT * FROM UKeepDAT.label_$user_code";
                                     $result3 = mysql_query($sql3) or die(mysql_error());

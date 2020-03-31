@@ -1,6 +1,6 @@
 <?php 
 	session_start();
-	include '../_inc/dbconn.php';
+	include 'essentials.php';
 
 	// Set information for logout process & last login
 	$date = date('Y-m-d h:i:s');

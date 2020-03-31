@@ -1,6 +1,6 @@
 <?php 
 if (isset($_REQUEST['loginbutton'])){
-  include '_inc/dbconn.php';
+  include 'dashboard/essentials.php';
 
   $login_user = $_REQUEST['login_user'];  
   $login_password = sha1($_REQUEST['login_password'].$salt); // password salting (for security reasons)

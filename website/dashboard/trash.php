@@ -58,7 +58,6 @@ include 'essentials.php';  // $user_code from essentials.php
       </h1>
 
       <!-- Content Row -->
-          <?php include '../_inc/dbconn.php';
           <?php
             $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE status='TRASH'";
             $result = mysql_query($final_sql) or die(mysql_error());
