@@ -53,7 +53,7 @@
   <!-- Create note Modal (1/3) -->
   <div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-     <form action="addons/item-processing" method="POST">
+     <form action="edit" method="POST">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-<?php echo $theme_color; ?>" id="exampleModalLabel"><i class="fas fa-sticky-note"></i> New Note</h5>
@@ -65,7 +65,7 @@
             <div class="row">
               <div class="col-xl-7 form-group">
                 <small id="taskHelp" class="form-text">Note Title</small>
-                <input type="text" class="form-control" name="new_note_title" placeholder="Example: Lasagna Recipe">
+                <input type="text" class="form-control" name="new_note_title" placeholder="Example: Lasagna Recipe" required>
               </div>
               <div class="col-xl-5 form-group">
                 <small id="taskHelp" class="form-text">Add label</small>
@@ -82,7 +82,7 @@
               </div>
             </div>
             <small class="form-text">Description</small>
-            <textarea class="form-control" name="new_note_description" rows="4" placeholder="You start by collecting all of the ingredients..."></textarea><br>
+            <textarea class="form-control" name="new_note_description" rows="4" placeholder="You start by collecting all of the ingredients..." required></textarea><br>
             <small class="form-text"><input type="checkbox" name="new_note_bookmark" value="1"> Bookmark Note? (This will place it on your dashboard)</small>
             <small class="form-text"><i class="fas fa-info-circle"></i> You can add more information after saving the note.</small>
           </div>
@@ -98,7 +98,7 @@
   <!-- Create task Modal (2/3) -->
   <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-     <form action="addons/item-processing" method="POST">
+     <form action="edit" method="POST">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-<?php echo $theme_color; ?>" id="exampleModalLabel"><i class="fas fa-plus"></i> New Task</h5>
@@ -110,7 +110,7 @@
             <div class="row">
               <div class="col-xl-7 form-group">
                 <small id="taskHelp" class="form-text">Task Title</small>
-                <input type="text" class="form-control" name="new_task_title" placeholder="Example: Send presentation">
+                <input type="text" class="form-control" name="new_task_title" placeholder="Example: Send presentation" required>
               </div>
               <div class="col-xl-5 form-group">
                 <small id="taskHelp" class="form-text">Task label</small>
@@ -131,10 +131,10 @@
                 <small id="taskHelp" class="form-text">Due Date</small>
                 <div class="row">
                   <div class="col-sm-7">
-                    <input type="date" class="form-control" name="new_task_duedate">
+                    <input type="date" class="form-control" name="new_task_duedate" required>
                   </div>
                   <div class="col-sm-5">
-                    <input type="time" class="form-control" name="new_task_duetime">
+                    <input type="time" class="form-control" name="new_task_duetime" required>
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@
               </div>
             </div>
             <small class="form-text">Task description</small>
-            <textarea class="form-control" name="new_task_description" rows="2" placeholder="Send presentation to boss by 5:00 pm. Items to complete: ..."></textarea><br>
+            <textarea class="form-control" name="new_task_description" rows="2" placeholder="Send presentation to boss by 5:00 pm. Items to complete: ..." required></textarea><br>
             <small class="form-text"><input type="checkbox" name="new_task_bookmark" value="1"> Bookmark Task? (This will pin your task at the top of the tasks page.)</small>
             <small class="form-text"><i class="fas fa-info-circle"></i> More information can be added after creating the task.</small>
           </div>
@@ -177,7 +177,7 @@
                 <div class="row">
                   <div class="col-xl-7 form-group">
                     <small id="taskHelp" class="form-text">Label Title</small>
-                    <input type="text" class="form-control" name="label_title" placeholder="Example: Really Important">
+                    <input type="text" class="form-control" name="label_title" placeholder="Example: Really Important" required>
                   </div>
                   <div class="col-xl-5 form-group">
                     <small id="taskHelp" class="form-text">Label Color</small>
@@ -195,7 +195,7 @@
                 <div class="row">
                   <div class="col-xl-12 form-group">
                     <small class="form-text">Label Description</small>
-                    <textarea class="form-control" name="label_description" rows="1" placeholder="Example: This label is for business only..."></textarea>
+                    <textarea class="form-control" name="label_description" rows="1" placeholder="Example: This label is for business only..." required></textarea>
                   </div>
                 </div>
 

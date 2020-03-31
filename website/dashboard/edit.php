@@ -9,6 +9,10 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
 <?php    
   if (isset($_REQUEST['item_edit'])){ // View item request (closing racket from addons/edit-process.php)
     $itemid = $_POST['item_id'];
+
+    if ($itemid == ""){ // if button pressed, but no item selected
+      header('location:items?view=all&error=3');
+    } else { // button pressed and item selected
       $itemsql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE id='$itemid'";
       $itemresult = mysql_query($itemsql) or die(mysql_error());
       $itemres = mysql_fetch_array($itemresult);
@@ -34,11 +38,10 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
       <div class="container-fluid">
       <form action="edit" method="POST">
         <h1 class="h3 mb-4 text-gray-800">Editing
-          <?php if ($itemres[2] == "task"){ echo 'task'; }
-            else { echo 'note'; } ?>: 
-          <div class="dropdown no-arrow" style="display:inline-block;">
-            <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-              <?php 
+          <?php if ($itemres[2] == "task"){ echo 'task: '; }
+            else { echo 'note: '; } 
+
+            echo '<span class="text-'.$theme_color.'">';
                 // Icon support
                 if ($itemres[10] == "1"){ // bookmarked
                   echo '<i class="fas fa-star fa-sm fa-fw"></i> ';
@@ -53,15 +56,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 // Title support
                 echo $itemres[3];
               ?>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-              <div class="dropdown-header text-<?php echo $theme_color; ?>">Actions:</div>
-              <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-save"></i> Save Item</a>
-              <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-trash-alt"></i> Delete</a>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-item"><i class="fas fa-fw fa-arrow-left"></i> Back</div>
-            </div>
-          </div>
+            </span>
         </h1>
 
         <div class="row">
@@ -88,7 +83,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
               <div class="card-body">
                 <div class="row">
                   <div class="col-xl-6 form-group">
-                    <input type="hidden" name="alt_id" value="<?php echo $itemres[0];?>">
+                    <input type="hidden" name="item_id" value="<?php echo $itemres[0];?>">
                     <input type="hidden" name="alt_type" value="<?php echo $itemres[2];?>">
                     <small id="taskHelp" class="form-text">Task Title</small>
                     <input type="text" class="form-control" name="task_alt_title" value="<?php echo $itemres[3];?>">
@@ -149,7 +144,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                   </div>
                 </div>
                 <small class="form-text">Task description</small>
-                <textarea class="form-control" name="task_alt_description" rows="2"><?php echo $itemres[3]; ?></textarea><br>
+                <textarea class="form-control" name="task_alt_description" rows="2"><?php echo $itemres[4]; ?></textarea><br>
 
                 <?php if ($itemres[10] == "1"){ $bookmark_set = "checked"; } // set bookmark tick or leave empty ?>
                 <small class="form-text"><input type="checkbox" name="task_alt_bookmark" value="1" <?php echo $bookmark_set; ?>> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
@@ -205,7 +200,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
               <div class="card-body">
                 <div class="row">
                   <div class="col-xl-5 form-group">
-                    <input type="hidden" name="alt_id" value="<?php echo $itemres[0];?>">
+                    <input type="hidden" name="item_id" value="<?php echo $itemres[0];?>">
                     <input type="hidden" name="alt_type" value="<?php echo $itemres[2];?>">
                     <small id="noteHelp" class="form-text">Note Title</small>
                     <input type="text" class="form-control" name="note_alt_title" value="<?php echo $itemres[3];?>">
@@ -281,6 +276,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
 </html>
 
 <?php 
- }
+    } // close else tag
+ } // close if statement
   include 'addons/item-processing.php';
 ?>

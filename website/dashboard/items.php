@@ -68,7 +68,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
         } elseif ($_GET['error'] == "3") { // error: accessing edit.php without item selected
           echo "<div class='alert alert-warning alert-dismissible'>
             <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-            <i class='fas fa-exclamation-triangle'></i> You cannot access this page without first selecting an item to edit.</div>";
+            <i class='fas fa-exclamation-triangle'></i> You need so select an item to perform this action.</div>";
         }
       ?>
 
@@ -140,10 +140,10 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                               <label for="filter" class="text-<?php echo $theme_color; ?>">Priority</label>
                                 <select class="form-control" name="priority">
                                     <option value="" selected>...</option>
-                                    <option value="high">High Priority</option>
-                                    <option value="medium">Medium Priority</option>
-                                    <option value="low">Low Priority</option>
-                                    <option value="none">None</option>
+                                    <option class="text-white bg-danger" value="high">High</option>
+                                    <option class="bg-warning" value="medium">Medium</option>
+                                    <option class="text-white bg-info" value="low">Low</option>
+                                    <option class="text-white bg-secondary" value="none">None</option>
                                 </select>
                               </div>
                               <div class="col-sm-4">
@@ -209,7 +209,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                           $icon = "fas fa-star";
                         } elseif ($rws[2] == "task" AND $rws[12] == "ACTIVE"){ // task and active
                           $icon = "fas fa-calendar-alt";
-                        } elseif ($rws[2] == "note"){ // note
+                        } elseif ($rws[2] == "note" AND $rws[12] == "ACTIVE"){ // note
                           $icon = "fas fa-sticky-note";
                         } else { // means it is a note/task, but archived
                           $icon = "fas fa-archive";

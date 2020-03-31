@@ -112,8 +112,6 @@ include 'essentials.php';  // $user_code from essentials.php
 
                         if ($rws[12] == "TRASH"){ // task and active
                           $icon = "fas fa-trash-alt";
-                        } else { // means it is a note/task, but archived
-                          $icon = "fas fa-question";
                         }
 
                         // making date readable
@@ -124,9 +122,9 @@ include 'essentials.php';  // $user_code from essentials.php
 
                         <div class="col-lg-6 mb-4">
                           <?php if ($rws[10] == "1"){ ?>
-                          <div class="card text-<?php echo $theme_color; ?> shadow-lg">
+                          <div class="card product-chooser-item text-<?php echo $theme_color; ?> shadow-lg">
                           <?php } else { ?>
-                          <div class="card text-dark product-chooser-item shadow-lg">
+                          <div class="card product-chooser-item text-dark shadow-lg">
                           <?php } ?>
                             <div class="card-body">
                               <h4><i class="<?php echo $icon; ?>"></i> 

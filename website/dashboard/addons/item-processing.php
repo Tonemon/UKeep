@@ -38,9 +38,14 @@
   } elseif (isset($_REQUEST['item_delete'])){ // Delete item (set status to TRASH, not actually deleted)
     
     $del_item_id = $_POST['item_id'];
-    $sql_delete = "UPDATE UKeepDAT.items_$user_code SET status='TRASH' WHERE id='$del_item_id'";
-    mysql_query($sql_delete) or die(mysql_error());
-    header('location:items?view=all&success=3');
+
+    if ($del_item_id == ""){
+      header('location:items?view=all&error=3');
+    } else {
+      $sql_delete = "UPDATE UKeepDAT.items_$user_code SET status='TRASH' WHERE id='$del_item_id'";
+      mysql_query($sql_delete) or die(mysql_error());
+      header('location:items?view=all&success=3');
+    }
 
   } elseif (isset($_REQUEST['item_undelete'])){ // Undelete item (set status to ACTIVE)
     
@@ -68,7 +73,7 @@
     }
   } elseif (isset($_REQUEST['note_alter'])){ // Update task request
     
-    $alt_id = $_POST['alt_id'];
+    $alt_id = $_POST['item_id'];
     $alt_title = mysql_real_escape_string($_REQUEST['note_alt_title']);
     $alt_label = mysql_real_escape_string($_REQUEST['note_alt_label']);
     $alt_priority = mysql_real_escape_string($_REQUEST['note_alt_priority']);
@@ -83,7 +88,7 @@
 
   } elseif (isset($_REQUEST['task_alter'])){ // Update task request
     
-    $alt_id = $_POST['alt_id'];
+    $alt_id = $_POST['item_id'];
     $alt_title = mysql_real_escape_string($_REQUEST['task_alt_title']);
     $alt_label = mysql_real_escape_string($_REQUEST['task_alt_label']);
     $alt_duedate = mysql_real_escape_string($_REQUEST['task_alt_duedate']);
@@ -101,7 +106,7 @@
 
   } elseif (isset($_REQUEST['item_transform'])){ // Update task request
     
-    $alt_id = $_POST['alt_id'];
+    $alt_id = $_POST['item_id'];
     $alt_type = $_POST['alt_type'];
 
     if ($alt_type == "task"){
