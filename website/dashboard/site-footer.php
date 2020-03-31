@@ -51,9 +51,9 @@
   </div>
 
   <!-- Create note Modal (1/3) -->
-    <div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-     <form action="edit.php" method="POST">
+  <div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+     <form action="addons/item-processing" method="POST">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-<?php echo $theme_color; ?>" id="exampleModalLabel"><i class="fas fa-sticky-note"></i> New Note</h5>
@@ -62,48 +62,43 @@
             </button>
           </div>
           <div class="modal-body">
-      <div class="row">
-        <div class="col-xl-7 form-group">
-          <small id="taskHelp" class="form-text">Note Title</small>
-          <input type="text" class="form-control" name="note_title" placeholder="Example: Lasagna Recipe">
-        </div>
-        <div class="col-xl-5 form-group">
-          <small id="taskHelp" class="form-text">Add label</small>
-          <select class="form-control" name="note_label">
-            <option value="" selected>None</option>
-              <?php 
-                include '../_inc/dbconn.php';
-                include 'essentials.php';
-                $sql_note = "SELECT * FROM UKeepDAT.label_$user_code";
-                $result = mysql_query($sql_note) or die(mysql_error());
-                $num_rows = mysql_num_rows($result);
+            <div class="row">
+              <div class="col-xl-7 form-group">
+                <small id="taskHelp" class="form-text">Note Title</small>
+                <input type="text" class="form-control" name="new_note_title" placeholder="Example: Lasagna Recipe">
+              </div>
+              <div class="col-xl-5 form-group">
+                <small id="taskHelp" class="form-text">Add label</small>
+                <select class="form-control" name="new_note_label">
+                  <option value="" selected>None</option>
+                  <?php 
+                    $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
+                    $labels_result = mysql_query($labels_sql) or die(mysql_error());
 
-                while($rws = mysql_fetch_array($result)){
-                  // displaying labels
-                  echo "<option value='".$rws[0]."'>".$rws[1]." (".strtolower($rws[2]).")</option>";
-                } 
-              ?>
-          </select>
-        </div>
-      </div>
-      <small class="form-text">Description</small>
-      <textarea class="form-control" name="note_description" rows="4" placeholder="You start by collecting all of the ingredients..."></textarea>
-      <small class="form-text"><input type="checkbox" name="note_bookmark" value="1"> Bookmark Note? (This will place it on your dashboard)</small><br>
-      <small class="form-text"><i class="fas fa-info-circle"></i> You can add more information after saving the note.</small>
-      </div>
+                    while ($labels_items = mysql_fetch_array($labels_result)){ // displaying labels ?>
+                      <option class="bg-<?php echo $labels_items[2]; ?> text-white" value="<?php echo $labels_items[0]; ?>"><?php echo $labels_items[1]; ?></option>
+                  <?php } ?> 
+                </select>
+              </div>
+            </div>
+            <small class="form-text">Description</small>
+            <textarea class="form-control" name="new_note_description" rows="4" placeholder="You start by collecting all of the ingredients..."></textarea>
+            <small class="form-text"><input type="checkbox" name="note_bookmark" value="1"> Bookmark Note? (This will place it on your dashboard)</small><br>
+            <small class="form-text"><i class="fas fa-info-circle"></i> You can add more information after saving the note.</small>
+          </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
             <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="note_create">Create Note</button>
           </div>
         </div>
      </form>
-      </div>
     </div>
+  </div>
 
   <!-- Create task Modal (2/3) -->
-    <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-     <form action="edit.php" method="POST">
+  <div class="modal fade" id="newTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+     <form action="addons/item-processing" method="POST">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-<?php echo $theme_color; ?>" id="exampleModalLabel"><i class="fas fa-plus"></i> New Task</h5>
@@ -112,64 +107,60 @@
             </button>
           </div>
           <div class="modal-body">
-      <div class="row">
-        <div class="col-xl-7 form-group">
-          <small id="taskHelp" class="form-text">Task Title</small>
-          <input type="text" class="form-control" name="task_title" placeholder="Example: Send presentation">
-        </div>
-        <div class="col-xl-5 form-group">
-          <small id="taskHelp" class="form-text">Task label</small>
-          <select class="form-control" name="task_label">
-            <option value="" selected>None</option>
-              <?php 
-                /*include '../_inc/dbconn.php';
-                $sql = "SELECT * FROM UKeepDAT.label".$user_id;
-                $result = mysql_query($sql) or die(mysql_error());
-                $num_rows = mysql_num_rows($result);
+            <div class="row">
+              <div class="col-xl-7 form-group">
+                <small id="taskHelp" class="form-text">Task Title</small>
+                <input type="text" class="form-control" name="task_title" placeholder="Example: Send presentation">
+              </div>
+              <div class="col-xl-5 form-group">
+                <small id="taskHelp" class="form-text">Task label</small>
+                <select class="form-control" name="task_label">
+                  <option value="" selected>None</option>
+                  <?php 
+                    $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
+                    $labels_result = mysql_query($labels_sql) or die(mysql_error());
 
-                while($rws = mysql_fetch_array($result)){
-                  // displaying labels
-                  echo "<option value='".$rws[0]."'>".$rws[1]." (".strtolower($rws[2]).")</option>";
-                } 
-              */?>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xl-8 form-group">
-          <small id="taskHelp" class="form-text">Due Date (date + time + AM/PM!)</small>
-          <div class="row">
-            <div class="col-sm-7">
-              <input type="date" class="form-control" name="task_duedate">
+                    while ($labels_items = mysql_fetch_array($labels_result)){ // displaying labels ?>
+                      <option class="bg-<?php echo $labels_items[2]; ?> text-white" value="<?php echo $labels_items[0]; ?>"><?php echo $labels_items[1]; ?></option>
+                  <?php } ?> 
+                </select>
+              </div>
             </div>
-            <div class="col-sm-5">
-              <input type="time" class="form-control" name="task_duetime">
+            <div class="row">
+              <div class="col-xl-8 form-group">
+                <small id="taskHelp" class="form-text">Due Date (date + time + AM/PM!)</small>
+                <div class="row">
+                  <div class="col-sm-7">
+                    <input type="date" class="form-control" name="task_duedate">
+                  </div>
+                  <div class="col-sm-5">
+                    <input type="time" class="form-control" name="task_duetime">
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-4 form-group">
+                <small id="taskHelp" class="form-text">Priority</small>
+                <select class="form-control" name="task_priority">
+                  <option value="0" selected>None</option>
+                  <option value="1">Low</option>
+                  <option value="2">Medium</option>
+                  <option value="3">High</option>
+                </select>
+              </div>
             </div>
+            <small class="form-text">Task description</small>
+            <textarea class="form-control" name="task_description" rows="2" placeholder="Send presentation to boss by 5:00 pm. Items to complete: ..."></textarea>
+            <small class="form-text"><input type="checkbox" name="task_bookmark" value="1"> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
+            <small class="form-text"><i class="fas fa-info-circle"></i> Want to add more information to this task? After creation you can add more on the edit task page.</small>
           </div>
-        </div>
-        <div class="col-xl-4 form-group">
-          <small id="taskHelp" class="form-text">Priority</small>
-          <select class="form-control" name="task_priority">
-            <option value="0" selected>None</option>
-            <option value="1">Low</option>
-            <option value="2">Medium</option>
-            <option value="3">High</option>
-          </select>
-        </div>
-      </div>
-      <small class="form-text">Task description</small>
-      <textarea class="form-control" name="task_description" rows="2" placeholder="Send presentation to boss by 5:00 pm. Items to complete: ..."></textarea>
-      <small class="form-text"><input type="checkbox" name="task_bookmark" value="1"> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
-      <small class="form-text"><i class="fas fa-info-circle"></i> Want to add more information to this task? After creation you can add more on the edit task page.</small>
-      </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
             <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="task_create">Create task</button>
           </div>
         </div>
      </form>
-      </div>
     </div>
+  </div>
 
   <!-- Create label Modal (3/3) -->
     <div class="modal fade" id="newLabelModal" tabindex="-1" role="dialog" aria-hidden="true">

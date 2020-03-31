@@ -49,6 +49,10 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
           echo "<div class='alert alert-danger alert-dismissible'>
             <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
             <i class='fas fa-exclamation-triangle'></i> You dont have access to this feature.</div>";
+        } elseif ($_GET['error'] == "3") { // error: accessing edit.php without item selected
+          echo "<div class='alert alert-warning alert-dismissible'>
+            <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+            <i class='fas fa-exclamation-triangle'></i> You cannot access this page without first selecting an item to edit.</div>";
         }
       ?>
 
@@ -201,7 +205,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                       ?>
 
                         <div class="col-lg-6 mb-4">
-                          <a href="edit?task=<?php echo $rws[0]; ?>" style="text-decoration:none">
+                          <a href="edit?item=<?php echo $rws[0]; ?>" style="text-decoration:none">
                           <?php if ($rws[10] == "1"){ ?>
                           <div class="card text-<?php echo $theme_color; ?> shadow-lg">
                           <?php } else { ?>
