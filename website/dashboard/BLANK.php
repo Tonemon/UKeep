@@ -10,7 +10,7 @@ include 'essentials.php';
 <html lang="en">
 <head>
 
-  <?php include 'extra/metadata.php'; ?>
+  <?php include 'addons/metadata.php'; ?>
   <title>BLANK &bull; UKeep</title>
 
 </head>

@@ -34,19 +34,6 @@ include 'essentials.php';
       header('location:labels?success=2');
     }
 
-  } elseif (isset($_REQUEST['label_edit'])){ // Request to edit an item
-    $labelid = $_POST['label_id'];
-
-    if ($labelid == ""){ // No label is selected, but edit button is pressed
-      header("Refresh: 0");
-      header('location:labels?error=2');
-    } else { // Label selected and button pressed, so grab label data from db
-      $labelid = $_POST['label_id'];
-      $edit_sql = "SELECT * FROM UKeepDAT.label_$user_code WHERE label_id='$labelid'";
-      $edit_result = mysql_query($edit_sql) or die(mysql_error());
-      $edit_vars = mysql_fetch_array($edit_result);
-    }
-
   } elseif (isset($_REQUEST['label_alter'])){ // Alter label request
     $alterlabel_id =  $_POST['label_alter_id'];
     $alterlabel_title =  $_POST['label_alter_title'];
@@ -214,7 +201,19 @@ include 'essentials.php';
             </form>
           </div>
 
-            <?php if (isset($_REQUEST['label_edit'])){ // Edit label request ?>
+            <?php if (isset($_REQUEST['label_edit'])){ // Edit label request 
+              $labelid = $_POST['label_id'];
+
+                if ($labelid == ""){ // No label is selected, but edit button is pressed
+                  header("Refresh: 0");
+                  header('location:labels?error=2');
+                } else { // Label selected and button pressed, so grab label data from db
+                  $labelid = $_POST['label_id'];
+                  $edit_sql = "SELECT * FROM UKeepDAT.label_$user_code WHERE label_id='$labelid'";
+                  $edit_result = mysql_query($edit_sql) or die(mysql_error());
+                  $edit_vars = mysql_fetch_array($edit_result);
+                }
+            ?>
             <div class="col-xl-6 col-lg-7">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -235,31 +234,17 @@ include 'essentials.php';
                         <small id="taskHelp" class="form-text">Label Color</small>
                         <select class="form-control" name="label_alter_color">
                           <?php // color mapping for 'at the moment' in dropdown
-                            if ($edit_vars[2] == "primary"){
-                              $editlabelcolor = "Blue";
-                            } elseif ($edit_vars[2] == "secondary"){
-                              $editlabelcolor = "Gray";
-                            } elseif ($edit_vars[2] == "success") {
-                              $editlabelcolor = "Green";
-                            } elseif ($edit_vars[2] == "danger"){
-                              $editlabelcolor = "Red";
-                            } elseif ($edit_vars[2] == "warning") {
-                              $editlabelcolor = "Yellow";
-                            } elseif ($edit_vars[2] == "info"){
-                              $editlabelcolor = "Lightblue";
-                            } elseif ($edit_vars[2] == "dark") {
-                              $editlabelcolor = "Black";
-                            }
+                            $label_color = array("primary", "secondary", "success", "danger", "warning", "info", "dark");
+                            $label_text = array("Blue", "Gray", "Green", "Red", "Yellow", "Lightblue", "Black");
+                            // I know, this can be set to a foreach statement, but I am kinda busy right now
                           ?>
-                          <option value="<?php echo $edit_vars[2]; ?>" selected disabled><?php echo $editlabelcolor; ?> (at the moment)</option>
-                          <option value="" disabled></option>
-                          <option value="primary">Blue</option>
-                          <option value="secondary">Gray</option>
-                          <option value="success">Green</option>
-                          <option value="danger">Red</option>
-                          <option value="warning">Yellow</option>
-                          <option value="info">Lightblue</option>
-                          <option value="dark">Black</option>
+                          <option value="<?php echo $label_color[0]; ?>" class="bg-<?php echo $label_color[0]; ?> text-white" <?php if ($edit_vars[2] == $label_color[0]) { echo 'selected'; } ?>><?php echo $label_text[0]; if ($edit_vars[2] == $label_color[0]) { echo ' (selected)'; } ?></option>
+                          <option value="<?php echo $label_color[1]; ?>" class="bg-<?php echo $label_color[1]; ?> text-white" <?php if ($edit_vars[2] == $label_color[1]) { echo 'selected'; } ?>><?php echo $label_text[1]; if ($edit_vars[2] == $label_color[1]) { echo ' (selected)'; } ?></option>
+                          <option value="<?php echo $label_color[2]; ?>" class="bg-<?php echo $label_color[2]; ?> text-white" <?php if ($edit_vars[2] == $label_color[2]) { echo 'selected'; } ?>><?php echo $label_text[2]; if ($edit_vars[2] == $label_color[2]) { echo ' (selected)'; } ?></option>
+                          <option value="<?php echo $label_color[3]; ?>" class="bg-<?php echo $label_color[3]; ?> text-white" <?php if ($edit_vars[2] == $label_color[3]) { echo 'selected'; } ?>><?php echo $label_text[3]; if ($edit_vars[2] == $label_color[3]) { echo ' (selected)'; } ?></option>
+                          <option value="<?php echo $label_color[4]; ?>" class="bg-<?php echo $label_color[4]; ?> text-white" <?php if ($edit_vars[2] == $label_color[4]) { echo 'selected'; } ?>><?php echo $label_text[4]; if ($edit_vars[2] == $label_color[4]) { echo ' (selected)'; } ?></option>
+                          <option value="<?php echo $label_color[5]; ?>" class="bg-<?php echo $label_color[5]; ?> text-white" <?php if ($edit_vars[2] == $label_color[5]) { echo 'selected'; } ?>><?php echo $label_text[5]; if ($edit_vars[2] == $label_color[5]) { echo ' (selected)'; } ?></option>
+                          <option value="<?php echo $label_color[6]; ?>" class="bg-<?php echo $label_color[6]; ?> text-white" <?php if ($edit_vars[2] == $label_color[6]) { echo 'selected'; } ?>><?php echo $label_text[6]; if ($edit_vars[2] == $label_color[6]) { echo ' (selected)'; } ?></option>
                         </select>
                       </div>
                     </div>
@@ -271,13 +256,13 @@ include 'essentials.php';
                     </div>
 
                     <p>The following colors are supported:<br>
-                      <span class="badge badge-primary">Blue</span>
-                      <span class="badge badge-secondary">Gray</span>
-                      <span class="badge badge-success">Green</span>
-                      <span class="badge badge-danger">Red</span>
-                      <span class="badge badge-warning">Yellow</span>
-                      <span class="badge badge-info">Lightblue</span>
-                      <span class="badge badge-dark">Black</span><br><br>
+                      <span class="badge badge-primary"><?php echo $edit_vars[1]; ?></span>
+                      <span class="badge badge-secondary"><?php echo $edit_vars[1]; ?></span>
+                      <span class="badge badge-success"><?php echo $edit_vars[1]; ?></span>
+                      <span class="badge badge-danger"><?php echo $edit_vars[1]; ?></span>
+                      <span class="badge badge-warning"><?php echo $edit_vars[1]; ?></span>
+                      <span class="badge badge-info"><?php echo $edit_vars[1]; ?></span>
+                      <span class="badge badge-dark"><?php echo $edit_vars[1]; ?></span><br><br>
 
                     <a href="labels" class="btn btn-dark">Discard</a>
                     <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="label_alter">Edit Label</button>
@@ -286,6 +271,7 @@ include 'essentials.php';
               </div>
             </div>
             <?php } ?>
+
           </div>
 
         </div>
