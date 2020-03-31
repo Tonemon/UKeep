@@ -82,13 +82,13 @@
               </div>
             </div>
             <small class="form-text">Description</small>
-            <textarea class="form-control" name="new_note_description" rows="4" placeholder="You start by collecting all of the ingredients..."></textarea>
-            <small class="form-text"><input type="checkbox" name="note_bookmark" value="1"> Bookmark Note? (This will place it on your dashboard)</small><br>
+            <textarea class="form-control" name="new_note_description" rows="4" placeholder="You start by collecting all of the ingredients..."></textarea><br>
+            <small class="form-text"><input type="checkbox" name="new_note_bookmark" value="1"> Bookmark Note? (This will place it on your dashboard)</small>
             <small class="form-text"><i class="fas fa-info-circle"></i> You can add more information after saving the note.</small>
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="note_create">Create Note</button>
+            <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="note_create">Create Note</button>
           </div>
         </div>
      </form>
@@ -110,11 +110,11 @@
             <div class="row">
               <div class="col-xl-7 form-group">
                 <small id="taskHelp" class="form-text">Task Title</small>
-                <input type="text" class="form-control" name="task_title" placeholder="Example: Send presentation">
+                <input type="text" class="form-control" name="new_task_title" placeholder="Example: Send presentation">
               </div>
               <div class="col-xl-5 form-group">
                 <small id="taskHelp" class="form-text">Task label</small>
-                <select class="form-control" name="task_label">
+                <select class="form-control" name="new_task_label">
                   <option value="" selected>None</option>
                   <?php 
                     $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
@@ -128,19 +128,19 @@
             </div>
             <div class="row">
               <div class="col-xl-8 form-group">
-                <small id="taskHelp" class="form-text">Due Date (date + time + AM/PM!)</small>
+                <small id="taskHelp" class="form-text">Due Date</small>
                 <div class="row">
                   <div class="col-sm-7">
-                    <input type="date" class="form-control" name="task_duedate">
+                    <input type="date" class="form-control" name="new_task_duedate">
                   </div>
                   <div class="col-sm-5">
-                    <input type="time" class="form-control" name="task_duetime">
+                    <input type="time" class="form-control" name="new_task_duetime">
                   </div>
                 </div>
               </div>
               <div class="col-xl-4 form-group">
                 <small id="taskHelp" class="form-text">Priority</small>
-                <select class="form-control" name="task_priority">
+                <select class="form-control" name="new_task_priority">
                   <option value="0" selected>None</option>
                   <option value="1">Low</option>
                   <option value="2">Medium</option>
@@ -149,13 +149,13 @@
               </div>
             </div>
             <small class="form-text">Task description</small>
-            <textarea class="form-control" name="task_description" rows="2" placeholder="Send presentation to boss by 5:00 pm. Items to complete: ..."></textarea>
-            <small class="form-text"><input type="checkbox" name="task_bookmark" value="1"> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
-            <small class="form-text"><i class="fas fa-info-circle"></i> Want to add more information to this task? After creation you can add more on the edit task page.</small>
+            <textarea class="form-control" name="new_task_description" rows="2" placeholder="Send presentation to boss by 5:00 pm. Items to complete: ..."></textarea><br>
+            <small class="form-text"><input type="checkbox" name="new_task_bookmark" value="1"> Bookmark Task? (This will pin your task at the top of the tasks page.)</small>
+            <small class="form-text"><i class="fas fa-info-circle"></i> More information can be added after creating the task.</small>
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="task_create">Create task</button>
+            <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="task_create">Create task</button>
           </div>
         </div>
      </form>

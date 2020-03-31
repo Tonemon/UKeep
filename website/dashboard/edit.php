@@ -7,8 +7,8 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
 ?>
 
 <?php    
-  if (isset($_REQUEST['item'])){ // View item request (closing racket from addons/edit-process.php)
-    $itemid = $_GET['item'];
+  if (isset($_REQUEST['item_edit'])){ // View item request (closing racket from addons/edit-process.php)
+    $itemid = $_POST['item_id'];
       $itemsql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE id='$itemid'";
       $itemresult = mysql_query($itemsql) or die(mysql_error());
       $itemres = mysql_fetch_array($itemresult);
@@ -32,7 +32,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
 
       <!-- Begin Page Content -->
       <div class="container-fluid">
-      <form action="addons/item-processing" method="POST">
+      <form action="edit" method="POST">
         <h1 class="h3 mb-4 text-gray-800">Editing
           <?php if ($itemres[2] == "task"){ echo 'task'; }
             else { echo 'note'; } ?>: 
@@ -74,7 +74,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">Task Editor
                   <?php 
-                    echo ' <span class="text-dark">('.$itemres[13].'x visited)</span>'; // task visit count
+                    // echo ' <span class="text-dark">('.$itemres[13].'x visited)</span>'; // task visit count
 
                     // setting date format for last modified
                     $editdate = strtotime($itemres[6]);
@@ -88,12 +88,14 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
               <div class="card-body">
                 <div class="row">
                   <div class="col-xl-6 form-group">
+                    <input type="hidden" name="alt_id" value="<?php echo $itemres[0];?>">
+                    <input type="hidden" name="alt_type" value="<?php echo $itemres[2];?>">
                     <small id="taskHelp" class="form-text">Task Title</small>
-                    <input type="text" class="form-control" name="task_title" value="<?php echo $itemres[3];?>">
+                    <input type="text" class="form-control" name="task_alt_title" value="<?php echo $itemres[3];?>">
                   </div>
                   <div class="col-xl-6 form-group">
                     <small id="taskHelp" class="form-text">Task label</small>
-                    <select class="form-control" name="task_label">
+                    <select class="form-control" name="task_alt_label">
                         <?php 
                           $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
                           $labels_result = mysql_query($labels_sql) or die(mysql_error());
@@ -112,7 +114,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                       $new_duedate = date('d-m-Y h:i:s', $duedate);
                       
                     ?>
-                    <input type="text" class="form-control" name="task_duedate" value="<?php echo $new_duedate; ?>">
+                    <input type="text" class="form-control" name="task_alt_duedate" value="<?php echo $new_duedate; ?>">
                   </div>
                   <div class="col-xl-6 form-group">
                     <small id="taskHelp" class="form-text">Priority</small>
@@ -121,7 +123,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                       $prior_text = array("None", "Low", "Medium", "High");
 
                     ?>
-                    <select class="form-control" name="task_priority">
+                    <select class="form-control" name="task_alt_priority">
                       <option class="bg-<?php echo $prior_color[0]; ?> text-white" value="0" <?php if ($itemres[11] == "0"){ echo "selected"; } ?>>None</option>
                       <option class="bg-<?php echo $prior_color[1]; ?> text-white" value="1" <?php if ($itemres[11] == "1"){ echo "selected"; } ?>>Low</option>
                       <option class="bg-<?php echo $prior_color[2]; ?> text-white" value="2" <?php if ($itemres[11] == "2"){ echo "selected"; } ?>>Medium</option>
@@ -132,26 +134,27 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <div class="row">
                   <div class="col-xl-4 form-group">
                     <small id="taskHelp" class="form-text">Location</small>
-                    <input type="text" class="form-control" name="task_location" value="<?php echo $itemres[8]; ?>">
+                    <input type="text" class="form-control" name="task_alt_location" value="<?php echo $itemres[8]; ?>">
                   </div>
                   <div class="col-xl-4 form-group">
                     <small id="taskHelp" class="form-text">People</small>
-                    <input type="text" class="form-control" name="task_people" value="<?php echo $itemres[9]; ?>">
+                    <input type="text" class="form-control" name="task_alt_people" value="<?php echo $itemres[9]; ?>">
                   </div>
                   <div class="col-xl-4 form-group">
                     <small id="taskHelp" class="form-text">Status</small>
-                    <select class="form-control" name="task_status">
+                    <select class="form-control" name="task_alt_status">
                       <option value="ACTIVE" <?php if ($itemres[12] == "ACTIVE"){ echo 'selected'; } ?>>Active</option>
                       <option value="ARCHIVED" <?php if ($itemres[12] == "ARCHIVED"){ echo 'selected'; } ?>>Archived</option>
                     </select>
                   </div>
                 </div>
                 <small class="form-text">Task description</small>
-                <textarea class="form-control" name="task_description" rows="2"><?php echo $itemres[3]; ?></textarea><br>
+                <textarea class="form-control" name="task_alt_description" rows="2"><?php echo $itemres[3]; ?></textarea><br>
 
                 <?php if ($itemres[10] == "1"){ $bookmark_set = "checked"; } // set bookmark tick or leave empty ?>
-                <small class="form-text"><input type="checkbox" name="task_bookmark" <?php echo $bookmark_set; ?>> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
+                <small class="form-text"><input type="checkbox" name="task_alt_bookmark" value="1" <?php echo $bookmark_set; ?>> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
 
+                <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_transform"><i class="fas fa-random"></i> Transform Task to a Note</button>
                 <div class="float-right">
                   <a class="btn btn-secondary" href="items?view=all">Discard</a>
                   <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#deleteTaskModal"><i class="fas fa-trash-alt"></i> Delete Task</a>
@@ -174,7 +177,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <div class="modal-body">Deleting this task will move it to the trash.</div>
                 <div class="modal-footer">
                   <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="task_delete"><i class="fas fa-trash-alt"></i> Delete Task</button>
+                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_delete"><i class="fas fa-trash-alt"></i> Delete Task</button>
                 </div>
               </div>
             </div>
@@ -188,7 +191,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">Note Editor
                   <?php 
-                    echo ' <span class="text-dark">('.$itemres[13].'x visited)</span>'; // note visit count
+                    // echo ' <span class="text-dark">('.$itemres[13].'x visited)</span>'; // note visit count
 
                     // setting date format for last modified
                     $editdate = strtotime($itemres[6]);
@@ -202,12 +205,14 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
               <div class="card-body">
                 <div class="row">
                   <div class="col-xl-5 form-group">
+                    <input type="hidden" name="alt_id" value="<?php echo $itemres[0];?>">
+                    <input type="hidden" name="alt_type" value="<?php echo $itemres[2];?>">
                     <small id="noteHelp" class="form-text">Note Title</small>
-                    <input type="text" class="form-control" name="note_title" value="<?php echo $itemres[3];?>">
+                    <input type="text" class="form-control" name="note_alt_title" value="<?php echo $itemres[3];?>">
                   </div>
                   <div class="col-xl-5 form-group">
                     <small id="noteHelp" class="form-text">Note label</small>
-                    <select class="form-control" name="note_label">
+                    <select class="form-control" name="note_alt_label">
                         <?php 
                           $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
                           $labels_result = mysql_query($labels_sql) or die(mysql_error());
@@ -219,18 +224,19 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                   </div>
                   <div class="col-xl-2 form-group">
                     <small id="noteHelp" class="form-text">Status</small>
-                    <select class="form-control" name="note_status">
+                    <select class="form-control" name="note_alt_status">
                       <option value="ACTIVE" <?php if ($itemres[12] == "ACTIVE"){ echo 'selected'; } ?>>Active</option>
                       <option value="ARCHIVED" <?php if ($itemres[12] == "ARCHIVED"){ echo 'selected'; } ?>>Archived</option>
                     </select>
                   </div>
                 </div>
                 <small class="form-text">Note description</small>
-                <textarea class="form-control" name="note_description" rows="2"><?php echo $itemres[3]; ?></textarea><br>
+                <textarea class="form-control" name="note_alt_description" rows="2"><?php echo $itemres[4]; ?></textarea><br>
 
                 <?php if ($itemres[10] == "1"){ $bookmark_set = "checked"; } // set bookmark tick or leave empty ?>
-                <small class="form-text"><input type="checkbox" name="note_bookmark" <?php echo $bookmark_set; ?>> Bookmark Note? (This will pin your note at the top of the tasks page.)</small><br>
+                <small class="form-text"><input type="checkbox" name="note_alt_bookmark" value="1" <?php echo $bookmark_set; ?>> Bookmark Note? (This will pin your note at the top of the tasks page.)</small><br>
 
+                <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_transform"><i class="fas fa-random"></i> Transform Note to a Task</button>
                 <div class="float-right">
                   <a class="btn btn-secondary" href="items?view=all">Discard</a>
                   <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#deleteNoteModal"><i class="fas fa-trash-alt"></i> Delete Note</a>
@@ -253,7 +259,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <div class="modal-body">Deleting this note will move it to the trash.</div>
                 <div class="modal-footer">
                   <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="note_delete"><i class="fas fa-trash-alt"></i> Delete Note</button>
+                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_delete"><i class="fas fa-trash-alt"></i> Delete Note</button>
                 </div>
               </div>
             </div>
@@ -275,8 +281,6 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
 </html>
 
 <?php 
-  } else {
-    //
-    include 'addons/item-processing.php';
-  }
+ }
+  include 'addons/item-processing.php';
 ?>

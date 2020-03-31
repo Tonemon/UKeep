@@ -53,9 +53,6 @@ include 'essentials.php';
   <?php include 'addons/metadata.php'; ?>
   <title>Labels Overview &bull; UKeep</title>
 
-  <link href="../vendor/css/custom-label-chooser.css" rel="stylesheet">
-  <script src="../vendor/js/custom-label-chooser.js"></script>
-
 </head>
 
 <body id="page-top">

@@ -33,7 +33,11 @@ include 'essentials.php';  // $user_code from essentials.php
           echo "<div class='alert alert-warning alert-dismissible'>
             <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
             <i class='fas fa-exclamation-triangle'></i> Oh. Something went wrong. Please try again.</div>";
-        } elseif ($_GET['error'] == "2") { // error: no access
+        } elseif ($_GET['error'] == "2") { // error: something wrong
+          echo "<div class='alert alert-warning alert-dismissible'>
+            <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+            <i class='fas fa-exclamation-triangle'></i> You need to select an item first to perform an action.</div>";
+        } elseif ($_GET['error'] == "3") { // error: no access
           echo "<div class='alert alert-danger alert-dismissible'>
             <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
             <i class='fas fa-exclamation-triangle'></i> You dont have access to this feature.</div>";
@@ -55,6 +59,7 @@ include 'essentials.php';  // $user_code from essentials.php
 
       <!-- Content Row -->
           <?php include '../_inc/dbconn.php';
+          <?php
             $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE status='TRASH'";
             $result = mysql_query($final_sql) or die(mysql_error());
             $num_rows = mysql_num_rows($result);
@@ -83,9 +88,10 @@ include 'essentials.php';  // $user_code from essentials.php
                   
                 </div>
 
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="row">
+              <!-- Card Body -->
+              <div class="card-body">
+              <form action="edit" method="POST">
+                  <div class="row form-group product-chooser">
                     <?php 
                       while ($rws = mysql_fetch_array($result)){
                         // color matching the badges
@@ -118,11 +124,10 @@ include 'essentials.php';  // $user_code from essentials.php
                       ?>
 
                         <div class="col-lg-6 mb-4">
-                          <a href="edit?task=<?php echo $rws[0]; ?>" style="text-decoration:none">
                           <?php if ($rws[10] == "1"){ ?>
                           <div class="card text-<?php echo $theme_color; ?> shadow-lg">
                           <?php } else { ?>
-                          <div class="card text-dark shadow-lg">
+                          <div class="card text-dark product-chooser-item shadow-lg">
                           <?php } ?>
                             <div class="card-body">
                               <h4><i class="<?php echo $icon; ?>"></i> 
@@ -140,19 +145,44 @@ include 'essentials.php';  // $user_code from essentials.php
                                 <?php } ?>
                               </h4>
                               <div class="small"><?php echo substr($rws[4], 0, 100); ?> ...</div>
-                              <?php if ($rws[2] == "task"){ ?>
                                 <div class="small">
                                   <i>Label:</i> <span class="badge badge-<?php echo $badgecolor; ?>"><?php echo $rws[15]; ?></span>
+                                  <?php if ($rws[2] == "task"){ ?>
                                   <i>Priority:</i> <span class="badge badge-<?php echo $priority_color; ?>"><?php echo $priority; ?></span>
+                                  <?php } ?>
                                 </div>
-                              <?php } ?>
+                              <input type="radio" name="item_id" value="<?php echo $rws[0]; ?>">
                             </div>
                           </div>
-                          </a>
                         </div>
                       <?php }  ?>
                   </div>
+                  <div class="float-right">
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_undelete"><i class="fas fa-trash-restore-alt"></i> Recover Item</button>
+                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#perDelModal"><i class="fas fa-recycle"></i> Permanently delete item</a>
+                  </div>
+
+                  <!-- Permanently remove item Modal-->
+                  <div class="modal fade" id="perDelModal" tabindex="-1" role="dialog" aria-labelledby="delModalPerm" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title text-<?php echo $theme_color; ?>" id="delModalPerm"><i class="fas fa-recycle"></i> Permanently delete this item?</h5>
+                          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body"><b>You cannot undo this action.</b></div>
+                        <div class="modal-footer">
+                          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_perm_delete"><i class="fas fa-recycle"></i> Permamently delete Item</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+              </form>
               </div>
             </div>
           </div>
