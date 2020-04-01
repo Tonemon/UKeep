@@ -30,9 +30,8 @@ include 'essentials.php';
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-<?php echo $theme_color; ?> shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
-          <!-- Content Row -->
+          <!-- Widgets Row -->
           <div class="row">
-
             <!-- 'Items to do this week' card -->
             <div class="col-xl-3 col-md-6 mb-4">
               <?php
@@ -57,7 +56,7 @@ include 'essentials.php';
               </div>
             </div>
 
-            <!-- 'Deadlines passed' card -->
+            <!-- 'Task deadlines passed' card -->
             <div class="col-xl-3 col-md-6 mb-4">
               <?php
                 $widget_passed_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE `dateon` < CURRENT_DATE() AND `type`='task' AND `status`!='TRASH'";
@@ -81,7 +80,7 @@ include 'essentials.php';
               </div>
             </div>
 
-            <!-- 'Active / Total' card -->
+            <!-- 'Active / Total tasks ratio' card -->
             <div class="col-xl-3 col-md-6 mb-4">
               <?php
                 $widget_active_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE status='ACTIVE' AND type='task' AND `status`!='TRASH'";
@@ -139,7 +138,7 @@ include 'essentials.php';
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <a href="items?view=all">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><b>Notes / Tasks</b> Ratio (<?php echo $widget_ratio_total;?> items total)</div>
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><b>Notes / Tasks</b> Ratio (<?php echo $widget_ratio_total; ?> items total)</div>
                       </a>
                       <div class="row no-gutters align-items-center">
                         <div class="col">
@@ -151,7 +150,7 @@ include 'essentials.php';
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-star fa-2x text-gray-300"></i>
+                      <i class="fas fa-columns fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -165,15 +164,14 @@ include 'essentials.php';
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">Item Activity Overview</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-chart-line"></i> Item Activity Overview</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Dropdown Header:</div>
                       <a class="dropdown-item" href="#">Action</a>
                       <a class="dropdown-item" href="#">Another action</a>
                       <div class="dropdown-divider"></div>
@@ -181,7 +179,6 @@ include 'essentials.php';
                     </div>
                   </div>
                 </div>
-                <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-area">
                     <canvas id="myAreaChart"></canvas>
@@ -193,15 +190,14 @@ include 'essentials.php';
             <!-- Pie Chart -->
             <div class="col-xl-4 col-lg-5">
               <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">Item Type Overview</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-chart-pie"></i> Item Type Overview</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Dropdown Header:</div>
                       <a class="dropdown-item" href="#">Action</a>
                       <a class="dropdown-item" href="#">Another action</a>
                       <div class="dropdown-divider"></div>
@@ -209,7 +205,6 @@ include 'essentials.php';
                     </div>
                   </div>
                 </div>
-                <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-pie pt-4 pb-2">
                     <canvas id="myPieChart"></canvas>
@@ -230,37 +225,70 @@ include 'essentials.php';
             </div>
           </div>
 
-          <!-- Content Row -->
           <div class="row">
-            <!-- Content Column -->
             <div class="col-lg-6 mb-4">
 
-              <!-- Project Card Example -->
+              <!-- 'Label Usage' card -->
               <div class="card shadow mb-4">
+                <?php
+                  $viewlabel_sql = "SELECT * FROM UKeepDAT.label_$user_code";
+                  $label_result = mysql_query($viewlabel_sql) or die(mysql_error());
+                  $label_num_rows = mysql_num_rows($label_result);                    
+                ?>
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">Projects</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-folder"></i> Label Analytics</h6>
                 </div>
                 <div class="card-body">
-                  <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
+                  All your Labels (<?php echo $label_num_rows; ?> total)<span class="small font-weight-bold float-right">% of items has the label</span>
+                    <div class="dropdown-divider"></div><br>
+
+
+                  <?php // display each label
+                    while ($rws = mysql_fetch_array($label_result)) {
+                      // color matching for the badges and progress bars
+                      $badgecolor = $rws[2];
+                      $per_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE label='$rws[0]' AND `status`!='TRASH'";
+                      $per_result = mysql_query($per_sql) or die(mysql_error());
+                      $per_numrows = mysql_num_rows($per_result);
+
+                      $per_current = ($per_numrows/$widget_ratio_total)*100;
+                    ?>
+
+                    <span class="font-weight-bold float-right">&nbsp; <?php echo $per_current; ?>%</span>
+
+                    <div class="progress progress-bar-striped mb-4">
+                      <div class="progress-bar bg-<?php echo $badgecolor; ?>" role="progressbar" style="width: <?php echo $per_current; ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                        <span class="d-flex position-absolute w-100">
+                          <span class='badge badge-<?php echo $badgecolor; ?>'><?php echo $rws[1]; ?></span>
+                        </span>
+                        <span class="justify-content-center d-flex position-absolute w-100 text-dark">
+                          <?php echo $per_numrows."/".$widget_ratio_total." items"; ?>
+                        </span>
+                      </div>
+                    </div>
+                  <?php } ?>
+
+                  <?php // progress bar for 'No Labels'
+                      $nolabel_sql = "SELECT title FROM UKeepDAT.items_$user_code WHERE label='' AND `status`!='TRASH'";
+                      $nolabel_result = mysql_query($nolabel_sql) or die(mysql_error());
+                      $nolabel_numrows = mysql_num_rows($nolabel_result);
+
+                      $nolabel_current = ($nolabel_numrows/$widget_ratio_total)*100;
+                  ?>
+                  
+                  <div class="dropdown-divider"></div><br>
+                  <span class="font-weight-bold float-right">&nbsp; <?php echo $nolabel_current; ?>%</span>
+
+                    <div class="progress progress-bar-striped mb-4">
+                      <div class="progress-bar bg-secondary" role="progressbar" style="width: <?php echo $nolabel_current; ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                        <span class="d-flex position-absolute w-100"><b><i>&nbsp; <u>No label</u></i></b></span>
+                        <span class="justify-content-center d-flex position-absolute w-100 text-dark">
+                          <?php echo $nolabel_numrows."/".$widget_ratio_total." items"; ?>
+                        </span>
+                      </div>
+                    </div>
+                    
+
                 </div>
               </div>
 
@@ -281,17 +309,14 @@ include 'essentials.php';
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>">Bookmarked Items</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-bookmark"></i> Bookmarked Items</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Bookmarked Actions:</div>
+                      <a class="dropdown-item" href="items?view=bookmarked&advanced_search"><i class="fa fa-fw fa-bookmark"></i> View all bookmarked items</a>
                     </div>
                   </div>
                 </div>
@@ -299,42 +324,58 @@ include 'essentials.php';
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-bookmark"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
+                    <?php 
+                      $bookmark_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE bookmark='1' AND `status`!='TRASH'";
+                      $bookmark_result = mysql_query($bookmark_sql) or die(mysql_error());
+                      $bookmark_numrows = mysql_num_rows($result);
+
+                      while ($bres = mysql_fetch_array($bookmark_result)){
+                        // color matching the badges
+                        $badgecolor = $bres[16];
+
+                        if ($bres[11] == "0"){
+                          $priority = "None";
+                          $priority_color = "secondary";
+                        } elseif ($bres[11] == "1"){
+                          $priority = "Low";
+                          $priority_color = "info";
+                        } elseif ($bres[11] == "2"){
+                          $priority = "Medium";
+                          $priority_color = "warning";
+                        } elseif ($bres[11] == "3"){
+                          $priority = "High";
+                          $priority_color = "danger";
+                        }
+
+                        if ($bres[2] == "task" AND $bres[12] == "ACTIVE"){ // task and active
+                          $icon = "fas fa-calendar-alt";
+                        } elseif ($bres[2] == "note" AND $bres[12] == "ACTIVE"){ // note
+                          $icon = "fas fa-sticky-note";
+                        } else { // means it is a note/task, but archived
+                          $icon = "fas fa-archive";
+                        }
+
+                        $Date = date_format(date_create($rws[5]),"l, d F Y, H:i");
+                        $search_query = str_replace(' ', '+', $bres[3]);
+
+                      // Item output while loop
+                      ?>
+                      <div class="col-lg-6 mb-4">
+                        <div class="card text-dark shadow-lg">
+                          <div class="card-body" onclick="location.href='items?search=<?php echo $search_query; ?>&normal_search'">
+                            <h4><i class="<?php echo $icon; ?>"></i> <?php echo $bres[3]; ?></h4>
+                            <div class="small"><?php echo substr($bres[4], 0, 100); ?> ...</div>
+                              <div class="small">
+                                <?php if ($bres[15] != ""){ ?>
+                                <i>Label:</i> <span class="badge badge-<?php echo $badgecolor; ?>"><?php echo $bres[15]; ?></span>
+                                <?php } if ($bres[2] == "task"){ ?>
+                                <i>Priority:</i> <span class="badge badge-<?php echo $priority_color; ?>"><?php echo $priority; ?></span>
+                                <?php } ?>
+                              </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-bookmark"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-bookmark"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-4">
-                      <div class="card bg-<?php echo $theme_color; ?> text-white shadow-lg">
-                        <div class="card-body">
-                          <i class="fas fa-bookmark"></i> Note title
-                          <div class="small">Note content</div>
-                          <div class="text-white-50 small"><i>Label:</i> asdf <span class="float-right"><i>Priority:</i> asdf</span></div>
-                        </div>
-                      </div>
-                    </div>
+                    <?php } ?>
                   </div>
                 </div>
               </div>

@@ -84,11 +84,11 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
             <a class="dropdown-item" href="items?view=tasks&advanced_search"><i class="fas fa-fw fa-calendar-check"></i> Tasks only</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="items?status=active&advanced_search"><i class="fas fa-fw fa-calendar"></i> Active</a>
-            <a class="dropdown-item" href="items?view=bookmarked&advanced_search"><i class="fas fa-fw fa-star"></i> Bookmarked</a>
+            <a class="dropdown-item" href="items?view=bookmarked&advanced_search"><i class="fas fa-fw fa-bookmark"></i> Bookmarked</a>
             <a class="dropdown-item" href="items?status=archived&advanced_search"><i class="fas fa-fw fa-archive"></i> Archived</a>
             <a class="dropdown-item" href="trash"><i class="fas fa-fw fa-trash-alt"></i> Trash</a>
             <div class="dropdown-divider"></div>
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View Advanced:</div>
+            <div class="dropdown-header text-<?php echo $theme_color; ?>">Advanced Search:</div>
             <a class="dropdown-item" href="items?view=week&advanced_search"><i class="fas fa-fw fa-calendar-alt"></i> This week</a>
             <a class="dropdown-item" href="items?view=passed&advanced_search"><i class="fas fa-fw fa-calendar-times"></i> Passed Deadlines</a>
             <a class="dropdown-item" href="items?view=future&advanced_search"><i class="fas fa-fw fa-plane-departure"></i> Future</a>
@@ -206,7 +206,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                         }
 
                         if ($rws[10] == "1"){ // bookmarked
-                          $icon = "fas fa-star";
+                          $icon = "fas fa-bookmark";
                         } elseif ($rws[2] == "task" AND $rws[12] == "ACTIVE"){ // task and active
                           $icon = "fas fa-calendar-alt";
                         } elseif ($rws[2] == "note" AND $rws[12] == "ACTIVE"){ // note
@@ -244,8 +244,9 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                               </h4>
                               <div class="small"><?php echo substr($rws[4], 0, 100); ?> ...</div>
                                 <div class="small">
+                                  <?php if ($rws[15] != "") { ?>
                                   <i>Label:</i> <span class="badge badge-<?php echo $badgecolor; ?>"><?php echo $rws[15]; ?></span>
-                                  <?php if ($rws[2] == "task"){ ?>
+                                  <?php } if ($rws[2] == "task"){ ?>
                                   <i>Priority:</i> <span class="badge badge-<?php echo $priority_color; ?>"><?php echo $priority; ?></span>
                                   <?php } ?>
                                 </div>

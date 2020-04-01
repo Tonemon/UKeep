@@ -82,7 +82,7 @@
     }
 
     if ($func_view == "" AND $func_priority == "" AND $func_label == "" AND $func_status == ""){ // no advanced options selected, but advanced search pressed
-      $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE id='0'";
+      $final_sql = "SELECT * FROM UKeepDAT.items_$user_code LEFT JOIN UKeepDAT.label_$user_code on UKeepDAT.items_$user_code.label = label_$user_code.label_id WHERE `status`!='TRASH'";
     } elseif ($func_view == ""){ // 'view' dropdown empty and 
       $final_sql = $startsql.$addon_sql1.$addon_sql2.$addon_sql3." AND `status`!='TRASH'";
     } elseif ($func_view != ""){

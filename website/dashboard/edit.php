@@ -44,7 +44,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
             echo '<span class="text-'.$theme_color.'">';
                 // Icon support
                 if ($itemres[10] == "1"){ // bookmarked
-                  echo '<i class="fas fa-star fa-sm fa-fw"></i> ';
+                  echo '<i class="fas fa-bookmark fa-sm fa-fw"></i> ';
                 } elseif ($itemres[2] == "task" AND $itemres[12] == "ACTIVE"){ // task and active
                   echo '<i class="fas fa-calendar-alt fa-sm fa-fw"></i> ';
                 } elseif ($itemres[2] == "note"){ // note
@@ -91,6 +91,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                   <div class="col-xl-6 form-group">
                     <small id="taskHelp" class="form-text">Task label</small>
                     <select class="form-control" name="task_alt_label">
+                      <option value="">None</option>
                         <?php 
                           $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
                           $labels_result = mysql_query($labels_sql) or die(mysql_error());
@@ -208,6 +209,7 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                   <div class="col-xl-5 form-group">
                     <small id="noteHelp" class="form-text">Note label</small>
                     <select class="form-control" name="note_alt_label">
+                      <option value="">None</option>
                         <?php 
                           $labels_sql = "SELECT * FROM UKeepDAT.label_$user_code";
                           $labels_result = mysql_query($labels_sql) or die(mysql_error());
