@@ -406,10 +406,10 @@ include 'essentials.php';
   <?php include 'site-footer.php'; ?>
   
 
-  <!-- Page level plugins / custom scripts for charts -->
+  <!-- Custom scripts for charts -->
   <script src="../vendor/js/chart.js/Chart.min.js"></script>
-  <script src="../vendor/js/demo/chart-area-demo.js"></script>
-  <script src="../vendor/js/demo/chart-pie-demo.js"></script>
+  <script src="addons/chart-area-demo.js"></script>
+  <script src="addons/chart-pie-demo.js"></script>
 
 </body>
 </html>
