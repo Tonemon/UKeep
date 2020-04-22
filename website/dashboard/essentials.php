@@ -21,6 +21,16 @@
   $user_code = $rws[8]; // used for storing personal information
   $user_acctype = $rws[9]; // used to allow people to access admin & support page or not
 
+
+  // User customization section
+  $custom_sql = "SELECT * FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+  $custom_result = mysql_query($custom_sql) or die(mysql_error());
+  $cus_arr = mysql_fetch_array($custom_result);
+
+  $theme_color = $cus_arr[1]; // used for page theme
+  // $redirect_url = $cus_arr[2]; // redirect to user set page
+  include 'addons/essentials-variables.php'; // more variables
+
         
   // checking for corrupted sessions
   if ($query_id = ""){ // often happends when user is deleted and still logged in or corrupted session

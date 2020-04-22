@@ -6,12 +6,12 @@ if (isset($_REQUEST['loginbutton'])){
   $login_password = sha1($_REQUEST['login_password'].$salt); // password salting (for security reasons)
 
   if (preg_match("/@/", $login_user)) { // check for @, if present, probably user is logging in using email
-    $sqlquery = "SELECT id,email,username,accstatus,password,redirect_url FROM UKeepMAIN.users WHERE email='$login_user' AND password='$login_password'";
+    $sqlquery = "SELECT id,email,username,accstatus,password,redirect_url,usercode FROM UKeepMAIN.users WHERE email='$login_user' AND password='$login_password'";
     $result = mysql_query($sqlquery) or die(mysql_error());
     $arr =  mysql_fetch_array($result);
 
   } else { // no @ present, user is probably trying to login with username
-    $sqlquery = "SELECT id,email,username,accstatus,password,redirect_url FROM UKeepMAIN.users WHERE username='$login_user' AND password='$login_password'";
+    $sqlquery = "SELECT id,email,username,accstatus,password,usercode FROM UKeepMAIN.users WHERE username='$login_user' AND password='$login_password'";
     $result = mysql_query($sqlquery) or die(mysql_error());
     $arr =  mysql_fetch_array($result);
   }
@@ -22,7 +22,12 @@ if (isset($_REQUEST['loginbutton'])){
     $db_username = $arr[2];
     $db_accstatus = $arr[3];
     $db_pass = $arr[4];
-    $redirect = $arr[5];
+    $db_usercode = $arr[5];
+
+    $red_sqlquery = "SELECT redirect_url FROM UKeepMAIN.preferences WHERE account_usercode='$db_usercode'";
+    $red_result = mysql_query($red_sqlquery) or die(mysql_error());
+    $red_arr =  mysql_fetch_array($red_result);
+    $redirect = $red_arr[0];
 
   if (($login_user == $db_username || $login_user == $db_email) && $login_password == $db_pass){ // submitted information is correct
     if ($db_accstatus == "ACTIVE"){ // check if account status is active or not

@@ -30,42 +30,42 @@ include 'essentials.php';
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-<?php echo $theme_color; ?> shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
-          <?php include 'cards/dash_start.php' // Start info card ?>
+          <?php if ($c_dash_start == "1"){ include 'cards/dash_start.php'; } // Start info card ?>
 
 
           <!-- Widgets Row -->
           <div class="row">
-            <?php include 'cards/dash_widget_week.php';  // 'Items to do this week' card ?>
+            <?php if ($c_dash_week == "1"){ include 'cards/dash_widget_week.php'; } // 'Items to do this week' card ?>
 
 
-            <?php include 'cards/dash_widget_passed.php'; // 'Task deadlines passed' card ?>
+            <?php if ($c_dash_dead == "1"){ include 'cards/dash_widget_passed.php'; } // 'Task deadlines passed' card ?>
 
 
-            <?php include 'cards/dash_widget_active.php'; // 'Active / Total tasks ratio' card ?>
+            <?php if ($c_dash_active == "1"){ include 'cards/dash_widget_active.php'; } // 'Active / Total tasks ratio' card ?>
 
 
-            <?php include 'cards/dash_widget_ratio.php'; // 'Notes / Tasks ratio' card ?>
+            <?php if ($c_dash_ratio == "1"){ include 'cards/dash_widget_ratio.php'; } // 'Notes / Tasks ratio' card ?>
 
           </div>
 
           <div class="row">
 
-            <?php include 'cards/dash_activity.php'; // Activity Overview card (Chart 1) ?>
+            <?php if ($c_dash_chart1 == "1"){ include 'cards/dash_activity.php'; } // Activity Overview card (Chart 1) ?>
 
 
-            <?php include 'cards/dash_type.php'; // Item Type card (Chart 2) ?>
+            <?php if ($c_dash_chart2 == "1"){ include 'cards/dash_type.php'; } // Item Type card (Chart 2) ?>
 
           </div>
 
           <div class="row">
             <div class="col-lg-6 mb-4">
 
-              <?php include 'cards/dash_labels.php'; // 'Label Usage' card ?>
+              <?php if ($c_dash_labels == "1"){ include 'cards/dash_labels.php'; } // 'Label Usage' card ?>
 
             </div>
 
             <div class="col-xl-6 col-lg-7">
-              <?php include 'cards/dash_book.php'; // ?>
+              <?php if ($c_dash_book == "1"){ include 'cards/dash_book.php'; } // 'Bookmarked Items' card ?>
 
             </div>
           </div>

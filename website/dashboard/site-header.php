@@ -47,32 +47,38 @@
           <span>Labels</span></a>
       </li>
 
+      <?php if ($c_side_trash == "1"){ ?>
       <li class="nav-item">
         <a class="nav-link" href="trash">
           <i class="fas fa-fw fa-trash-alt"></i>
           <span>Trash</span></a>
       </li>
-
+      
+      <?php } if ($c_side_teams == "1" OR $c_side_contacts == "1" OR $c_side_support == "1") { ?>
       <hr class="sidebar-divider">
       <div class="sidebar-heading">Features</div>
-
+      
+      <?php } if ($c_side_teams == "1") { ?>
       <li class="nav-item">
         <a class="nav-link" href="teams">
           <i class="fas fa-fw fa-users"></i>
           <span>Teams</span></a>
       </li>
 
+      <?php } if ($c_side_contacts == "1") { ?>
       <li class="nav-item">
         <a class="nav-link" href="friends">
           <i class="fas fa-fw fa-user-friends"></i>
           <span>Contacts</span></a>
       </li>
 
+      <?php } if ($c_side_support == "1") { ?>
       <li class="nav-item">
         <a class="nav-link" href="support">
           <i class="fas fa-fw fa-life-ring"></i>
           <span>Support</span></a>
       </li>
+      <?php } ?>
 
       <hr class="sidebar-divider">
       <div class="sidebar-heading">Other</div>
