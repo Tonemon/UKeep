@@ -21,20 +21,6 @@
   $user_code = $rws[8]; // used for storing personal information
   $user_acctype = $rws[9]; // used to allow people to access admin & support page or not
 
-  // logged in account id & users name and surname
-  #$user_id = $rws[0];
-  
-  #$userdat_username = $rws[11];
-  #$userdat_lastlogin = $rws[9];
-  #$userdat_accstatus = $rws[10];
-  #$status = $rws[12];
-                
-  #$userdat_address = $rws[5];
-  #$userdat_acctype = $rws[4];
-  #$userdat_gender = $rws[2];
-  #$userdat_mobile = $rws[6];
-  #$userdat_email = $_SESSION['session_tasks_email'];
-  #$userdat_dob = $rws[3];
         
   // checking for corrupted sessions
   if ($query_id = ""){ // often happends when user is deleted and still logged in or corrupted session

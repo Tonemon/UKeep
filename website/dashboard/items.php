@@ -236,18 +236,15 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                                     echo ' <small><small><small>[ARCHIVED]</small></small></small>';
                                   }
 
-                                  if ($rws[2] == "task"){ // adding a todo before if it is a task ?>
-                                  <span class="float-right">
-                                    <small><small><small><i>Todo before:</i> <b><?php echo $Date; ?></b></small></small></small>
-                                  </span>
-                                <?php } ?>
+                                  ?>
                               </h4>
                               <div class="small"><?php echo substr($rws[4], 0, 100); ?> ...</div>
-                                <div class="small">
+                                <div class="small"><br>
                                   <?php if ($rws[15] != "") { ?>
                                   <i>Label:</i> <span class="badge badge-<?php echo $badgecolor; ?>"><?php echo $rws[15]; ?></span>
                                   <?php } if ($rws[2] == "task"){ ?>
                                   <i>Priority:</i> <span class="badge badge-<?php echo $priority_color; ?>"><?php echo $priority; ?></span>
+                                  <i>Before:</i> <b><?php echo $Date; ?></b>
                                   <?php } ?>
                                 </div>
                               <input type="radio" name="item_id" value="<?php echo $rws[0]; ?>">
