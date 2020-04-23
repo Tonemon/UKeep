@@ -33,29 +33,60 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $cdash_bookmarked = $_POST['cdash_bookmarked'];
 
     $custom2_sql = "UPDATE UKeepMAIN.preferences SET dashw_show_week='$cdashw_week', dashw_show_deadlines='$cdashw_deadlines', dashw_show_active='$cdashw_active', dashw_show_ratio='$cdashw_ratio', dash_show_start='$cdash_start', dash_show_chart1='$cdash_chart1', dash_show_chart2='$cdash_chart2', dash_show_labels='$cdash_labels', dash_show_book='$cdash_bookmarked' WHERE account_usercode='$user_code'";
-    mysql_query($custom2_sql) or die(mysql_error());
+    mysql_query($custom2_sql) or die(header('location:settings?customize=dashboard&error=1'));
     header('location:settings?customize=dashboard&success=1');
 
-    $pwd_check = sha1(mysql_real_escape_string($_REQUEST['edit_submit_pwd']).$salt); // password confirmation
-    
-    $edit_usercode = mysql_real_escape_string($_REQUEST['edit_submit_usercode']);
-    $edit_fullname = $_POST['edit_fullname'];
-    $edit_dob = $_POST['edit_dob'];
-    $edit_address = $_POST['edit_address'];
-    $edit_mobile = $_POST['edit_mobile'];
-    $edit_gender = $_POST['edit_gender'];
+  } elseif (isset($_REQUEST['customize_profile'])){
+    $profile_pic = $_POST['prof_pic'];
+    $profile_fullname = $_POST['prof_fullname'];
+    $profile_email = $_POST['prof_email'];
+    $profile_dob = $_POST['prof_dob'];
+    $profile_gender = $_POST['prof_gender'];
+    $profile_status = $_POST['prof_status'];
 
-    $query3 = "SELECT password FROM UKeepMAIN.users WHERE usercode='$edit_usercode'";
-        $result3 = mysql_query($query3) or die(mysql_error());
-        $passcheck = mysql_fetch_array($result3);
+    $custom3_sql = "UPDATE UKeepMAIN.preferences SET account_show_pic='$profile_pic', account_show_status='$profile_status', account_show_fullname='$profile_fullname', account_show_email='$profile_email', account_show_dob='$profile_dob', account_show_gender='$profile_gender' WHERE account_usercode='$user_code'";
+    mysql_query($custom3_sql) or die(mysql_error());
+    header('location:settings?customize=profile&success=1');
+
+  } elseif (isset($_REQUEST['customize_picture'])){
+    // coming soon
+    header('location:settings?error=1');
+
+  } elseif (isset($_REQUEST['change_password'])){ // other information change request
+    $old_password = sha1(mysql_real_escape_string($_REQUEST['old_password']).$salt); // password confirmation
+    $new_password = sha1(mysql_real_escape_string($_REQUEST['new_password']).$salt); // new password
+    $again_password = sha1(mysql_real_escape_string($_REQUEST['again_password']).$salt); // new password again
+
+    // select current password from users table
+    $getpass = "SELECT password FROM UKeepMAIN.users WHERE usercode='$user_code'";
+    $getpass_result = mysql_query($getpass) or die(mysql_error());
+    $pass_current = mysql_fetch_array($getpass_result);
     
-    if ($passcheck[0] == $pwd_check){ // submitted password matches
-      $sql9 = "UPDATE UKeepMAIN.users SET name='$edit_fullname', dob='$edit_dob', address='$edit_address', mobile='$edit_mobile', gender='$edit_gender' WHERE usercode='$edit_usercode'";
-      mysql_query($sql9) or die(mysql_error());
-      header('location:profile?success=1');
-    } else { // password does not match
-      header('location:profile?error=1');
+    if ($pass_current[0] == $old_password && $new_password == $again_password){ // everything matches
+      $updatepass_sql = "UPDATE UKeepMAIN.users SET password='$new_password' WHERE usercode='$user_code'";
+      mysql_query($updatepass_sql) or die(mysql_error()); // execute query
+
+      $setoffline = "UPDATE UKeepMAIN.users SET status='offline' WHERE usercode='$user_code'";
+      mysql_query($setoffline) or die("Could not set your status to offline.");
+
+      session_destroy(); // destroying session to let the user login again using new password
+      header('location:../login?notice=2');
+    } elseif ($getpass_current[0] != $old_password){ // old password does not match the database
+      header('location:settings?action=password&error=2');
+    } elseif ($new_password != $again_password){ // two new submitted passwords don't match
+      header('location:settings?action=password&error=3');
+    } else { // something is wrong
+      header('location:settings?action=password&error=1');
     }
+
+  } elseif (isset($_REQUEST['deactivate_account'])){ // deactivate your account
+    // coming soon
+    header('location:settings?error=1');
+
+  } elseif (isset($_REQUEST['delete_account'])){ // delete user account
+    // coming soon
+    header('location:settings?error=1');
+
   }
 
 ?>
@@ -79,26 +110,48 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
         <div class="container-fluid">
 
         <?php
-          if ($_GET['success'] == "1") { // created new task
+          if ($_GET['success'] == "1") { // user information updated
             echo "<div class='alert alert-success alert-dismissible'>
               <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-              <i class='fas fa-check'></i> User information changed. </div>";
+              <i class='fas fa-check'></i> User information updated. </div>";
           } elseif ($_GET['error'] == "1") { // error: something wrong
             echo "<div class='alert alert-warning alert-dismissible'>
               <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
               <i class='fas fa-exclamation-triangle'></i> Oh. Something went wrong. Please try again.</div>";
+          } elseif ($_GET['error'] == "2") { // error: something wrong
+            echo "<div class='alert alert-warning alert-dismissible'>
+              <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+              <i class='fas fa-exclamation-triangle'></i> The old password does not match the database.</div>";
+          } elseif ($_GET['error'] == "3") { // error: something wrong
+            echo "<div class='alert alert-warning alert-dismissible'>
+              <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+              <i class='fas fa-exclamation-triangle'></i> The two provided passwords do not match.</div>";
           }
         ?>
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800">Your <span class="text-<?php echo $theme_color; ?>">Settings</span> (customize your profile and dashboard)</h1>
+        <h1 class="h3 mb-4 text-gray-800">Settings (customization and account settings)</h1>
           <div class="row">
 
             <!-- View personal information -->
             <div class="col-lg-6 mb-4">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-palette"></i> Customize your dashboard</h6>
+                  <?php
+                    if ($_GET['customize'] == "main"){
+                      $customize_header = '<i class="fas fa-home"></i> Theme, redirect and sidebar';
+                    } elseif ($_GET['customize'] == "dashboard"){
+                      $customize_header = '<i class="fas fa-tachometer-alt"></i> SMART Dashboard';
+                    } elseif ($_GET['customize'] == "profile"){
+                      $customize_header = '<i class="fas fa-user-circle"></i> Your Public Profile';
+                    } elseif ($_GET['customize'] == "picture"){
+                      $customize_header = '<i class="fas fa-camera"></i> Your Profile Picture';
+                    } else {
+                      $customize_header = '<i class="fas fa-palette"></i> Customization Settings';
+                    }
+
+                  ?>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><?php echo $customize_header; ?></h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
                     </a>
@@ -106,11 +159,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                       <div class="dropdown-header text-<?php echo $theme_color; ?>">Select a feature to customize:</div>
                       <a class="dropdown-item" href="?customize=main"><i class="fas fa-fw fa-home"></i> Theme, redirect and sidebar</a>
                       <a class="dropdown-item" href="?customize=dashboard"><i class="fas fa-fw fa-tachometer-alt"></i> SMART Dashboard</a>
-                      <a class="dropdown-item" href="?customize=profile"><i class="fas fa-fw fa-user-circle"></i> Your Public profile</a>
+                      <a class="dropdown-item" href="?customize=profile"><i class="fas fa-fw fa-user-circle"></i> Your Public Profile</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="?customize=picture"><i class="fas fa-fw fa-camera"></i> Your Profile Picture</a>
                     </div>
                   </div>
-                  
                 </div>
+
                 <div class="card-body">
 
                   <?php if ($_GET['customize'] == "main") { ?>
@@ -123,7 +178,6 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
 
                     <form action="settings" method="POST">
                       <p>Here you can choose a theme for your dashboard, the page you will be redirected to after login and which pages will be visible in the sidebar.</p>
-                      <input type="hidden" name="c_usercode" value="<?php echo $user_code; ?>" />
                       <table>
                         <tr>
                           <td><b>Dashboard theme</b></td>
@@ -155,7 +209,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         </tr>
                       </table><br>
                       <table>
-                        <tr><td><b>Show/Hide Pages &nbsp;</b></td>
+                        <tr><td><b>Show these sidebar links: &nbsp;</b></td>
                           <td><input type="checkbox" value="1" name="cside_trash" <?php if ($arr1[2] == "1"){ echo 'checked'; } ?>> Trash</td>
                         </tr>
                         <tr><td></td>
@@ -171,7 +225,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           <td><input type="checkbox" value="1" name="cside_settings" <?php if ($arr1[6] == "1"){ echo 'checked'; } ?>> Settings</td>
                         </tr>
                       </table><br>
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_main"><i class="fas fa-check"></i> Update settings</button>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_main"><i class="fas fa-check"></i> Update Settings</button>
                     </form><br>
                     <div class='alert alert-info'>
                       <i class='fas fa-info-circle'></i> You can still visit hidden pages, but you will need to use links on other pages or the URL bar to access them.
@@ -187,7 +241,6 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
 
                     <form action="settings" method="POST">
                       <p>Here you can choose which widgets and cards you want to display on your dashboard.</p>
-                      <input type="hidden" name="c_usercode" value="<?php echo $user_code; ?>" />
                       <table>
                         <tr><td><b>Widgets &nbsp;</b></td>
                           <td><input type="checkbox" value="1" name="cdash_week" <?php if ($arr2[0] == "1"){ echo 'checked'; } ?>> Todo this week</td>
@@ -219,65 +272,165 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           <td><input type="checkbox" value="1" name="cdash_bookmarked" <?php if ($arr2[8] == "1"){ echo 'checked'; } ?>> Bookmarked Items</td>
                         </tr>
                       </table><br>
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_dashboard"><i class="fas fa-check"></i> Update settings</button>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_dashboard"><i class="fas fa-check"></i> Update Dashboard Settings</button>
                     </form>
 
+                  <?php } elseif ($_GET['customize'] == "profile") { ?>
+                    <?php
+                      // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
+                      $customcheck3 = "SELECT account_show_pic, account_show_status, account_show_fullname, account_show_email, account_show_dob, account_show_gender FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customresult3 = mysql_query($customcheck3) or die(mysql_error());
+                      $arr3 =  mysql_fetch_array($customresult3);
+                    ?>
+
+                    <form action="settings" method="POST">
+                      <p>Here you can specify what information users can see on your public profile.</p>
+                      <table>
+                        <tr><td><b>Show your &nbsp;</b></td>
+                          <td><input type="checkbox" value="1" name="prof_pic" <?php if ($arr3[0] == "1"){ echo 'checked'; } ?>> Profile picture</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="prof_status" <?php if ($arr3[1] == "1"){ echo 'checked'; } ?>> Status 
+                            (<span class="badge badge-success">Online</span> / <span class="badge badge-secondary">Offline</span> or disable to set to <span class="badge badge-dark"><i>Private</i></span>)</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="prof_fullname" <?php if ($arr3[2] == "1"){ echo 'checked'; } ?>> Full Name</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="prof_email" <?php if ($arr3[3] == "1"){ echo 'checked'; } ?>> Email Address</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="prof_dob" <?php if ($arr3[4] == "1"){ echo 'checked'; } ?>> Date of Birth</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="prof_gender" <?php if ($arr3[5] == "1"){ echo 'checked'; } ?>> Gender</td>
+                        </tr>
+                      </table><br>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_profile"><i class="fas fa-check"></i> Update Profile Settings</button>
+                    </form><br>
+                    <div class='alert alert-info'>
+                      <i class='fas fa-info-circle'></i> You cannot hide your username, last login and account type.
+                    </div>
+
+                  <?php } elseif ($_GET['customize'] == "picture") { ?>
+                    <p>This is your picture at the moment: &nbsp; <img class="img-thumbnail rounded-circle" width="100px" src="../usericons/<?php echo $user_code; ?>.png">
+
+                    </p>
+
+                    Customize Feature coming soon...
+
                   <?php } else { ?>
-                    <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to select a feature to customize.</p>
+                    <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to select a feature to customize.</p> You can customize the following:
+                    <ul>
+                      <li>
+                        Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard Theme</span>, <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-map-signs"></i> Login Redirect</span> and <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-external-link-alt"></i> Sidebar items</span>.
+                      </li>
+                      <li>Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-tachometer-alt"></i> SMART Dashboard</span>.</li>
+                      <li>Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-user-circle"></i> Public profile</span>.</li>
+                    </ul>
+
                   <?php } ?>
 
                 </div>
               </div>
             </div>
 
-            <!-- Edit Account information -->
+            <!-- Account settings -->
             <div class="col-lg-6">
               <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-cogs"></i> Account settings</h6>
-                </div>
-                <div class="card-body">
-                  <form action="profile" method="POST">
-                    <small class="form-text">You can edit your personal information below. Your username and email <b>cannot</b> be changed manually at the moment. Please contact support to change this.</small><br>
-                    <table>
-                      <tr>
-                        <td>Name:</td>
-                        <td><input type="text" class="form-control" value="<?php echo $display_fullname; ?>" name="edit_fullname" required /></td>
-                      </tr>
-                      <tr>
-                        <td>Dob:</td>
-                        <td><input type="date" class="form-control" value="<?php echo $display_dob; ?>" name="edit_dob" required /></td>
-                      </tr>
-                      <tr>
-                        <td>Address: &nbsp;</td>
-                        <td><input type="text" class="form-control" value="<?php echo $display_address; ?>" name="edit_address" required /></td>
-                      </tr>
-                      <tr>
-                        <td>Phone:</td>
-                        <td><input type="text" class="form-control" value="<?php echo $display_phone; ?>" name="edit_mobile" required /></td>
-                      </tr>
-                      <tr>
-                        <td>Gender:</td>
-                        <td><select class="form-control" name="edit_gender">
-                            <option value="M" <?php if ($display_gender == "M") { echo 'selected'; }?> >Male (M)</option>
-                            <option value="F" <?php if ($display_gender == "F") { echo 'selected'; }?> >Female (F)</option>
-                          </select>
-                        </td>
-                      </tr>
-                    </table><br>
-                    <small class="form-text">Confirm your current password below to change your personal information.</small>
-                    <table><tr>
-                        <td>Password: &nbsp;</td>
-                        <td><input type="hidden" name="edit_submit_usercode" value="<?php echo $user_code; ?>"/>
-                          <input type="password" class="form-control" name="edit_submit_pwd" required /></td>
-                    </tr></table><br>
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="change_persinfo"><i class="fas fa-check"></i> Submit my new information</button>
-                  </form>
-                </div>
-              </div>
-            </div>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <?php
+                    if ($_GET['action'] == "password"){
+                      $account_header = '<i class="fas fa-key"></i> Change your Password';
+                    } elseif ($_GET['action'] == "deactivate"){
+                      $account_header = '<i class="fas fa-archive"></i> Deactivate account';
+                    } elseif ($_GET['action'] == "delete"){
+                      $account_header = '<i class="fas fa-trash-alt"></i> Delete account <u>permanently</u>';
+                    } else {
+                      $account_header = '<i class="fas fa-cogs"></i> Account settings';
+                    }
 
-              </div>
+                  ?>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><?php echo $account_header; ?></h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Select an action to perform:</div>
+                      <a class="dropdown-item" href="?action=password"><i class="fas fa-fw fa-key"></i> Change password</a>
+                      <div class="dropdown-divider"></div>
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Danger Area:</div>
+                      <a class="dropdown-item" href="?action=deactivate"><i class="fas fa-fw fa-archive"></i> Deactivate account</a>
+                      <a class="dropdown-item" href="?action=delete"><i class="fas fa-fw fa-trash-alt"></i> Delete account</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-body">
+                  <?php if ($_GET['action'] == "password") { ?>
+                    <form action="settings" method="POST">
+                      <p>Enter your current password and then two times your new password.</p>
+                      <table>
+                        <tr>
+                          <td><b>Current password:</b></td>
+                          <td><input type="password" class="form-control" name="old_password" required=""/></td>
+                        </tr>
+                        <tr>
+                          <td><b>New password:</b></td>
+                          <td><input type="password" class="form-control" name="new_password" required=""/></td>
+                        </tr>
+                        <tr>
+                          <td><b>New password again:</b> &nbsp;</td>
+                          <td><input type="password" class="form-control" name="again_password" required=""/></td>
+                        </tr>
+                      </table><br>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="change_password"><i class="fas fa-pencil-alt"></i> Change Password</button>
+                    </form>
+
+                  <?php } elseif ($_GET['action'] == "deactivate") { ?>
+                    <form action="settings" method="POST">
+                    <?php if ($user_acctype == "admin"){ // normal users ?>
+                      <p>Hi <b>admin</b>, you cannot deactivate your account.</p>
+
+                    <?php } else { // if admin asks to delete his account ?>
+                      <p>When you deactivate your account, you keep your notes/tasks and labels, but you won't be able to login again. You will need to contact support to reactivate your account.<br><br>
+                        <input type="checkbox" id="deactivate1Check" required> I am sure I want to deactivate my UKeep account.<br>
+                        <input type="checkbox" id="deactivate2Check" required> I acknowledge the fact that I can reactivate my account by contacting support.<br><br>
+                        <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="deactivate_account"><i class="fas fa-archive"></i> Deactivate my Account</button>
+                      </p>
+
+                    <?php } ?>
+                    </form>
+
+                  <?php } elseif ($_GET['action'] == "delete") { ?>
+                    <form action="settings" method="POST">
+                    <?php if ($user_acctype == "admin"){ // admin user requests account removal ?>
+                      <p>Hi <b>admin</b>, if you want to stop working at UKeep, please contact someone with a higher position and hand in your resignation.</p>
+
+                    <?php } else { // normal user requests account removal ?>
+                      <p>Hi <?php echo $user_name; ?>, we are sad to see you close your UKeep account! Please enter your reason below to inform us why you want to close your account.<br><br>
+                        <textarea class="form-control" name="deleteReason" rows="1" placeholder="Reason why I am leaving..." required></textarea><br>
+                        <input type="checkbox" id="delete1Check" required> I am sure I want to permanently delete my UKeep account.<br>
+                        <input type="checkbox" id="delete2Check" required> I am sure I want to <b>delete all of my notes/tasks and labels</b>.<br><br>
+                        Please confirm by writing <span class="font-weight-bold text-<?php echo $theme_color; ?>">I am sure</span> in the textbox below.
+                        <textarea class="form-control" name="delete3Check" rows="1" placeholder="I am sure" required></textarea><br>
+                        <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="delete_account"><i class="fas fa-exclamation-triangle"></i> Permanently delete my Account</button>
+                      </p>
+
+                    <?php } ?>
+                    </form>
+
+                  <?php } else { ?>
+                    <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to perform actions on this account.</p> You can perform these actions:
+                    <ul>
+                      <li>Change your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-key"></i> password</span>.</li>
+                      <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-archive"></i> Deactivate</span> your account.</li>
+                      <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-trash-alt"></i> Delete</span> your account <u>permanently</u>.</li>
+                    </ul>
+
+                  <?php } ?>
+
+                </div>
               </div>
             </div>
 

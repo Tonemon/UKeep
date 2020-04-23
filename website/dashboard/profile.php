@@ -14,7 +14,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
 
     // get status of all information that can be displayed (privacy settings)
     $display_usercode = $viewuser[8];
-    $userpref_sql = "SELECT account_show_pic,account_show_fullname,account_show_email,account_show_dob,account_show_gender FROM UKeepMAIN.preferences WHERE account_usercode='$display_usercode'";
+    $userpref_sql = "SELECT account_show_pic, account_show_fullname, account_show_email, account_show_dob, account_show_gender, account_show_status FROM UKeepMAIN.preferences WHERE account_usercode='$display_usercode'";
     $userpref_result = mysql_query($userpref_sql) or die(mysql_error());
     $userpref = mysql_fetch_array($userpref_result);
 
@@ -23,6 +23,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $showpref_email = $userpref[2];
     $showpref_dob = $userpref[3];
     $showpref_gender = $userpref[4];
+    $showpref_badge = $userpref[5];
 
   } else {
     $viewme_sql = "SELECT * FROM UKeepMAIN.users WHERE usercode='$user_code'";
@@ -248,7 +249,12 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         } else {
                           echo $display_username;
                         } ?>
-                      </b> <?php echo $display_badge; ?>
+                      </b> 
+                        <?php if ($showpref_badge == "1"){ // full name preference
+                          echo $display_badge; 
+                        } else {
+                          echo '<span class="badge badge-dark"><i>Private</i></span>';
+                        } ?>
                     </h2><br>
                     <span>Last login was on <b><?php echo date_format(date_create($display_lastlogin),"l, d F Y, H:i"); ?></b>.</span><br>
                     <span>Users account type is <b><?php echo $display_acctype; ?></b>.</span><br><br>

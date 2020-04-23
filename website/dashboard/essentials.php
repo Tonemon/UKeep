@@ -19,7 +19,7 @@
   $user_name = $rws[1]; // used for header (top right)
   $theme_color = $rws[10]; // used for page theme
   $user_code = $rws[8]; // used for storing personal information
-  $user_acctype = $rws[9]; // used to allow people to access admin & support page or not
+  $user_acctype = $rws[9]; // used to allow people to access admin page, support page and delete account or not.
 
 
   // User customization section
