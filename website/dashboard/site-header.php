@@ -9,7 +9,7 @@
         <div class="sidebar-brand-text mx-3">UKeep Dash</div>
       </a>
       <?php
-        $side_sql = "SELECT side_trash,side_teams,side_contacts,side_support FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+        $side_sql = "SELECT side_trash,side_teams,side_contacts,side_support,side_settings FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
         $side_result = mysql_query($side_sql) or die(mysql_error());
         $side = mysql_fetch_array($side_result);
 
@@ -17,6 +17,7 @@
         $c_side_teams = $side[1];
         $c_side_contacts = $side[2];
         $c_side_support = $side[3];
+        $c_side_settings = $side[4];
       ?>
 
 
@@ -92,6 +93,14 @@
 
       <hr class="sidebar-divider">
       <div class="sidebar-heading">Other</div>
+
+      <?php if ($c_side_settings == "1") { ?>
+      <li class="nav-item">
+        <a class="nav-link" href="settings">
+          <i class="fas fa-fw fa-cogs"></i>
+          <span>Settings</span></a>
+      </li>
+      <?php } ?>
 
       <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">

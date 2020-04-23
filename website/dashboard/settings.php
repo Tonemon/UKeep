@@ -6,30 +6,36 @@ if (!isset($_SESSION['session_keep_start']))
 include 'essentials.php';
 $current_username = $rws[3]; // from esssentials to compare with user view request
 
-  if ($_GET['customize'] == "main"){
-    $custom_sql = "SELECT user_theme,redirect_url FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
-    $custom_result = mysql_query($custom_sql) or die(mysql_error());
-    $custom = mysql_fetch_array($custom_result);
+   if (isset($_REQUEST['customize_main'])){
+    $custom_theme = $_POST['theme'];
+    $custom_redirect = $_POST['redirect'];
 
-    // get status of all information that can be displayed (privacy settings)
-    $display_usercode = $viewuser[8];
-    $userpref_sql = "SELECT account_show_pic,account_show_fullname,account_show_email,account_show_dob,account_show_gender FROM UKeepMAIN.preferences WHERE account_usercode='$display_usercode'";
-    $userpref_result = mysql_query($userpref_sql) or die(mysql_error());
-    $userpref = mysql_fetch_array($userpref_result);
+    $side_trash = $_POST['cside_trash'];
+    $side_teams = $_POST['cside_teams'];
+    $side_contacts = $_POST['cside_contacts'];
+    $side_support = $_POST['cside_support'];
+    $side_settings = $_POST['cside_settings'];
 
-    $showpref_pic = $userpref[0];
-    $showpref_fullname = $userpref[1];
-    $showpref_email = $userpref[2];
-    $showpref_dob = $userpref[3];
-    $showpref_gender = $userpref[4];
+    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_settings='$side_settings' WHERE account_usercode='$user_code'";
+    mysql_query($custom_sql) or die(header('location:settings?customize=main&error=1'));
+    header('location:settings?customize=main&success=1');
 
-  } else {
-    $viewme_sql = "SELECT * FROM UKeepMAIN.users WHERE usercode='$user_code'";
-    $viewme_result = mysql_query($viewme_sql) or die(mysql_error());
-    $viewuser = mysql_fetch_array($viewme_result);
-  }
+  } elseif (isset($_REQUEST['customize_dashboard'])){
+    $cdashw_week = $_POST['cdash_week'];
+    $cdashw_deadlines = $_POST['cdash_deadlines'];
+    $cdashw_active = $_POST['cdash_active'];
+    $cdashw_ratio = $_POST['cdash_ratio'];
 
-  if (isset($_REQUEST['change_persinfo'])){ // other information change request
+    $cdash_start = $_POST['cdash_start'];
+    $cdash_chart1 = $_POST['cdash_chart1'];
+    $cdash_chart2 = $_POST['cdash_chart2'];
+    $cdash_labels = $_POST['cdash_labels'];
+    $cdash_bookmarked = $_POST['cdash_bookmarked'];
+
+    $custom2_sql = "UPDATE UKeepMAIN.preferences SET dashw_show_week='$cdashw_week', dashw_show_deadlines='$cdashw_deadlines', dashw_show_active='$cdashw_active', dashw_show_ratio='$cdashw_ratio', dash_show_start='$cdash_start', dash_show_chart1='$cdash_chart1', dash_show_chart2='$cdash_chart2', dash_show_labels='$cdash_labels', dash_show_book='$cdash_bookmarked' WHERE account_usercode='$user_code'";
+    mysql_query($custom2_sql) or die(mysql_error());
+    header('location:settings?customize=dashboard&success=1');
+
     $pwd_check = sha1(mysql_real_escape_string($_REQUEST['edit_submit_pwd']).$salt); // password confirmation
     
     $edit_usercode = mysql_real_escape_string($_REQUEST['edit_submit_usercode']);
@@ -51,6 +57,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
       header('location:profile?error=1');
     }
   }
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +65,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
 <head>
 
   <?php include 'addons/metadata.php'; ?>
-  <title><?php echo $display_fullname; ?> profile &bull; UKeep</title>
+  <title>Settings &bull; UKeep</title>
 
 </head>
 
@@ -84,71 +91,141 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
         ?>
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800">Profile: 
-        <div class="dropdown dropdown-lg no-arrow" style="display:inline-block;">
-          <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-            <?php if ($display_username != ""){
-              echo $display_username;
-            } else {
-              echo "<i>User not found</i>";
-            } ?> 
-          </a>
-          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"  style="width: 450px">
-            <!-- Search Users bar -->
-            <form action="profile" method="GET">
-              <div class="input-group dropdown-header text-<?php echo $theme_color; ?>">Search user by username</div>
-              <div class="input-group dropdown-header">
-                <input type="text" name="view" class="form-control bg-light border-0 small" placeholder="Username" aria-label="Search" required>
-                <div class="input-group-append">
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>">
-                    <i class="fas fa-search fa-sm"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </h1>
-
-
-
-        <?php if (!isset($_GET['view'])){ // if view in URL, display all of this, else not. ?>
+        <h1 class="h3 mb-4 text-gray-800">Your <span class="text-<?php echo $theme_color; ?>">Settings</span> (customize your profile and dashboard)</h1>
           <div class="row">
 
             <!-- View personal information -->
             <div class="col-lg-6 mb-4">
               <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user"></i> User Information</h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-palette"></i> Customize your dashboard</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Select a feature to customize:</div>
+                      <a class="dropdown-item" href="?customize=main"><i class="fas fa-fw fa-home"></i> Theme, redirect and sidebar</a>
+                      <a class="dropdown-item" href="?customize=dashboard"><i class="fas fa-fw fa-tachometer-alt"></i> SMART Dashboard</a>
+                      <a class="dropdown-item" href="?customize=profile"><i class="fas fa-fw fa-user-circle"></i> Your Public profile</a>
+                    </div>
+                  </div>
+                  
                 </div>
                 <div class="card-body">
-                  <p>
-                    <?php $display_own_badge = "<span class='badge badge-success'>Online</span>"; ?>
-                    <h2><img class="rounded-circle img-thumbnail" width="100px" src="../usericons/<?php echo $display_profilepic; ?>.png">
-                      <b><?php echo $display_fullname; ?></b> <?php echo $display_own_badge; ?>
-                    </h2><br>
-                    <span>Your Last login was on <b><?php echo date_format(date_create($display_lastlogin),"l, d F Y, H:i"); ?></b>.</span><br>
-                    <span class="heading">
-                      Your username is <b><?php echo $display_username; ?></b> and your email address is <b><?php echo $display_email; ?></b>.
-                      Your account type is <b><?php echo $display_acctype; ?></b>. 
-                    </span><br><br>
-                    <span class="heading">
-                      Your address is <b><?php echo $display_address; ?></b> and your phone number is <b><?php echo $display_phone; ?></b>. 
-                      Your date of birth is <b><?php echo date_format(date_create($display_dob),"d F Y"); ?></b> and your gender is 
-                        <b><?php 
-                            if ($display_gender == "M"){ 
-                              echo "male"; 
-                            } elseif ($display_gender == "F") { 
-                              echo "female"; 
-                            } else {
-                              echo "unknown";
-                            } ?></b>. 
 
-                      <br><br>
-                      <div class='alert alert-info'>
-                        <i class='fas fa-info-circle'></i> <a href="profile?view=<?php echo $display_username;?>" class="text-<?php echo $theme_color; ?>">This</a> is how other people see your profile.
-                      </div>
-                  </p>                  
+                  <?php if ($_GET['customize'] == "main") { ?>
+                    <?php
+                      // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
+                      $customcheck1 = "SELECT user_theme, redirect_url, side_trash, side_teams, side_contacts, side_support, side_settings FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customresult1 = mysql_query($customcheck1) or die(mysql_error());
+                      $arr1 =  mysql_fetch_array($customresult1);
+                    ?>
+
+                    <form action="settings" method="POST">
+                      <p>Here you can choose a theme for your dashboard, the page you will be redirected to after login and which pages will be visible in the sidebar.</p>
+                      <input type="hidden" name="c_usercode" value="<?php echo $user_code; ?>" />
+                      <table>
+                        <tr>
+                          <td><b>Dashboard theme</b></td>
+                          <td><select class="form-control" name="theme">
+                              <option value="primary" <?php if ($arr1[0] == "primary"){ echo 'selected'; } ?>>Blue</option>
+                              <option value="secondary" <?php if ($arr1[0] == "secondary"){ echo 'selected'; } ?>>Gray</option>
+                              <option value="success" <?php if ($arr1[0] == "success"){ echo 'selected'; } ?>>Green</option>
+                              <option value="danger" <?php if ($arr1[0] == "danger"){ echo 'selected'; } ?>>Red</option>
+                              <option value="warning" <?php if ($arr1[0] == "warning"){ echo 'selected'; } ?>>Yellow</option>
+                              <option value="info" <?php if ($arr1[0] == "info"){ echo 'selected'; } ?>>Lightblue</option>
+                              <option value="dark" <?php if ($arr1[0] == "dark"){ echo 'selected'; } ?>>Black</option>
+                            </select>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><b>Login redirect page &nbsp;</b></td>
+                          <td><select class="form-control" name="redirect">
+                              <option value="" <?php if ($arr1[1] == ""){ echo 'selected'; } ?>>Dashboard (default)</option>
+                              <option value="items" <?php if ($arr1[1] == "items?view=all"){ echo 'selected'; } ?>>Notes/Tasks</option>
+                              <option value="labels" <?php if ($arr1[1] == "labels"){ echo 'selected'; } ?>>Labels</option>
+                              <option value="trash" <?php if ($arr1[1] == "trash"){ echo 'selected'; } ?>>Trash</option>
+                              <option value="teams" <?php if ($arr1[1] == "teams"){ echo 'selected'; } ?>>Teams</option>
+                              <option value="contacts" <?php if ($arr1[1] == "contacts"){ echo 'selected'; } ?>>Contacts</option>
+                              <option value="support" <?php if ($arr1[1] == "support"){ echo 'selected'; } ?>>Support</option>
+                              <option value="profile" <?php if ($arr1[1] == "profile"){ echo 'selected'; } ?>>Your Profile</option>
+                              <option value="settings" <?php if ($arr1[1] == "settings"){ echo 'selected'; } ?>>Settings</option>
+                            </select>
+                          </td>
+                        </tr>
+                      </table><br>
+                      <table>
+                        <tr><td><b>Show/Hide Pages &nbsp;</b></td>
+                          <td><input type="checkbox" value="1" name="cside_trash" <?php if ($arr1[2] == "1"){ echo 'checked'; } ?>> Trash</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_teams" <?php if ($arr1[3] == "1"){ echo 'checked'; } ?>> Teams</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_contacts" <?php if ($arr1[4] == "1"){ echo 'checked'; } ?>> Contacts</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_support" <?php if ($arr1[5] == "1"){ echo 'checked'; } ?>> Support</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_settings" <?php if ($arr1[6] == "1"){ echo 'checked'; } ?>> Settings</td>
+                        </tr>
+                      </table><br>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_main"><i class="fas fa-check"></i> Update settings</button>
+                    </form><br>
+                    <div class='alert alert-info'>
+                      <i class='fas fa-info-circle'></i> You can still visit hidden pages, but you will need to use links on other pages or the URL bar to access them.
+                    </div>
+
+                  <?php } elseif ($_GET['customize'] == "dashboard") { ?>
+                    <?php
+                      // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
+                      $customcheck2 = "SELECT dashw_show_week, dashw_show_deadlines, dashw_show_active, dashw_show_ratio, dash_show_start, dash_show_chart1, dash_show_chart2, dash_show_labels, dash_show_book FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customresult2 = mysql_query($customcheck2) or die(mysql_error());
+                      $arr2 =  mysql_fetch_array($customresult2);
+                    ?>
+
+                    <form action="settings" method="POST">
+                      <p>Here you can choose which widgets and cards you want to display on your dashboard.</p>
+                      <input type="hidden" name="c_usercode" value="<?php echo $user_code; ?>" />
+                      <table>
+                        <tr><td><b>Widgets &nbsp;</b></td>
+                          <td><input type="checkbox" value="1" name="cdash_week" <?php if ($arr2[0] == "1"){ echo 'checked'; } ?>> Todo this week</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_deadlines" <?php if ($arr2[1] == "1"){ echo 'checked'; } ?>> Deadlines missed</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_active" <?php if ($arr2[2] == "1"){ echo 'checked'; } ?>> Active/total</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_ratio" <?php if ($arr2[3] == "1"){ echo 'checked'; } ?>> Notes/Tasks ratio</td>
+                        </tr>
+                      </table><br>
+                      <table>
+                        <tr><td><b>Cards &nbsp;</b></td>
+                          <td><input type="checkbox" value="1" name="cdash_start" <?php if ($arr2[4] == "1"){ echo 'checked'; } ?>> Introduction (disable this card after your first login)</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_chart1" <?php if ($arr2[5] == "1"){ echo 'checked'; } ?>> Item Activity Flow Chart</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_chart2" <?php if ($arr2[6] == "1"){ echo 'checked'; } ?>> Item Type Pie Chart</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_labels" <?php if ($arr2[7] == "1"){ echo 'checked'; } ?>> Label Analytics</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cdash_bookmarked" <?php if ($arr2[8] == "1"){ echo 'checked'; } ?>> Bookmarked Items</td>
+                        </tr>
+                      </table><br>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_dashboard"><i class="fas fa-check"></i> Update settings</button>
+                    </form>
+
+                  <?php } else { ?>
+                    <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to select a feature to customize.</p>
+                  <?php } ?>
+
                 </div>
               </div>
             </div>
@@ -157,7 +234,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
             <div class="col-lg-6">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user-plus"></i> Change user information</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-cogs"></i> Account settings</h6>
                 </div>
                 <div class="card-body">
                   <form action="profile" method="POST">
@@ -200,110 +277,11 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
               </div>
             </div>
 
+              </div>
+              </div>
+            </div>
+
           </div> <!-- / row -->
-
-        <?php } elseif (isset($_GET['view']) && $display_fullname != ""){ // view others profile ?>
-          <div class="row">
-
-            <!-- View user info -->
-            <div class="col-lg-6 mb-4">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user"></i> User Information</h6>
-                </div>
-                <div class="card-body">
-                  <?php // responsive badges: online/offline
-                    if ($display_status == "online"){
-                      $display_badge = "<span class='badge badge-success'>Online</span>";
-                    } else {
-                      $display_badge = "<span class='badge badge-secondary'>Offline</span>";
-                    }
-
-                    $display_own_badge = "<span class='badge badge-success'>Online</span>";
-                  ?>
-                  <p>
-                    <h2>
-                      <?php if ($showpref_pic == "1"){ // profile pic preference
-                        echo '<img class="rounded-circle img-thumbnail" width="100px" src="../usericons/'.$display_profilepic.'.png">';
-                      } else {
-                        echo '<img class="rounded-circle img-thumbnail" width="100px" src="../usericons/unknown.png">';
-                      } ?>
-                      <b>
-                        <?php if ($showpref_fullname == "1"){ // full name preference
-                          echo $display_fullname; 
-                        } else {
-                          echo $display_username;
-                        } ?>
-                      </b> <?php echo $display_badge; ?>
-                    </h2><br>
-                    <span>Last login was on <b><?php echo date_format(date_create($display_lastlogin),"l, d F Y, H:i"); ?></b>.</span><br>
-                    <span>Users account type is <b><?php echo $display_acctype; ?></b>.</span><br><br>
-                    <span class="heading">
-                      Username is <b><?php echo $display_username; ?></b>.<br>
-                      <?php if ($showpref_email == "1") { // email preference ?>
-                        Email address is <b><?php echo $display_email; ?></b>.<br>
-                      <?php } ?>
-                    </span>
-                    <span class="heading">
-                      <?php if ($showpref_dob == "1") { // dob preference ?>
-                        Date of birth is <b><?php echo date_format(date_create($display_dob),"d F Y"); ?></b>.<br>
-                      <?php } if ($showpref_gender == "1") { // gender preference ?>
-                        Gender is 
-                        <?php 
-                              if ($display_gender == "M"){ 
-                                echo "<b>male</b>."; 
-                              } else { 
-                                echo "<b>female</b>."; 
-                              }
-                        ?>
-                      <?php } ?>
-                    </span>
-                    <?php if ($_GET['view'] == $current_username){ ?><br><br>
-                      <div class='alert alert-info'>
-                        <i class='fas fa-info-circle'></i> Go <a href="profile" class="text-<?php echo $theme_color; ?>">back</a> to your profile.
-                      </div>
-                    <?php } ?>
-                  </p>                  
-                </div>
-              </div>
-            </div>
-
-            <!-- User Actions -->
-            <?php if ($_GET['view'] != $current_username){ ?>
-            <div class="col-lg-6">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user-plus"></i> Contact Options</h6>
-                </div>
-                <div class="card-body">
-                      Add user as contact
-                    <div class="float-right">
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="advanced_search"><i class="fas fa-user-plus"></i> Add New Contact</button>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <?php } ?>
-
-
-          </div>
-
-        <?php } else { // profile does not exist ?>
-
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user"></i> User Information</h6>
-                </div>
-                <div class="card-body">
-                  User with the username '<span class="font-weight-bold text-<?php echo $theme_color; ?>"><?php echo $_GET['view']; ?></span>'' does not exist.
-                </div>
-              </div>
-            </div>
-          </div>
-
-        <?php } ?>
 
         </div>
         <!-- /.container-fluid -->
