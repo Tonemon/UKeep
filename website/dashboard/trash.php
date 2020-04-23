@@ -155,8 +155,8 @@ include 'essentials.php';  // $user_code from essentials.php
                       <?php }  ?>
                   </div>
                   <div class="float-right">
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_undelete"><i class="fas fa-trash-restore-alt"></i> Recover Item</button>
-                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#perDelModal"><i class="fas fa-recycle"></i> Permanently delete item</a>
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_undelete"><i class="fas fa-recycle"></i> Recover Item</button>
+                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#perDelModal"><i class="fas fa-dumpster"></i> Permanently delete item</a>
                   </div>
 
                   <!-- Permanently remove item Modal-->

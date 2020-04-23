@@ -15,8 +15,11 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $side_contacts = $_POST['cside_contacts'];
     $side_support = $_POST['cside_support'];
     $side_settings = $_POST['cside_settings'];
+    $side_notes_tasks = $_POST['cside_notes_tasks'];
+    $side_notes = $_POST['cside_notes'];
+    $side_tasks = $_POST['cside_tasks'];
 
-    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_settings='$side_settings' WHERE account_usercode='$user_code'";
+    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_settings='$side_settings', side_notes_tasks='$side_notes_tasks', side_notes='$side_notes', side_tasks='$side_tasks' WHERE account_usercode='$user_code'";
     mysql_query($custom_sql) or die(header('location:settings?customize=main&error=1'));
     header('location:settings?customize=main&success=1');
 
@@ -171,7 +174,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                   <?php if ($_GET['customize'] == "main") { ?>
                     <?php
                       // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
-                      $customcheck1 = "SELECT user_theme, redirect_url, side_trash, side_teams, side_contacts, side_support, side_settings FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customcheck1 = "SELECT user_theme, redirect_url, side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
                       $customresult1 = mysql_query($customcheck1) or die(mysql_error());
                       $arr1 =  mysql_fetch_array($customresult1);
                     ?>
@@ -210,6 +213,15 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                       </table><br>
                       <table>
                         <tr><td><b>Show these sidebar links: &nbsp;</b></td>
+                          <td><input type="checkbox" value="1" name="cside_notes_tasks" <?php if ($arr1[7] == "1"){ echo 'checked'; } ?>> Notes/Tasks</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_notes" <?php if ($arr1[8] == "1"){ echo 'checked'; } ?>> Notes</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_tasks" <?php if ($arr1[9] == "1"){ echo 'checked'; } ?>> Tasks</td>
+                        </tr>
+                        <tr><td></td>
                           <td><input type="checkbox" value="1" name="cside_trash" <?php if ($arr1[2] == "1"){ echo 'checked'; } ?>> Trash</td>
                         </tr>
                         <tr><td></td>
@@ -313,12 +325,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     </div>
 
                   <?php } elseif ($_GET['customize'] == "picture") { ?>
+                    <div class="alert alert-warning">
+                      <i class="fas fa-exclamation-triangle"></i> This feature is not yet available.
+                    </div>
+                    
                     <p>This is your picture at the moment: &nbsp; <img class="img-thumbnail rounded-circle" width="100px" src="../usericons/<?php echo $user_code; ?>.png">
 
                     </p>
-
-                    Customize Feature coming soon...
-
                   <?php } else { ?>
                     <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to select a feature to customize.</p> You can customize the following:
                     <ul>
@@ -388,6 +401,9 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     </form>
 
                   <?php } elseif ($_GET['action'] == "deactivate") { ?>
+                    <div class="alert alert-warning">
+                      <i class="fas fa-exclamation-triangle"></i> This feature is not yet available.
+                    </div>
                     <form action="settings" method="POST">
                     <?php if ($user_acctype == "admin"){ // normal users ?>
                       <p>Hi <b>admin</b>, you cannot deactivate your account.</p>
@@ -403,6 +419,9 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     </form>
 
                   <?php } elseif ($_GET['action'] == "delete") { ?>
+                    <div class="alert alert-warning">
+                      <i class="fas fa-exclamation-triangle"></i> This feature is not yet available.
+                    </div>
                     <form action="settings" method="POST">
                     <?php if ($user_acctype == "admin"){ // admin user requests account removal ?>
                       <p>Hi <b>admin</b>, if you want to stop working at UKeep, please contact someone with a higher position and hand in your resignation.</p>

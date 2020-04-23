@@ -92,9 +92,6 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
             <a class="dropdown-item" href="items?view=week&advanced_search"><i class="fas fa-fw fa-calendar-alt"></i> This week</a>
             <a class="dropdown-item" href="items?view=passed&advanced_search"><i class="fas fa-fw fa-calendar-times"></i> Passed Deadlines</a>
             <a class="dropdown-item" href="items?view=future&advanced_search"><i class="fas fa-fw fa-plane-departure"></i> Future</a>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View:</div>
-            <a class="dropdown-item" href="labels"><i class="fas fa-fw fa-folder"></i> Labels</a>
           </div>
         </div>
       </h1>
@@ -126,7 +123,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                     ?>
                   </h6>
                   <div class="dropdown dropdown-lg no-arrow">
-                    <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
+                    <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
                       <i class="fas fa-filter fa-sm fa-fw"></i> Filter
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" style="width: 450px">
@@ -175,9 +172,6 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                         </div>
                       </form>
                     </div>
-                    <a class="dropdown-toggle text-dark" href="trash" style="text-decoration:none">
-                      <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trash
-                    </a>
                   </div>
                   
                 </div>

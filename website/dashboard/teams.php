@@ -24,9 +24,8 @@ include 'essentials.php';
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <div class="alert alert-warning alert-dismissible">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <i class="fas fa-exclamation-triangle"></i> This feature is not fully implemented yet.
+          <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i> This feature is not yet available.
           </div>
 
           <!-- Page Heading -->
@@ -38,21 +37,59 @@ include 'essentials.php';
 
           <div class="row">
 
-            <!-- Introduction card -->
-            <div class="col-xl-8 col-lg-7">
+          <?php
+            $dash_sql = "SELECT teams_show_start FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+            $dash_result = mysql_query($dash_sql) or die(mysql_error());
+            $dash = mysql_fetch_array($dash_result);
+            $teams_start = $dash[0];
+          ?>
+            
+            <div class="col-xl-8">
+              
+            <!-- Introduction card -->  
+            <?php if ($teams_start == "1") { ?>
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-info-circle"></i> Introduction</h6>
                 </div>
                 <div class="card-body">
                   <p>Welcome to the teams function in UKeep! This feature enables you and your team to collaborate and share notes and labels between eachother. As the team leader, you have the ability to add/remove team members and create new teams.</p>
-                  <p class="mb-0">All of your teams are listed on the right and you can access your team notes/tasks/labels in <a href="items?view=all" class="text-<?php echo $theme_color; ?>">your own environment</a> by clicking on the <span class="font-weight-bold text-<?php echo $theme_color; ?>">View category</span> dropdown and selecting your team.</p>
+                  <p class="mb-0">All of your teams are listed on the right and you can access your team notes/tasks/labels in <a href="items?view=all" class="text-<?php echo $theme_color; ?>">your own environment</a> by clicking on the <span class="font-weight-bold text-<?php echo $theme_color; ?>">View category</span> dropdown and by selecting your team.</p>
                 </div>
               </div>
+            <?php } ?>
+
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-cog"></i> Team Actions</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">  <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Select an action to perform:</div>
+                      <a class="dropdown-item" href="?action=create"><i class="fas fa-fw fa-plus-square"></i> Create new team</a>
+                      <a class="dropdown-item" href="?action=join"><i class="fas fa-fw fa-users"></i> Join a team</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="?action=overview"><i class="fas fa-fw fa-pencil-alt"></i> Edit a team</a>
+                      <a class="dropdown-item" href="?action=overview"><i class="fas fa-fw fa-trash-alt"></i> Delete a team</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to perform an action.</p> You can do the following:
+                  <ul>
+                    <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-plus-square"></i> Create</span> a new team.</li>
+                    <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-users"></i> Join</span> an existing team.</li>
+                    <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-pencil-alt"></i> Edit</span> a team.</li>
+                    <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-trash-alt"></i> Delete</span> a team.</li>
+                  </ul>
+                </div>
+              </div>
+
             </div>
 
             <!-- User Teams section -->
-            <div class="col-xl-4 col-lg-5">
+            <div class="col-xl-4">
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-users"></i> Your Teams</h6>

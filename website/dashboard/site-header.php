@@ -9,7 +9,7 @@
         <div class="sidebar-brand-text mx-3">UKeep Dash</div>
       </a>
       <?php
-        $side_sql = "SELECT side_trash,side_teams,side_contacts,side_support,side_settings FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+        $side_sql = "SELECT side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
         $side_result = mysql_query($side_sql) or die(mysql_error());
         $side = mysql_fetch_array($side_result);
 
@@ -18,6 +18,9 @@
         $c_side_contacts = $side[2];
         $c_side_support = $side[3];
         $c_side_settings = $side[4];
+        $c_side_notes_tasks = $side[5];
+        $c_side_notes = $side[6];
+        $c_side_tasks = $side[7];
       ?>
 
 
@@ -46,12 +49,28 @@
         </div>
       </li>
 
+      <?php if ($c_side_notes_tasks == "1"){ ?>
       <li class="nav-item">
         <a class="nav-link" href="items?view=all">
           <i class="fas fa-fw fa-book"></i>
           <span>Notes/Tasks</span></a>
       </li>
 
+      <?php } if ($c_side_notes == "1"){ ?>
+      <li class="nav-item">
+        <a class="nav-link" href="items?view=notes&advanced_search">
+          <i class="fas fa-fw fa-sticky-note"></i>
+          <span>Notes</span></a>
+      </li>
+
+      <?php } if ($c_side_tasks == "1"){ ?>
+      <li class="nav-item">
+        <a class="nav-link" href="items?view=tasks&advanced_search">
+          <i class="fas fa-fw fa-calendar-check"></i>
+          <span>Tasks</span></a>
+      </li>
+
+      <?php } ?>
       <li class="nav-item">
         <a class="nav-link" href="labels">
           <i class="fas fa-fw fa-folder"></i>
@@ -78,7 +97,7 @@
 
       <?php } if ($c_side_contacts == "1") { ?>
       <li class="nav-item">
-        <a class="nav-link" href="friends">
+        <a class="nav-link" href="contacts">
           <i class="fas fa-fw fa-user-friends"></i>
           <span>Contacts</span></a>
       </li>
