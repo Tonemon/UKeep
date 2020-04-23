@@ -11,6 +11,19 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $viewme_sql = "SELECT * FROM UKeepMAIN.users WHERE username='$viewuser'";
     $viewme_result = mysql_query($viewme_sql) or die(mysql_error());
     $viewuser = mysql_fetch_array($viewme_result);
+
+    // get status of all information that can be displayed (privacy settings)
+    $display_usercode = $viewuser[8];
+    $userpref_sql = "SELECT account_show_pic,account_show_fullname,account_show_email,account_show_dob,account_show_gender FROM UKeepMAIN.preferences WHERE account_usercode='$display_usercode'";
+    $userpref_result = mysql_query($userpref_sql) or die(mysql_error());
+    $userpref = mysql_fetch_array($userpref_result);
+
+    $showpref_pic = $userpref[0];
+    $showpref_fullname = $userpref[1];
+    $showpref_email = $userpref[2];
+    $showpref_dob = $userpref[3];
+    $showpref_gender = $userpref[4];
+
   } else {
     $viewme_sql = "SELECT * FROM UKeepMAIN.users WHERE usercode='$user_code'";
     $viewme_result = mysql_query($viewme_sql) or die(mysql_error());
@@ -72,12 +85,24 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
+        <?php
+          if ($_GET['success'] == "1") { // created new task
+            echo "<div class='alert alert-success alert-dismissible'>
+              <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+              <i class='fas fa-check'></i> User information changed. </div>";
+          } elseif ($_GET['error'] == "1") { // error: something wrong
+            echo "<div class='alert alert-warning alert-dismissible'>
+              <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+              <i class='fas fa-exclamation-triangle'></i> Oh. Something went wrong. Please try again.</div>";
+          }
+        ?>
+
         <!-- Page Heading -->
         <h1 class="h3 mb-4 text-gray-800">Profile: 
         <div class="dropdown dropdown-lg no-arrow" style="display:inline-block;">
           <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-            <?php if ($display_fullname != ""){
-              echo $display_fullname;
+            <?php if ($display_username != ""){
+              echo $display_username;
             } else {
               echo "<i>User not found</i>";
             } ?> 
@@ -116,14 +141,14 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     <h2><img class="rounded-circle img-thumbnail" width="100px" src="../usericons/<?php echo $display_profilepic; ?>.png">
                       <b><?php echo $display_fullname; ?></b> <?php echo $display_own_badge; ?>
                     </h2><br>
-                    <span>Your Last login was on <b><?php echo $display_lastlogin; ?></b>.</span><br>
+                    <span>Your Last login was on <b><?php echo date_format(date_create($display_lastlogin),"l, d F Y, H:i"); ?></b>.</span><br>
                     <span class="heading">
                       Your username is <b><?php echo $display_username; ?></b> and your email address is <b><?php echo $display_email; ?></b>.
                       Your account type is <b><?php echo $display_acctype; ?></b>. 
                     </span><br><br>
                     <span class="heading">
                       Your address is <b><?php echo $display_address; ?></b> and your phone number is <b><?php echo $display_phone; ?></b>. 
-                      Your date of birth is <b><?php echo $display_dob; ?></b> and your gender is 
+                      Your date of birth is <b><?php echo date_format(date_create($display_dob),"d F Y"); ?></b> and your gender is 
                         <b><?php 
                             if ($display_gender == "M"){ 
                               echo "male"; 
@@ -207,27 +232,45 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     } else {
                       $display_badge = "<span class='badge badge-secondary'>Offline</span>";
                     }
+
+                    $display_own_badge = "<span class='badge badge-success'>Online</span>";
                   ?>
                   <p>
-                    <?php $display_own_badge = "<span class='badge badge-success'>Online</span>"; ?>
-                    <h2><img class="rounded-circle img-thumbnail" width="100px" src="../usericons/<?php echo $display_profilepic; ?>.png">
-                      <b><?php echo $display_fullname; ?></b> <?php echo $display_badge; ?>
+                    <h2>
+                      <?php if ($showpref_pic == "1"){ // profile pic preference
+                        echo '<img class="rounded-circle img-thumbnail" width="100px" src="../usericons/'.$display_profilepic.'.png">';
+                      } else {
+                        echo '<img class="rounded-circle img-thumbnail" width="100px" src="../usericons/unknown.png">';
+                      } ?>
+                      <b>
+                        <?php if ($showpref_fullname == "1"){ // full name preference
+                          echo $display_fullname; 
+                        } else {
+                          echo $display_username;
+                        } ?>
+                      </b> <?php echo $display_badge; ?>
                     </h2><br>
-                    <span>Last login was on <b><?php echo $display_lastlogin; ?></b>.</span><br>
+                    <span>Last login was on <b><?php echo date_format(date_create($display_lastlogin),"l, d F Y, H:i"); ?></b>.</span><br>
+                    <span>Users account type is <b><?php echo $display_acctype; ?></b>.</span><br><br>
                     <span class="heading">
-                      Users username is <b><?php echo $display_username; ?></b> and their email address is <b><?php echo $display_email; ?></b>.<br>
-                      Users account type is <b><?php echo $display_acctype; ?></b>. 
-                    </span><br><br>
+                      Username is <b><?php echo $display_username; ?></b>.<br>
+                      <?php if ($showpref_email == "1") { // email preference ?>
+                        Email address is <b><?php echo $display_email; ?></b>.<br>
+                      <?php } ?>
+                    </span>
                     <span class="heading">
-                      Date of birth is <b><?php echo $display_dob; ?></b> and gender is 
-                      <b><?php 
-                            if ($display_gender == "M"){ 
-                              echo "male"; 
-                            } elseif ($display_gender == "F") { 
-                              echo "female"; 
-                            } else {
-                              echo "unknown";
-                            } ?></b>.
+                      <?php if ($showpref_dob == "1") { // dob preference ?>
+                        Date of birth is <b><?php echo date_format(date_create($display_dob),"d F Y"); ?></b>.<br>
+                      <?php } if ($showpref_gender == "1") { // gender preference ?>
+                        Gender is 
+                        <?php 
+                              if ($display_gender == "M"){ 
+                                echo "<b>male</b>."; 
+                              } else { 
+                                echo "<b>female</b>."; 
+                              }
+                        ?>
+                      <?php } ?>
                     </span>
                     <?php if ($_GET['view'] == $current_username){ ?><br><br>
                       <div class='alert alert-info'>
