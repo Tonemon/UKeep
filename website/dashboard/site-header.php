@@ -8,6 +8,16 @@
         </div>
         <div class="sidebar-brand-text mx-3">UKeep Dash</div>
       </a>
+      <?php
+        $side_sql = "SELECT side_trash,side_teams,side_contacts,side_support FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+        $side_result = mysql_query($side_sql) or die(mysql_error());
+        $side = mysql_fetch_array($side_result);
+
+        $c_side_trash = $side[0];
+        $c_side_teams = $side[1];
+        $c_side_contacts = $side[2];
+        $c_side_support = $side[3];
+      ?>
 
 
       <!-- Dashboard -->

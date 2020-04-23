@@ -23,13 +23,10 @@
 
 
   // User customization section
-  $custom_sql = "SELECT * FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
-  $custom_result = mysql_query($custom_sql) or die(mysql_error());
-  $cus_arr = mysql_fetch_array($custom_result);
-
-  $theme_color = $cus_arr[1]; // used for page theme
-  // $redirect_url = $cus_arr[2]; // redirect to user set page
-  include 'addons/essentials-variables.php'; // more variables
+  $theme_sql = "SELECT user_theme FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+  $theme_result = mysql_query($theme_sql) or die(mysql_error());
+  $theme = mysql_fetch_array($theme_result);
+  $theme_color = $theme[0]; // used for page theme
 
         
   // checking for corrupted sessions

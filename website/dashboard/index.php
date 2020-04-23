@@ -30,6 +30,22 @@ include 'essentials.php';
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-<?php echo $theme_color; ?> shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
+          <?php
+            $dash_sql = "SELECT dash_show_start,dashw_show_week,dashw_show_deadlines,dashw_show_active,dashw_show_ratio,dash_show_chart1,dash_show_chart2,dash_show_labels,dash_show_book FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+            $dash_result = mysql_query($dash_sql) or die(mysql_error());
+            $dash = mysql_fetch_array($dash_result);
+
+            $c_dash_start = $dash[0];
+            $c_dash_week = $dash[1];
+            $c_dash_dead = $dash[2];
+            $c_dash_active = $dash[3];
+            $c_dash_ratio = $dash[4];
+            $c_dash_chart1 = $dash[5];
+            $c_dash_chart2 = $dash[6];
+            $c_dash_labels = $dash[7];
+            $c_dash_book = $dash[8];
+          ?>
+
           <?php if ($c_dash_start == "1"){ include 'cards/dash_start.php'; } // Start info card ?>
 
 
