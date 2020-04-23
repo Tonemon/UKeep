@@ -9,7 +9,7 @@
         <div class="sidebar-brand-text mx-3">UKeep Dash</div>
       </a>
       <?php
-        $side_sql = "SELECT side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+        $side_sql = "SELECT side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks, side_guide, side_suite, side_labels FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
         $side_result = mysql_query($side_sql) or die(mysql_error());
         $side = mysql_fetch_array($side_result);
 
@@ -21,6 +21,9 @@
         $c_side_notes_tasks = $side[5];
         $c_side_notes = $side[6];
         $c_side_tasks = $side[7];
+        $c_side_guide = $side[8];
+        $c_side_suite = $side[9];
+        $c_side_labels = $side[10];
       ?>
 
 
@@ -49,11 +52,30 @@
         </div>
       </li>
 
-      <?php if ($c_side_notes_tasks == "1"){ ?>
+      <?php if ($c_side_suite == "1"){ ?>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSuite" aria-expanded="true" aria-controls="collapseSuite">
+          <i class="far fa-fw fa-list-alt"></i>
+          <span>UKeep Suite</span>
+        </a>
+        <div id="collapseSuite" class="collapse" aria-labelledby="headingItems" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header text-<?php echo $theme_color; ?>">Goto...</h6>
+            <a class="collapse-item" href="items?view=all"><i class="fas fa-fw fa-book"></i> All Items</a>
+            <a class="collapse-item" href="items?view=notes&advanced_search"><i class="fas fa-fw fa-sticky-note"></i> All Notes</a>
+            <a class="collapse-item" href="items?view=tasks&advanced_search"><i class="fas fa-fw fa-calendar-check"></i> All Tasks</a>
+            <a class="collapse-item" href="trash"><i class="fas fa-fw fa-trash-alt"></i> Trash</a>
+            <div class="dropdown-divider"></div>
+            <a class="collapse-item" href="labels"><i class="fas fa-fw fa-folder"></i> Labels</a>
+          </div>
+        </div>
+      </li>
+
+      <?php } if ($c_side_notes_tasks == "1"){ ?>
       <li class="nav-item">
         <a class="nav-link" href="items?view=all">
           <i class="fas fa-fw fa-book"></i>
-          <span>Notes/Tasks</span></a>
+          <span>All Items</span></a>
       </li>
 
       <?php } if ($c_side_notes == "1"){ ?>
@@ -70,14 +92,14 @@
           <span>Tasks</span></a>
       </li>
 
-      <?php } ?>
+      <?php } if ($c_side_labels == "1"){ ?>
       <li class="nav-item">
         <a class="nav-link" href="labels">
           <i class="fas fa-fw fa-folder"></i>
           <span>Labels</span></a>
       </li>
 
-      <?php if ($c_side_trash == "1"){ ?>
+      <?php } if ($c_side_trash == "1"){ ?>
       <li class="nav-item">
         <a class="nav-link" href="trash">
           <i class="fas fa-fw fa-trash-alt"></i>
@@ -113,7 +135,14 @@
       <hr class="sidebar-divider">
       <div class="sidebar-heading">Other</div>
 
-      <?php if ($c_side_settings == "1") { ?>
+      <?php if ($c_side_guide == "1") { ?>
+      <li class="nav-item">
+        <a class="nav-link" href="guide">
+          <i class="fas fa-fw fa-life-ring"></i>
+          <span>Guide</span></a>
+      </li>
+
+      <?php } if ($c_side_settings == "1") { ?>
       <li class="nav-item">
         <a class="nav-link" href="settings">
           <i class="fas fa-fw fa-cogs"></i>

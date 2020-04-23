@@ -31,7 +31,6 @@ include 'essentials.php';
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Manage your Teams</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" disabled><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
 
@@ -45,7 +44,7 @@ include 'essentials.php';
           ?>
             
             <div class="col-xl-8">
-              
+
             <!-- Introduction card -->  
             <?php if ($teams_start == "1") { ?>
               <div class="card shadow mb-4">

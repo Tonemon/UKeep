@@ -256,7 +256,6 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           echo '<span class="badge badge-dark"><i>Private</i></span>';
                         } ?>
                     </h2><br>
-                    <span>Last login was on <b><?php echo date_format(date_create($display_lastlogin),"l, d F Y, H:i"); ?></b>.</span><br>
                     <span>Users account type is <b><?php echo $display_acctype; ?></b>.</span><br><br>
                     <span class="heading">
                       Username is <b><?php echo $display_username; ?></b>.<br>

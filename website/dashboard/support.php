@@ -23,13 +23,13 @@ include 'essentials.php';
 
     // variables to set on the go
     $qstatus = "TO REVIEW";
-    $qfrom = "User";
+    $qfrom = "User panel";
     $qdate = date('Y-m-d h:i:s');
 
     // insert question to table 'questions'
-    $qsql = "INSERT INTO UKeepMAIN.questions values('','$qname','$qemail','$qtype','$qmessage','$qstatus','','$qfrom','$qdate')";
-    mysql_query($qsql) or die(header('location:profile?error=1'));
-    header('location:profile?success=1');
+    $qsql = "INSERT INTO UKeepMAIN.questions values('','$qname','$qemail','$qtype','$qmessage','$qstatus','','$qfrom','$qdate','','')";
+    mysql_query($qsql) or die(header('location:support?error=1'));
+    header('location:support?success=1');
   }
 ?>
 
@@ -80,11 +80,13 @@ include 'essentials.php';
                 <table>
                   <tr>
                     <td>First name:</td>
-                    <td><input type="text" name="q_name" class="form-control" value="<?php echo $display_fullname; ?>" disabled="disabled" /></td>
+                    <td><input type="hidden" name="q_name" value="<?php echo $display_fullname; ?>" />
+                    <input type="text" class="form-control" value="<?php echo $display_fullname; ?>" disabled="disabled" /></td>
                   </tr>
                   <tr>
                     <td>Email address:</td>
-                    <td><input type="email" name="q_email" class="form-control" value="<?php echo $display_email; ?>" disabled="disabled" /></td>
+                    <td><input type="hidden" name="q_email" value="<?php echo $display_email; ?>" />
+                    <input type="email" class="form-control" value="<?php echo $display_email; ?>" disabled="disabled" /></td>
                   </tr>
                   <tr>
                     <td>Category:</td>

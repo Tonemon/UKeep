@@ -18,8 +18,11 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $side_notes_tasks = $_POST['cside_notes_tasks'];
     $side_notes = $_POST['cside_notes'];
     $side_tasks = $_POST['cside_tasks'];
+    $side_guide = $_POST['cside_guide'];
+    $side_suite = $_POST['cside_suite'];
+    $side_labels = $_POST['cside_labels'];
 
-    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_settings='$side_settings', side_notes_tasks='$side_notes_tasks', side_notes='$side_notes', side_tasks='$side_tasks' WHERE account_usercode='$user_code'";
+    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_settings='$side_settings', side_notes_tasks='$side_notes_tasks', side_notes='$side_notes', side_tasks='$side_tasks', side_guide='$side_guide', side_suite='$side_suite', side_labels='$side_labels' WHERE account_usercode='$user_code'";
     mysql_query($custom_sql) or die(header('location:settings?customize=main&error=1'));
     header('location:settings?customize=main&success=1');
 
@@ -174,7 +177,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                   <?php if ($_GET['customize'] == "main") { ?>
                     <?php
                       // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
-                      $customcheck1 = "SELECT user_theme, redirect_url, side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customcheck1 = "SELECT user_theme, redirect_url, side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks, side_guide, side_suite, side_labels FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
                       $customresult1 = mysql_query($customcheck1) or die(mysql_error());
                       $arr1 =  mysql_fetch_array($customresult1);
                     ?>
@@ -207,12 +210,16 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                               <option value="support" <?php if ($arr1[1] == "support"){ echo 'selected'; } ?>>Support</option>
                               <option value="profile" <?php if ($arr1[1] == "profile"){ echo 'selected'; } ?>>Your Profile</option>
                               <option value="settings" <?php if ($arr1[1] == "settings"){ echo 'selected'; } ?>>Settings</option>
+                              <option value="guide" <?php if ($arr1[1] == "guide"){ echo 'selected'; } ?>>Guide</option>
                             </select>
                           </td>
                         </tr>
                       </table><br>
                       <table>
                         <tr><td><b>Show these sidebar links: &nbsp;</b></td>
+                          <td><input type="checkbox" value="1" name="cside_suite" <?php if ($arr1[11] == "1"){ echo 'checked'; } ?>> UKeep Suite</td>
+                        </tr>
+                        <tr><td></td>
                           <td><input type="checkbox" value="1" name="cside_notes_tasks" <?php if ($arr1[7] == "1"){ echo 'checked'; } ?>> Notes/Tasks</td>
                         </tr>
                         <tr><td></td>
@@ -220,6 +227,9 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         </tr>
                         <tr><td></td>
                           <td><input type="checkbox" value="1" name="cside_tasks" <?php if ($arr1[9] == "1"){ echo 'checked'; } ?>> Tasks</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_labels" <?php if ($arr1[12] == "1"){ echo 'checked'; } ?>> Labels</td>
                         </tr>
                         <tr><td></td>
                           <td><input type="checkbox" value="1" name="cside_trash" <?php if ($arr1[2] == "1"){ echo 'checked'; } ?>> Trash</td>
@@ -235,6 +245,9 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         </tr>
                         <tr><td></td>
                           <td><input type="checkbox" value="1" name="cside_settings" <?php if ($arr1[6] == "1"){ echo 'checked'; } ?>> Settings</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_guide" <?php if ($arr1[10] == "1"){ echo 'checked'; } ?>> Guide</td>
                         </tr>
                       </table><br>
                       <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_main"><i class="fas fa-check"></i> Update Settings</button>
