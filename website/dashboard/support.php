@@ -102,7 +102,12 @@ include 'essentials.php';
                 </table><br>
                 <small class="form-text">Enter more information about your question below.</small>
                 <textarea class="form-control" name="q_content" rows="2" placeholder="Please enter your question here" required></textarea><br>
-                <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="submit_question"><i class="fas fa-check"></i> Submit my Question</button>
+                <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="submit_question">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                  </span>
+                  <span class="text">Submit my Question</span>
+                </button>
               </form>
             </div>
           </div>

@@ -44,7 +44,12 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-<?php echo $theme_color; ?>" href="logout.php">Logout</a>
+          <a href="logout.php" class="btn btn-<?php echo $theme_color; ?> btn-icon-split">
+            <span class="icon text-white-50">
+              <i class="fas fa-sign-out-alt"></i>
+            </span>
+            <span class="text">Logout</span>
+          </a>
         </div>
       </div>
     </div>
@@ -88,7 +93,12 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="note_create">Create Note</button>
+            <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="note_create">
+              <span class="icon text-white-50">
+                <i class="fas fa-plus-square"></i>
+              </span>
+              <span class="text">Create Note</span>
+            </button>
           </div>
         </div>
      </form>
@@ -155,7 +165,12 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-            <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="task_create">Create task</button>
+            <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="task_create">
+              <span class="icon text-white-50">
+                <i class="fas fa-calendar-plus"></i>
+              </span>
+              <span class="text">Create task</span>
+            </button>
           </div>
         </div>
      </form>
@@ -210,7 +225,12 @@
             </div>
             <div class="modal-footer">
               <button class="btn btn-secondary" type="button" data-dismiss="modal">Discard</button>
-              <button type="submit" class="btn btn-<?php echo $theme_color; ?> icon save" name="label_create">Create Label</button>
+              <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="label_create">
+                <span class="icon text-white-50">
+                  <i class="fas fa-folder-plus"></i>
+                </span>
+                <span class="text">Create Label</span>
+              </button>
             </div>
           </form>
         </div>

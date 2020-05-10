@@ -209,7 +209,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         <td><input type="hidden" name="edit_submit_usercode" value="<?php echo $user_code; ?>"/>
                           <input type="password" class="form-control" name="edit_submit_pwd" required /></td>
                     </tr></table><br>
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="change_persinfo"><i class="fas fa-check"></i> Submit my new information</button>
+
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="change_persinfo">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                      </span>
+                      <span class="text">Update my information</span>
+                    </button>
                   </form>
                 </div>
               </div>
@@ -297,7 +303,12 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                 <div class="card-body">
                       Add user as contact
                     <div class="float-right">
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="advanced_search"><i class="fas fa-user-plus"></i> Add New Contact</button>
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="add_contact">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-user-plus"></i>
+                        </span>
+                        <span class="text">Add New Contact</span>
+                      </button>
                     </div>
                 </div>
               </div>

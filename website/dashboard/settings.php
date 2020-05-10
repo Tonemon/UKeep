@@ -250,7 +250,14 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           <td><input type="checkbox" value="1" name="cside_guide" <?php if ($arr1[10] == "1"){ echo 'checked'; } ?>> Guide</td>
                         </tr>
                       </table><br>
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_main"><i class="fas fa-check"></i> Update Settings</button>
+
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="customize_main">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">Update Settings</span>
+                      </button>
+
                     </form><br>
                     <div class='alert alert-info'>
                       <i class='fas fa-info-circle'></i> You can still visit hidden pages, but you will need to use links on other pages or the URL bar to access them.
@@ -297,7 +304,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           <td><input type="checkbox" value="1" name="cdash_bookmarked" <?php if ($arr2[8] == "1"){ echo 'checked'; } ?>> Bookmarked Items</td>
                         </tr>
                       </table><br>
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_dashboard"><i class="fas fa-check"></i> Update Dashboard Settings</button>
+
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="customize_dashboard">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">Update Dashboard Settings</span>
+                      </button>
                     </form>
 
                   <?php } elseif ($_GET['customize'] == "profile") { ?>
@@ -331,7 +344,14 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           <td><input type="checkbox" value="1" name="prof_gender" <?php if ($arr3[5] == "1"){ echo 'checked'; } ?>> Gender</td>
                         </tr>
                       </table><br>
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="customize_profile"><i class="fas fa-check"></i> Update Profile Settings</button>
+
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="customize_profile">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">Update Profile Settings</span>
+                      </button>
+
                     </form><br>
                     <div class='alert alert-info'>
                       <i class='fas fa-info-circle'></i> You cannot hide your username, last login and account type.
@@ -410,7 +430,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                           <td><input type="password" class="form-control" name="again_password" required=""/></td>
                         </tr>
                       </table><br>
-                      <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="change_password"><i class="fas fa-pencil-alt"></i> Change Password</button>
+
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="change_password">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-pencil-alt"></i>
+                        </span>
+                        <span class="text">Change Password</span>
+                      </button>
                     </form>
 
                   <?php } elseif ($_GET['action'] == "deactivate") { ?>
@@ -425,7 +451,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                       <p>When you deactivate your account, you keep your notes/tasks and labels, but you won't be able to login again. You will need to contact support to reactivate your account.<br><br>
                         <input type="checkbox" id="deactivate1Check" required> I am sure I want to deactivate my UKeep account.<br>
                         <input type="checkbox" id="deactivate2Check" required> I acknowledge the fact that I can reactivate my account by contacting support.<br><br>
-                        <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="deactivate_account"><i class="fas fa-archive"></i> Deactivate my Account</button>
+
+                        <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="deactivate_account">
+                          <span class="icon text-white-50">
+                            <i class="fas fa-archive"></i>
+                          </span>
+                          <span class="text">Deactivate my account</span>
+                        </button>
                       </p>
 
                     <?php } ?>
@@ -446,7 +478,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         <input type="checkbox" id="delete2Check" required> I am sure I want to <b>delete all of my notes/tasks and labels</b>.<br><br>
                         Please confirm by writing <span class="font-weight-bold text-<?php echo $theme_color; ?>">I am sure</span> in the textbox below.
                         <textarea class="form-control" name="delete3Check" rows="1" placeholder="I am sure" required></textarea><br>
-                        <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="delete_account"><i class="fas fa-exclamation-triangle"></i> Permanently delete my Account</button>
+
+                        <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="delete_account">
+                          <span class="icon text-white-50">
+                            <i class="fas fa-exclamation-triangle"></i>
+                          </span>
+                          <span class="text">Permanently delete my Account</span>
+                        </button>
                       </p>
 
                     <?php } ?>

@@ -45,16 +45,9 @@ include 'essentials.php';  // $user_code from essentials.php
       ?>
 
       <h1 class="h3 mb-4 text-gray-800">Viewing category: 
-        <div class="dropdown no-arrow" style="display:inline-block;">
-          <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
+          <span class="text-<?php echo $theme_color; ?>">
             <i class="fas fa-trash-alt fa-sm fa-fw"></i> Trashed Items
-          </a>
-          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View Items by Type:</div>
-            <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-clipboard"></i> All Items</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-fw fa-trash-alt"></i> Trash</a>
-          </div>
-        </div>
+          </span>
       </h1>
 
       <!-- Content Row -->
@@ -113,8 +106,19 @@ include 'essentials.php';  // $user_code from essentials.php
                   </div>
 
                   <div class="float-right">
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_undelete"><i class="fas fa-recycle"></i> Recover Item</button>
-                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#perDelModal"><i class="fas fa-dumpster"></i> Permanently delete item</a>
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_undelete">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-recycle"></i>
+                      </span>
+                      <span class="text">Recover Item</span>
+                    </button>
+                    <a href="#" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" data-toggle="modal" data-target="#perDelModal">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-dumpster"></i>
+                      </span>
+                      <span class="text">Permanently delete item</span>
+                    </a>
+                    
                   </div>
 
                   <!-- Permanently remove item Modal-->
@@ -127,10 +131,15 @@ include 'essentials.php';  // $user_code from essentials.php
                             <span aria-hidden="true">×</span>
                           </button>
                         </div>
-                        <div class="modal-body"><b>You cannot undo this action.</b></div>
+                        <div class="modal-body">Are you sure you want to permantly delete this item?<br> <b>You cannot undo this action.</b></div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_perm_delete"><i class="fas fa-recycle"></i> Permamently delete Item</button>
+                          <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_perm_delete">
+                            <span class="icon text-white-50">
+                              <i class="fas fa-dumpster"></i>
+                            </span>
+                            <span class="text">Permanently delete item</span>
+                          </button>
                         </div>
                       </div>
                     </div>

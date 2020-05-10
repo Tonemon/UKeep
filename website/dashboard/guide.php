@@ -85,7 +85,14 @@ include 'essentials.php';
                 <div class="card-body">
                   <p>Info here</p>
                   <p class="mb-0">More information coming soon..</p><br>
-                  <div class="text-white"><a class="btn btn-<?php echo $theme_color; ?>" href="settings?customize=dashboard"><i class="fas fa-wrench"></i> Customize my dashboard</a></div>
+                  <div class="text-white">
+                    <a href="settings?customize=dashboard" class="btn btn-<?php echo $theme_color; ?> btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-wrench"></i>
+                      </span>
+                      <span class="text">Customize my dashboard</span>
+                    </a>
+                  </div>
                 </div>
               </div>
 

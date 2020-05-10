@@ -167,8 +167,15 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                                   </select>
                               </div>
                             </div>
-                          </div><br>
-                          <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="advanced_search"><i class="fas fa-search"></i> Filtered Search</button>
+                          </div>
+                          <div class="float-right">
+                            <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="advanced_search">
+                              <span class="icon text-white-50">
+                                <i class="fas fa-search"></i>
+                              </span>
+                              <span class="text">Filtered Search</span>
+                            </button>
+                          </div>
                         </div>
                       </form>
                     </div>
@@ -202,8 +209,18 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                   </div>
 
                   <div class="float-right">
-                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#delItemModal"><i class="fas fa-trash-alt"></i> Delete item</a>
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_edit"><i class="fas fa-pencil-alt"></i> Edit Item</button>
+                    <a href="#" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" data-toggle="modal" data-target="#delItemModal">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
+                      <span class="text">Delete item</span>
+                    </a>
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_edit">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-pencil-alt"></i>
+                      </span>
+                      <span class="text">Edit Item</span>
+                    </button>
                   </div>
 
                   <!-- Delete item Modal-->

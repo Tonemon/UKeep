@@ -43,6 +43,12 @@ include 'essentials.php';
     $alter_sql = "UPDATE UKeepDAT.label_$user_code SET name='$alterlabel_title', color='$alterlabel_color', lab_description='$alterlabel_description' WHERE label_id='$alterlabel_id'";
     $alter_result = mysql_query($alter_sql) or die(mysql_error());
     header('location:labels?success=3');
+  } elseif (isset($_REQUEST['label_edit'])){ // Edit label request
+    $labelid = $_POST['label_id'];
+
+    if ($labelid == ""){ // No label is selected, but edit button is pressed
+      header('location:labels?error=2');
+    }
   }
 ?>
 
@@ -88,16 +94,9 @@ include 'essentials.php';
       ?>
 
       <h1 class="h3 mb-4 text-gray-800">Viewing category: 
-        <div class="dropdown no-arrow" style="display:inline-block;">
-          <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration:none">
-            <i class="fas fa-folder fa-sm fa-fw"></i> Labels
-          </a>
-          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-            <div class="dropdown-header text-<?php echo $theme_color; ?>">View:</div>
-            <a class="dropdown-item" href="items?view=all"><i class="fas fa-fw fa-clipboard"></i> Items</a>
-            <div class="dropdown-item"><i class="fas fa-fw fa-folder"></i> Labels</div>
-          </div>
-        </div>
+        <span class="text-<?php echo $theme_color; ?>">
+          <i class="fas fa-folder fa-sm fa-fw"></i> Labels
+        </span>
       </h1>
 
           <?php
@@ -127,21 +126,15 @@ include 'essentials.php';
                       }
                     ?>
                   </h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i>
+                  <div class="dropdown dropdown-lg no-arrow">
+                    <a class="dropdown-toggle text-<?php echo $theme_color; ?>" href="items?view=all" style="text-decoration:none">
+                      <i class="fas fa-clipboard fa-sm fa-fw"></i> All Items
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header text-<?php echo $theme_color; ?>">Label Actions:</div>
-                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#newLabelModal"><i class="fas fa-fw fa-plus"></i> New Label</a>
-                      <button class="dropdown-item" type="submit" name="label_edit"><i class="fas fa-pencil-alt"></i> Edit Label</button>
-                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteLabelModal"><i class="fas fa-trash-alt"></i> Delete Label</a>
-                    </div>
                   </div>
                 </div>
 
                 <!-- Card Body -->
-                <div class="card-body">
+                <div class="card-body right-click-support-items">
                   <div class="row form-group product-chooser">
 
                     <?php
@@ -164,14 +157,38 @@ include 'essentials.php';
                             <input type="radio" name="label_id" value="<?php echo $rws[0]; ?>">
                           </div>
                         </div>
-                      </div> <!-- Stop resizable div -->
+                      </div>
                     <?php } ?><br><br>
 
-                  </div><br>
+                  </div>
+
+                  <!-- Right click support -->
+                  <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+                    <div class="dropdown-header text-<?php echo $theme_color; ?>">Perform an action:</div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#newLabelModal"><i class="fas fa-fw fa-plus"></i> New Label</a>
+                    <button class="dropdown-item" type="submit" name="label_edit"><i class="fas fa-pencil-alt"></i> Edit Label</button>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteLabelModal"><i class="fas fa-trash-alt"></i> Delete Label</a>
+                  </div>
+
                   <div class="float-right">
-                    <a class="btn btn-dark" href="#" data-toggle="modal" data-target="#deleteLabelModal"><i class="fas fa-trash-alt"></i> Delete Label</a>
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="label_edit"><i class="fas fa-pencil-alt"></i> Edit Label</button>
-                    <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#newLabelModal"><i class="fas fa-fw fa-plus"></i> New Label</a>
+                    <a href="#" class="btn btn-dark btn-icon-split" data-toggle="modal" data-target="#deleteLabelModal">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
+                      <span class="text">Delete Label</span>
+                    </a>
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="label_edit">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-pencil-alt"></i>
+                      </span>
+                      <span class="text">Edit Label</span>
+                    </button>
+                    <a href="#" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" data-toggle="modal" data-target="#newLabelModal">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                      </span>
+                      <span class="text">New Label</span>
+                    </a>
                   </div>
 
                   <!-- Delete Label Modal-->
@@ -187,7 +204,12 @@ include 'essentials.php';
                         <div class="modal-body">Are you sure you want to <b>permanently</b> delete this label? All items with this label will be cleared of this label and you <b>cannot</b> undo this!</div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="label_delete"><i class="fas fa-trash-alt"></i> Delete Label</button>
+                          <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="label_delete">
+                            <span class="icon text-white-50">
+                              <i class="fas fa-trash-alt"></i>
+                            </span>
+                            <span class="text">Delete Label</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -201,15 +223,10 @@ include 'essentials.php';
             <?php if (isset($_REQUEST['label_edit'])){ // Edit label request 
               $labelid = $_POST['label_id'];
 
-                if ($labelid == ""){ // No label is selected, but edit button is pressed
-                  header("Refresh: 0");
-                  header('location:labels?error=2');
-                } else { // Label selected and button pressed, so grab label data from db
-                  $labelid = $_POST['label_id'];
-                  $edit_sql = "SELECT * FROM UKeepDAT.label_$user_code WHERE label_id='$labelid'";
-                  $edit_result = mysql_query($edit_sql) or die(mysql_error());
-                  $edit_vars = mysql_fetch_array($edit_result);
-                }
+              $labelid = $_POST['label_id'];
+              $edit_sql = "SELECT * FROM UKeepDAT.label_$user_code WHERE label_id='$labelid'";
+              $edit_result = mysql_query($edit_sql) or die(mysql_error());
+              $edit_vars = mysql_fetch_array($edit_result);
             ?>
             <div class="col-xl-6 col-lg-7">
               <div class="card shadow mb-4">
@@ -261,8 +278,13 @@ include 'essentials.php';
                       <span class="badge badge-info"><?php echo $edit_vars[1]; ?></span>
                       <span class="badge badge-dark"><?php echo $edit_vars[1]; ?></span><br><br>
 
-                    <a href="labels" class="btn btn-dark">Discard</a>
-                    <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="label_alter">Edit Label</button>
+                    <a href="labels" class="btn btn-secondary">Discard</a>
+                    <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="label_alter">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-pencil-alt"></i>
+                      </span>
+                      <span class="text">Edit Label</span>
+                    </button>
                   </form>
                 </div>
               </div>
@@ -276,6 +298,9 @@ include 'essentials.php';
 
       </div>
       <!-- End of Main Content -->
+
+      <!-- Right click support script -->
+      <script type="text/javascript" src="addons/right-click-support.js"></script>
 
       <?php include 'site-footer.php'; ?>
 

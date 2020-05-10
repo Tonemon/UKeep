@@ -150,11 +150,27 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <?php if ($itemres[10] == "1"){ $bookmark_set = "checked"; } // set bookmark tick or leave empty ?>
                 <small class="form-text"><input type="checkbox" name="task_alt_bookmark" value="1" <?php echo $bookmark_set; ?>> Bookmark Task? (This will pin your task at the top of the tasks page.)</small><br>
 
-                <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_transform"><i class="fas fa-random"></i> Transform Task to a Note</button>
+                <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_transform">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-random"></i>
+                  </span>
+                  <span class="text">Transform Task to a Note</span>
+                </button>
+
                 <div class="float-right">
                   <a class="btn btn-secondary" href="items?view=all">Discard</a>
-                  <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#deleteTaskModal"><i class="fas fa-trash-alt"></i> Delete Task</a>
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="task_alter"><i class="fas fa-save"></i> Save Task</button>
+                  <a href="#" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" data-toggle="modal" data-target="#deleteTaskModal">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Delete Task</span>
+                  </a>
+                  <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="task_alter">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">Save Task</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -173,7 +189,12 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <div class="modal-body">Deleting this task will move it to the trash.</div>
                 <div class="modal-footer">
                   <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_delete"><i class="fas fa-trash-alt"></i> Delete Task</button>
+                  <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_delete">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Delete Task</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -233,11 +254,27 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <?php if ($itemres[10] == "1"){ $bookmark_set = "checked"; } // set bookmark tick or leave empty ?>
                 <small class="form-text"><input type="checkbox" name="note_alt_bookmark" value="1" <?php echo $bookmark_set; ?>> Bookmark Note? (This will pin your note at the top of the tasks page.)</small><br>
 
-                <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_transform"><i class="fas fa-random"></i> Transform Note to a Task</button>
+                <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_transform">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-random"></i>
+                  </span>
+                  <span class="text">Transform Note to a Task</span>
+                </button>
+
                 <div class="float-right">
                   <a class="btn btn-secondary" href="items?view=all">Discard</a>
-                  <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#deleteNoteModal"><i class="fas fa-trash-alt"></i> Delete Note</a>
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="note_alter"><i class="fas fa-save"></i> Save Note</button>
+                  <a href="#" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" data-toggle="modal" data-target="#deleteNoteModal">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Delete Note</span>
+                  </a>
+                  <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="note_alter">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">Save Note</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -256,7 +293,12 @@ include 'essentials.php'; // $user_code and other variables from essentials.php
                 <div class="modal-body">Deleting this note will move it to the trash.</div>
                 <div class="modal-footer">
                   <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_delete"><i class="fas fa-trash-alt"></i> Delete Note</button>
+                  <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="item_delete">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-trash-alt"></i>
+                    </span>
+                    <span class="text">Delete Note</span>
+                  </button>
                 </div>
               </div>
             </div>
