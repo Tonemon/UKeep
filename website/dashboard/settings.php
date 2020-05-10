@@ -26,6 +26,13 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     mysql_query($custom_sql) or die(header('location:settings?customize=main&error=1'));
     header('location:settings?customize=main&success=1');
 
+  } elseif (isset($_REQUEST['customize_layout'])){
+    $citems_layout = $_POST['citems_layout'];
+
+    $custom2_sql = "UPDATE UKeepMAIN.preferences SET items_layout='$citems_layout' WHERE account_usercode='$user_code'";
+    mysql_query($custom2_sql) or die(header('location:settings?customize=layout&error=1'));
+    header('location:settings?customize=layout&success=1');
+
   } elseif (isset($_REQUEST['customize_dashboard'])){
     $cdashw_week = $_POST['cdash_week'];
     $cdashw_deadlines = $_POST['cdash_deadlines'];
@@ -38,8 +45,8 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $cdash_labels = $_POST['cdash_labels'];
     $cdash_bookmarked = $_POST['cdash_bookmarked'];
 
-    $custom2_sql = "UPDATE UKeepMAIN.preferences SET dashw_show_week='$cdashw_week', dashw_show_deadlines='$cdashw_deadlines', dashw_show_active='$cdashw_active', dashw_show_ratio='$cdashw_ratio', dash_show_start='$cdash_start', dash_show_chart1='$cdash_chart1', dash_show_chart2='$cdash_chart2', dash_show_labels='$cdash_labels', dash_show_book='$cdash_bookmarked' WHERE account_usercode='$user_code'";
-    mysql_query($custom2_sql) or die(header('location:settings?customize=dashboard&error=1'));
+    $custom3_sql = "UPDATE UKeepMAIN.preferences SET dashw_show_week='$cdashw_week', dashw_show_deadlines='$cdashw_deadlines', dashw_show_active='$cdashw_active', dashw_show_ratio='$cdashw_ratio', dash_show_start='$cdash_start', dash_show_chart1='$cdash_chart1', dash_show_chart2='$cdash_chart2', dash_show_labels='$cdash_labels', dash_show_book='$cdash_bookmarked' WHERE account_usercode='$user_code'";
+    mysql_query($custom3_sql) or die(header('location:settings?customize=dashboard&error=1'));
     header('location:settings?customize=dashboard&success=1');
 
   } elseif (isset($_REQUEST['customize_profile'])){
@@ -50,8 +57,8 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
     $profile_gender = $_POST['prof_gender'];
     $profile_status = $_POST['prof_status'];
 
-    $custom3_sql = "UPDATE UKeepMAIN.preferences SET account_show_pic='$profile_pic', account_show_status='$profile_status', account_show_fullname='$profile_fullname', account_show_email='$profile_email', account_show_dob='$profile_dob', account_show_gender='$profile_gender' WHERE account_usercode='$user_code'";
-    mysql_query($custom3_sql) or die(mysql_error());
+    $custom4_sql = "UPDATE UKeepMAIN.preferences SET account_show_pic='$profile_pic', account_show_status='$profile_status', account_show_fullname='$profile_fullname', account_show_email='$profile_email', account_show_dob='$profile_dob', account_show_gender='$profile_gender' WHERE account_usercode='$user_code'";
+    mysql_query($custom4_sql) or die(mysql_error());
     header('location:settings?customize=profile&success=1');
 
   } elseif (isset($_REQUEST['customize_picture'])){
@@ -164,6 +171,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                       <div class="dropdown-header text-<?php echo $theme_color; ?>">Select a feature to customize:</div>
                       <a class="dropdown-item" href="?customize=main"><i class="fas fa-fw fa-home"></i> Theme, redirect and sidebar</a>
+                      <a class="dropdown-item" href="?customize=layout"><i class="fas fa-fw fa-columns"></i> Work Efficiency Settings</a>
                       <a class="dropdown-item" href="?customize=dashboard"><i class="fas fa-fw fa-tachometer-alt"></i> SMART Dashboard</a>
                       <a class="dropdown-item" href="?customize=profile"><i class="fas fa-fw fa-user-circle"></i> Your Public Profile</a>
                       <div class="dropdown-divider"></div>
@@ -263,45 +271,74 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                       <i class='fas fa-info-circle'></i> You can still visit hidden pages, but you will need to use links on other pages or the URL bar to access them.
                     </div>
 
+                  <?php } elseif ($_GET['customize'] == "layout") { ?>
+                    <?php
+                      // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
+                      $customcheck2 = "SELECT items_layout FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customresult2 = mysql_query($customcheck2) or die(mysql_error());
+                      $arr2 =  mysql_fetch_array($customresult2);
+                    ?>
+
+                    <form action="settings" method="POST">
+                      <p>Here you can choose a layout for how your items will be displayed.</p>
+                      <table>
+                        <tr><td><b>Items Layout &nbsp;</b></td>
+                          <td>
+                            <select class="form-control" name="citems_layout">
+                              <option value="compact" <?php if ($arr2[0] == "compact"){ echo 'selected'; } ?>>Compact Mode</option>
+                              <option value="bigpicture" <?php if ($arr2[0] == "bigpicture"){ echo 'selected'; } ?>>Big Picture Mode</option>
+                            </select>
+                          </td>
+                        </tr>
+                      </table><br>
+
+                      <button type="submit" class="btn btn-<?php echo $theme_color; ?> btn-icon-split" name="customize_layout">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">Update Dashboard Settings</span>
+                      </button>
+                    </form>
+
                   <?php } elseif ($_GET['customize'] == "dashboard") { ?>
                     <?php
                       // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
-                      $customcheck2 = "SELECT dashw_show_week, dashw_show_deadlines, dashw_show_active, dashw_show_ratio, dash_show_start, dash_show_chart1, dash_show_chart2, dash_show_labels, dash_show_book FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
-                      $customresult2 = mysql_query($customcheck2) or die(mysql_error());
-                      $arr2 =  mysql_fetch_array($customresult2);
+                      $customcheck3 = "SELECT dashw_show_week, dashw_show_deadlines, dashw_show_active, dashw_show_ratio, dash_show_start, dash_show_chart1, dash_show_chart2, dash_show_labels, dash_show_book FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customresult3 = mysql_query($customcheck3) or die(mysql_error());
+                      $arr3 =  mysql_fetch_array($customresult3);
                     ?>
 
                     <form action="settings" method="POST">
                       <p>Here you can choose which widgets and cards you want to display on your dashboard.</p>
                       <table>
                         <tr><td><b>Widgets &nbsp;</b></td>
-                          <td><input type="checkbox" value="1" name="cdash_week" <?php if ($arr2[0] == "1"){ echo 'checked'; } ?>> Todo this week</td>
+                          <td><input type="checkbox" value="1" name="cdash_week" <?php if ($arr3[0] == "1"){ echo 'checked'; } ?>> Todo this week</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_deadlines" <?php if ($arr2[1] == "1"){ echo 'checked'; } ?>> Deadlines missed</td>
+                          <td><input type="checkbox" value="1" name="cdash_deadlines" <?php if ($arr3[1] == "1"){ echo 'checked'; } ?>> Deadlines missed</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_active" <?php if ($arr2[2] == "1"){ echo 'checked'; } ?>> Active/total</td>
+                          <td><input type="checkbox" value="1" name="cdash_active" <?php if ($arr3[2] == "1"){ echo 'checked'; } ?>> Active/total</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_ratio" <?php if ($arr2[3] == "1"){ echo 'checked'; } ?>> Notes/Tasks ratio</td>
+                          <td><input type="checkbox" value="1" name="cdash_ratio" <?php if ($arr3[3] == "1"){ echo 'checked'; } ?>> Notes/Tasks ratio</td>
                         </tr>
                       </table><br>
                       <table>
                         <tr><td><b>Cards &nbsp;</b></td>
-                          <td><input type="checkbox" value="1" name="cdash_start" <?php if ($arr2[4] == "1"){ echo 'checked'; } ?>> Introduction (disable this card after your first login)</td>
+                          <td><input type="checkbox" value="1" name="cdash_start" <?php if ($arr3[4] == "1"){ echo 'checked'; } ?>> Introduction (disable this card after your first login)</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_chart1" <?php if ($arr2[5] == "1"){ echo 'checked'; } ?>> Item Activity Flow Chart</td>
+                          <td><input type="checkbox" value="1" name="cdash_chart1" <?php if ($arr3[5] == "1"){ echo 'checked'; } ?>> Item Activity Flow Chart</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_chart2" <?php if ($arr2[6] == "1"){ echo 'checked'; } ?>> Item Type Pie Chart</td>
+                          <td><input type="checkbox" value="1" name="cdash_chart2" <?php if ($arr3[6] == "1"){ echo 'checked'; } ?>> Item Type Pie Chart</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_labels" <?php if ($arr2[7] == "1"){ echo 'checked'; } ?>> Label Analytics</td>
+                          <td><input type="checkbox" value="1" name="cdash_labels" <?php if ($arr3[7] == "1"){ echo 'checked'; } ?>> Label Analytics</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cdash_bookmarked" <?php if ($arr2[8] == "1"){ echo 'checked'; } ?>> Bookmarked Items</td>
+                          <td><input type="checkbox" value="1" name="cdash_bookmarked" <?php if ($arr3[8] == "1"){ echo 'checked'; } ?>> Bookmarked Items</td>
                         </tr>
                       </table><br>
 
@@ -316,32 +353,32 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                   <?php } elseif ($_GET['customize'] == "profile") { ?>
                     <?php
                       // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
-                      $customcheck3 = "SELECT account_show_pic, account_show_status, account_show_fullname, account_show_email, account_show_dob, account_show_gender FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
-                      $customresult3 = mysql_query($customcheck3) or die(mysql_error());
-                      $arr3 =  mysql_fetch_array($customresult3);
+                      $customcheck4 = "SELECT account_show_pic, account_show_status, account_show_fullname, account_show_email, account_show_dob, account_show_gender FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customresult4 = mysql_query($customcheck4) or die(mysql_error());
+                      $arr4 =  mysql_fetch_array($customresult4);
                     ?>
 
                     <form action="settings" method="POST">
                       <p>Here you can specify what information users can see on your public profile.</p>
                       <table>
                         <tr><td><b>Show your &nbsp;</b></td>
-                          <td><input type="checkbox" value="1" name="prof_pic" <?php if ($arr3[0] == "1"){ echo 'checked'; } ?>> Profile picture</td>
+                          <td><input type="checkbox" value="1" name="prof_pic" <?php if ($arr4[0] == "1"){ echo 'checked'; } ?>> Profile picture</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="prof_status" <?php if ($arr3[1] == "1"){ echo 'checked'; } ?>> Status 
+                          <td><input type="checkbox" value="1" name="prof_status" <?php if ($arr4[1] == "1"){ echo 'checked'; } ?>> Status 
                             (<span class="badge badge-success">Online</span> / <span class="badge badge-secondary">Offline</span> or disable to set to <span class="badge badge-dark"><i>Private</i></span>)</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="prof_fullname" <?php if ($arr3[2] == "1"){ echo 'checked'; } ?>> Full Name</td>
+                          <td><input type="checkbox" value="1" name="prof_fullname" <?php if ($arr4[2] == "1"){ echo 'checked'; } ?>> Full Name</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="prof_email" <?php if ($arr3[3] == "1"){ echo 'checked'; } ?>> Email Address</td>
+                          <td><input type="checkbox" value="1" name="prof_email" <?php if ($arr4[3] == "1"){ echo 'checked'; } ?>> Email Address</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="prof_dob" <?php if ($arr3[4] == "1"){ echo 'checked'; } ?>> Date of Birth</td>
+                          <td><input type="checkbox" value="1" name="prof_dob" <?php if ($arr4[4] == "1"){ echo 'checked'; } ?>> Date of Birth</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="prof_gender" <?php if ($arr3[5] == "1"){ echo 'checked'; } ?>> Gender</td>
+                          <td><input type="checkbox" value="1" name="prof_gender" <?php if ($arr4[5] == "1"){ echo 'checked'; } ?>> Gender</td>
                         </tr>
                       </table><br>
 
@@ -369,8 +406,9 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to select a feature to customize.</p> You can customize the following:
                     <ul>
                       <li>
-                        Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-tachometer-alt"></i> Dashboard Theme</span>, <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-map-signs"></i> Login Redirect</span> and <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-external-link-alt"></i> Sidebar items</span>.
+                        Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-palette"></i> Dashboard Theme</span>, <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-map-signs"></i> Login Redirect</span> and <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-external-link-alt"></i> Sidebar items</span>.
                       </li>
+                      <li>Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-columns"></i> Work Efficiency Settings</span>.</li>
                       <li>Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-tachometer-alt"></i> SMART Dashboard</span>.</li>
                       <li>Your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-user-circle"></i> Public profile</span>.</li>
                     </ul>

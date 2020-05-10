@@ -285,7 +285,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     </span>
                     <?php if ($_GET['view'] == $current_username){ ?><br><br>
                       <div class='alert alert-info'>
-                        <i class='fas fa-info-circle'></i> Go <a href="profile" class="text-<?php echo $theme_color; ?>">back</a> to your profile.
+                        <i class='fas fa-info-circle'></i> Go <a href="profile" class="text-<?php echo $theme_color; ?>">back</a> to your profile or <a href="settings?customize=profile" class="text-<?php echo $theme_color; ?>">change</a> which information is visible.
                       </div>
                     <?php } ?>
                   </p>                  

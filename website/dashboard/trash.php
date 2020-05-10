@@ -89,7 +89,7 @@ include 'essentials.php';  // $user_code from essentials.php
                       $layout_result = mysql_query($layout_sql) or die(mysql_error());
                       $layout = mysql_fetch_array($layout_result);
 
-                      if ($layout[0] == "0"){
+                      if ($layout[0] == "compact"){
                         include 'addons/items_layout_compact.php'; 
                       } else {
                         include 'addons/items_layout_big.php';
@@ -103,6 +103,8 @@ include 'essentials.php';  // $user_code from essentials.php
                     <div class="dropdown-header text-<?php echo $theme_color; ?>">Perform an action:</div>
                     <button type="submit" class="dropdown-item" name="item_undelete"><i class="fas fa-recycle"></i> Recover Item</button>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#perDelModal"><i class="fas fa-dumpster"></i> Permanently delete item</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="settings?customize=layout"><i class="fas fa-columns"></i> Change Layout</a>
                   </div>
 
                   <div class="float-right">

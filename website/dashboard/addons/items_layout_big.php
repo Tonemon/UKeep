@@ -28,7 +28,7 @@
                         }
 
                         // making date readable
-                        $Date = date_format(date_create($rws[6]),"l, d F Y, H:i");
+                        $Date = date_format(date_create($rws[5]),"l, d F Y, H:i");
 
                       // Item output while loop
                       ?>
