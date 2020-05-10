@@ -177,7 +177,7 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                 </div>
 
                 <!-- Card Body -->
-                <div class="card-body">
+                <div class="card-body right-click-support">
                 <form action="edit" method="POST">
                   <div class="row form-group product-chooser">
                     <?php 
@@ -247,6 +247,13 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
                         </div>
                       <?php }  ?>
                   </div>
+
+                  <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+                    <div class="dropdown-header text-<?php echo $theme_color; ?>">Perform an action:</div>
+                    <button type="submit" class="dropdown-item" name="item_edit"><i class="fas fa-pencil-alt"></i> Edit Item</button>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delItemModal"><i class="fas fa-trash-alt"></i> Delete Item</a>
+                  </div>
+
                   <div class="float-right">
                     <a class="btn btn-<?php echo $theme_color; ?>" href="#" data-toggle="modal" data-target="#delItemModal"><i class="fas fa-trash-alt"></i> Delete item</a>
                     <button type="submit" class="btn btn-<?php echo $theme_color; ?>" name="item_edit"><i class="fas fa-pencil-alt"></i> Edit Item</button>
@@ -282,6 +289,9 @@ include 'addons/search-engine.php'; // Custom made search engine for items + adv
 
       </div>
       <!-- End of Main Content -->
+
+      <!-- Right click support script -->
+      <script type="text/javascript" src="addons/right-click-support.js"></script>
 
       <?php include 'site-footer.php'; ?>
 
