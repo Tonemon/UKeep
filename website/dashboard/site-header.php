@@ -226,6 +226,24 @@
               </div>
             </li>
 
+            <!-- Nav Item - Admin Dashboard link -->
+            <?php
+              $isadmin_sql = "SELECT account FROM UKeepMAIN.users WHERE usercode='$user_code'";
+              $isadmin_result = mysql_query($isadmin_sql) or die(mysql_error());
+              $isadmin = mysql_fetch_array($isadmin_result);
+            
+            if ($isadmin[0] == "admin") { ?>
+
+            <li class="nav-item mx-1">
+              <a class="nav-link" href="/admin/">
+                <i class="fas fa-wrench fa-fw"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-danger badge-counter">1</span>
+              </a>
+            </li>
+
+            <?php } ?>
+
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

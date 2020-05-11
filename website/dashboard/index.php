@@ -23,6 +23,17 @@ include 'essentials.php';
 
         <!-- Begin Page Content -->
         <div class="container-fluid right-click-support-dashboard">
+          <?php
+            if ($_GET['error'] == "1") { // normal user has no access to the admin panel
+              echo "<div class='alert alert-danger alert-dismissible'>
+                <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                <i class='fas fa-exclamation-triangle'></i> You dont have access to this page.</div>";
+            } elseif ($_GET['notice'] == "1") { // user is already logged in, but visited the login page
+              echo "<div class='alert alert-info alert-dismissible'>
+                <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
+                <i class='fas fa-info-circle'></i> You were already logged in and have been redirected to the dashboard.</div>";
+            }
+          ?>
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">

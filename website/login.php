@@ -6,12 +6,12 @@ if (isset($_REQUEST['loginbutton'])){
   $login_password = sha1($_REQUEST['login_password'].$salt); // password salting (for security reasons)
 
   if (preg_match("/@/", $login_user)) { // check for @, if present, probably user is logging in using email
-    $sqlquery = "SELECT id,email,username,accstatus,password,redirect_url,usercode FROM UKeepMAIN.users WHERE email='$login_user' AND password='$login_password'";
+    $sqlquery = "SELECT id,email,username,accstatus,password,usercode,account FROM UKeepMAIN.users WHERE email='$login_user' AND password='$login_password'";
     $result = mysql_query($sqlquery) or die(mysql_error());
     $arr =  mysql_fetch_array($result);
 
   } else { // no @ present, user is probably trying to login with username
-    $sqlquery = "SELECT id,email,username,accstatus,password,usercode FROM UKeepMAIN.users WHERE username='$login_user' AND password='$login_password'";
+    $sqlquery = "SELECT id,email,username,accstatus,password,usercode,account FROM UKeepMAIN.users WHERE username='$login_user' AND password='$login_password'";
     $result = mysql_query($sqlquery) or die(mysql_error());
     $arr =  mysql_fetch_array($result);
   }
@@ -23,6 +23,7 @@ if (isset($_REQUEST['loginbutton'])){
     $db_accstatus = $arr[3];
     $db_pass = $arr[4];
     $db_usercode = $arr[5];
+    $db_account = $arr[6];
 
     $red_sqlquery = "SELECT redirect_url FROM UKeepMAIN.preferences WHERE account_usercode='$db_usercode'";
     $red_result = mysql_query($red_sqlquery) or die(mysql_error());
@@ -38,7 +39,14 @@ if (isset($_REQUEST['loginbutton'])){
       // setting user status to online and redirecting to their set homepage
       $setonline = "UPDATE UKeepMAIN.users SET status='online' WHERE email='$db_email'";
       mysql_query($setonline) or die(mysql_error());
-      header('location:/dashboard/'.$redirect);
+
+      if ($db_account == "admin" && $redirect == "admin"){ // Redirect administrators to the admin panel
+        header('location:/admin/');
+      } elseif ($db_account == "admin" && $redirect == ""){ // Admin logged in, but no redirect URL set
+        header('location:continue');
+      } else { // Redirect normal users to their redirect URL or dashboard (by default)
+        header('location:/dashboard/'.$redirect);
+      }
 
     } else { // account status is set to disabled
       header('location:login?error=3');
@@ -57,10 +65,10 @@ if (isset($_REQUEST['loginbutton'])){
       header('location:login?error=1');
     }     
   }
-} else { // when no login button pressed, but user is logged in and visits the login page --> redirect to home
+} else { // page visited and no button pressed, but user was already logged in
   session_start();
   if (isset($_SESSION['session_keep_start'])) 
-    header('location:/dashboard/');
+    header('location:/dashboard?notice=1');
 }    
 ?>
 
