@@ -224,14 +224,69 @@ include '../dashboard/essentials.php';
 
           </div>
 
+          <div class="row">
+            <div class="col-lg-6 mb-4">
+
+              <!-- Registration Codes Analytics card -->
+              <div class="card shadow mb-4">
+                <?php
+                  // count total register codes
+                  $card_codetotalsql = "SELECT * FROM UKeepMAIN.codes WHERE type='register'";
+                  $card_codetotalresult = mysql_query($card_codetotalsql) or die(mysql_error());
+                  $card_codetotal_numrows = mysql_num_rows($card_codetotalresult);    
+
+                  // count valid register codes
+                  $card_codevalidsql = "SELECT * FROM UKeepMAIN.codes WHERE type='register' AND status='VALID'";
+                  $card_codevalidresult = mysql_query($card_codevalidsql) or die(mysql_error());
+                  $card_codevalid_numrows = mysql_num_rows($card_codevalidresult);                
+                ?>
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-id-card-alt"></i> Registration Codes Analytics</h6>
+                </div>
+                <div class="card-body">
+                  Active registration codes (<?php echo $card_codevalid_numrows."/".$card_codetotal_numrows; ?> total)<span class="small font-weight-bold float-right">Code Used</span>
+                    <div class="dropdown-divider"></div><br>
+
+                  <?php // display each code using a progressbar
+                    while ($rws = mysql_fetch_array($card_codevalidresult)) {
+                      $percentage_current = ($rws[3]/$rws[4])*100;
+                    ?>
+
+                    <span class="font-weight-bold float-right">&nbsp; <?php echo $rws[3]."/".$rws[4]; ?></span>
+
+                    <div class="progress progress-bar-striped mb-4">
+                      <div class="progress-bar bg-<?php echo $theme_color; ?>" role="progressbar" style="width: <?php echo $percentage_current; ?>%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                        <span class="d-flex position-absolute w-100">
+                          <span class='badge badge-<?php echo $badgecolor; ?>'><?php echo $rws[2]; ?></span>
+                        </span>
+                      </div>
+                    </div>
+                  <?php } ?>                    
+
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-7">
+              <?php if ($c_dash_book == "1"){ include 'cards/dash_book.php'; } // 'Bookmarked Items' card ?>
+
+            </div>
+          </div>
+
+          <!-- Right click support -->
+          <div class="dropdown-menu dropdown-menu-sm" id="context-menu-dashboard">
+            <div class="dropdown-header font-weight-bold text-<?php echo $theme_color; ?>">View:</div>
+            <a class="dropdown-item" href="users?view=online"><i class="fas fa-globe"></i> Online Users</a>
+            <a class="dropdown-item" href="users?view=premium_requests"><i class="fas fa-crown"></i> Premium Requests</a>
+            <a class="dropdown-item" href="users?view=account_requests"><i class="fas fa-user-plus"></i> New Account Requests</a>
+            <a class="dropdown-item" href="support?view=unreviewed"><i class="fas fa-mail-bulk"></i> Unreviewed Support Questions</a>
+            <a class="dropdown-item" href="alerts"><i class="fas fa-exclamation-triangle"></i> Online Users</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="codes"><i class="fas fa-project-diagram"></i> Registration Codes</a>
+          </div>
+
         </div>
         <!-- /.container-fluid -->
-
-        <!-- Right click support -->
-        <div class="dropdown-menu dropdown-menu-sm" id="context-menu-dashboard">
-          <div class="dropdown-header text-<?php echo $theme_color; ?>">Perform an action:</div>
-          <a class="dropdown-item" href="settings?customize=dashboard"><i class="fas fa-palette"></i> Customize SMART Dashboard</a>
-        </div>
 
       </div>
       <!-- End of Main Content -->
