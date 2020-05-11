@@ -134,7 +134,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
             <div class="col-lg-6 mb-4">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user"></i> User Information</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user"></i> Account Information</h6>
                 </div>
                 <div class="card-body">
                   <p>
@@ -172,7 +172,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
             <div class="col-lg-6">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user-plus"></i> Change user information</h6>
+                  <h6 class="m-0 font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user-edit"></i> Change your account information</h6>
                 </div>
                 <div class="card-body">
                   <form action="profile" method="POST">

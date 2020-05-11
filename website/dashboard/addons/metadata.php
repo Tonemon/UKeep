@@ -14,15 +14,3 @@
 
   <!-- Custom styles for this template-->
   <link href="../vendor/css/sb-admin-2.min.css" rel="stylesheet">
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="../vendor/js/sb-admin-2.min.js"></script>
-
-  <!-- js-scroll-trigger: animated scroll (not using at the moment, but could be usefull in the future) -->
-  <script src="../vendor/js/sb-admin-2.min.js"></script>
-
-  <link href="../vendor/css/custom-label-chooser.css" rel="stylesheet">
-  <script src="../vendor/js/custom-label-chooser.js"></script>

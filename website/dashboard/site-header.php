@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-<?php echo $theme_color; ?> sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-<?php echo $theme_color; ?> sidebar sidebar-dark accordion toggled right-click-support-sidebar" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../dashboard/">
@@ -9,21 +9,22 @@
         <div class="sidebar-brand-text mx-3">UKeep Dash</div>
       </a>
       <?php
-        $side_sql = "SELECT side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks, side_guide, side_suite, side_labels FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+        $side_sql = "SELECT side_suite, side_notes_tasks, side_notes, side_tasks, side_labels, side_trash, side_teams, side_contacts, side_support,  side_guide, side_profile, side_settings FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
         $side_result = mysql_query($side_sql) or die(mysql_error());
         $side = mysql_fetch_array($side_result);
-
-        $c_side_trash = $side[0];
-        $c_side_teams = $side[1];
-        $c_side_contacts = $side[2];
-        $c_side_support = $side[3];
-        $c_side_settings = $side[4];
-        $c_side_notes_tasks = $side[5];
-        $c_side_notes = $side[6];
-        $c_side_tasks = $side[7];
-        $c_side_guide = $side[8];
-        $c_side_suite = $side[9];
-        $c_side_labels = $side[10];
+        
+        $c_side_suite = $side[0];
+        $c_side_notes_tasks = $side[1];
+        $c_side_notes = $side[2];
+        $c_side_tasks = $side[3];
+        $c_side_labels = $side[4];
+        $c_side_trash = $side[5];
+        $c_side_teams = $side[6];
+        $c_side_contacts = $side[7];
+        $c_side_support = $side[8];
+        $c_side_guide = $side[9];
+        $c_side_profile = $side[10];
+        $c_side_settings = $side[11];
       ?>
 
 
@@ -142,6 +143,13 @@
           <span>Guide</span></a>
       </li>
 
+      <?php } if ($c_side_profile == "1") { ?>
+      <li class="nav-item">
+        <a class="nav-link" href="profile">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Profile</span></a>
+      </li>
+
       <?php } if ($c_side_settings == "1") { ?>
       <li class="nav-item">
         <a class="nav-link" href="settings">
@@ -162,6 +170,13 @@
       </div>
 
     </ul>
+
+    <!-- Right click support -->
+    <div class="dropdown-menu dropdown-menu-sm" id="context-menu-sidebar">
+      <div class="dropdown-header text-<?php echo $theme_color; ?>">Perform an action:</div>
+      <a class="dropdown-item" href="settings?customize=main"><i class="fas fa-palette"></i> Customize Sidebar</a>
+    </div>
+
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->

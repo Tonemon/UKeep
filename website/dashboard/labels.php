@@ -299,9 +299,6 @@ include 'essentials.php';
       </div>
       <!-- End of Main Content -->
 
-      <!-- Right click support script -->
-      <script type="text/javascript" src="addons/right-click-support.js"></script>
-
       <?php include 'site-footer.php'; ?>
 
 </body>

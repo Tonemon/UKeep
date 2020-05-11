@@ -9,20 +9,21 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
    if (isset($_REQUEST['customize_main'])){
     $custom_theme = $_POST['theme'];
     $custom_redirect = $_POST['redirect'];
-
+    
+    $side_suite = $_POST['cside_suite'];
+    $side_notes_tasks = $_POST['cside_notes_tasks'];
+    $side_notes = $_POST['cside_notes'];
+    $side_tasks = $_POST['cside_tasks'];
+    $side_labels = $_POST['cside_labels'];
     $side_trash = $_POST['cside_trash'];
     $side_teams = $_POST['cside_teams'];
     $side_contacts = $_POST['cside_contacts'];
     $side_support = $_POST['cside_support'];
-    $side_settings = $_POST['cside_settings'];
-    $side_notes_tasks = $_POST['cside_notes_tasks'];
-    $side_notes = $_POST['cside_notes'];
-    $side_tasks = $_POST['cside_tasks'];
     $side_guide = $_POST['cside_guide'];
-    $side_suite = $_POST['cside_suite'];
-    $side_labels = $_POST['cside_labels'];
+    $side_profile = $_POST['cside_profile'];
+    $side_settings = $_POST['cside_settings'];
 
-    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_settings='$side_settings', side_notes_tasks='$side_notes_tasks', side_notes='$side_notes', side_tasks='$side_tasks', side_guide='$side_guide', side_suite='$side_suite', side_labels='$side_labels' WHERE account_usercode='$user_code'";
+    $custom_sql = "UPDATE UKeepMAIN.preferences SET user_theme='$custom_theme', redirect_url='$custom_redirect', side_suite='$side_suite', side_notes_tasks='$side_notes_tasks', side_notes='$side_notes', side_tasks='$side_tasks', side_labels='$side_labels', side_trash='$side_trash', side_teams='$side_teams', side_contacts='$side_contacts', side_support='$side_support', side_guide='$side_guide', side_profile='$side_profile', side_settings='$side_settings' WHERE account_usercode='$user_code'";
     mysql_query($custom_sql) or die(header('location:settings?customize=main&error=1'));
     header('location:settings?customize=main&success=1');
 
@@ -170,7 +171,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                       <div class="dropdown-header text-<?php echo $theme_color; ?>">Select a feature to customize:</div>
-                      <a class="dropdown-item" href="?customize=main"><i class="fas fa-fw fa-home"></i> Theme, redirect and sidebar</a>
+                      <a class="dropdown-item" href="?customize=main"><i class="fas fa-fw fa-home"></i> Theme, Redirect and Sidebar</a>
                       <a class="dropdown-item" href="?customize=layout"><i class="fas fa-fw fa-columns"></i> Work Efficiency Settings</a>
                       <a class="dropdown-item" href="?customize=dashboard"><i class="fas fa-fw fa-tachometer-alt"></i> SMART Dashboard</a>
                       <a class="dropdown-item" href="?customize=profile"><i class="fas fa-fw fa-user-circle"></i> Your Public Profile</a>
@@ -185,7 +186,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                   <?php if ($_GET['customize'] == "main") { ?>
                     <?php
                       // The code below gets the custom user settings from UKeepMAIN.preferences. These values will be used to display checked options.
-                      $customcheck1 = "SELECT user_theme, redirect_url, side_trash, side_teams, side_contacts, side_support, side_settings, side_notes_tasks, side_notes, side_tasks, side_guide, side_suite, side_labels FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
+                      $customcheck1 = "SELECT user_theme, redirect_url, side_suite, side_notes_tasks, side_notes, side_tasks, side_labels, side_trash, side_teams, side_contacts, side_support, side_guide, side_profile, side_settings FROM UKeepMAIN.preferences WHERE account_usercode='$user_code'";
                       $customresult1 = mysql_query($customcheck1) or die(mysql_error());
                       $arr1 =  mysql_fetch_array($customresult1);
                     ?>
@@ -225,37 +226,40 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                       </table><br>
                       <table>
                         <tr><td><b>Show these sidebar links: &nbsp;</b></td>
-                          <td><input type="checkbox" value="1" name="cside_suite" <?php if ($arr1[11] == "1"){ echo 'checked'; } ?>> UKeep Suite</td>
+                          <td><input type="checkbox" value="1" name="cside_suite" <?php if ($arr1[2] == "1"){ echo 'checked'; } ?>> UKeep Suite</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_notes_tasks" <?php if ($arr1[7] == "1"){ echo 'checked'; } ?>> Notes/Tasks</td>
+                          <td><input type="checkbox" value="1" name="cside_notes_tasks" <?php if ($arr1[3] == "1"){ echo 'checked'; } ?>> All Items</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_notes" <?php if ($arr1[8] == "1"){ echo 'checked'; } ?>> Notes</td>
+                          <td><input type="checkbox" value="1" name="cside_notes" <?php if ($arr1[4] == "1"){ echo 'checked'; } ?>> Notes</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_tasks" <?php if ($arr1[9] == "1"){ echo 'checked'; } ?>> Tasks</td>
+                          <td><input type="checkbox" value="1" name="cside_tasks" <?php if ($arr1[5] == "1"){ echo 'checked'; } ?>> Tasks</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_labels" <?php if ($arr1[12] == "1"){ echo 'checked'; } ?>> Labels</td>
+                          <td><input type="checkbox" value="1" name="cside_labels" <?php if ($arr1[6] == "1"){ echo 'checked'; } ?>> Labels</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_trash" <?php if ($arr1[2] == "1"){ echo 'checked'; } ?>> Trash</td>
+                          <td><input type="checkbox" value="1" name="cside_trash" <?php if ($arr1[7] == "1"){ echo 'checked'; } ?>> Trash</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_teams" <?php if ($arr1[3] == "1"){ echo 'checked'; } ?>> Teams</td>
+                          <td><input type="checkbox" value="1" name="cside_teams" <?php if ($arr1[8] == "1"){ echo 'checked'; } ?>> Teams</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_contacts" <?php if ($arr1[4] == "1"){ echo 'checked'; } ?>> Contacts</td>
+                          <td><input type="checkbox" value="1" name="cside_contacts" <?php if ($arr1[9] == "1"){ echo 'checked'; } ?>> Contacts</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_support" <?php if ($arr1[5] == "1"){ echo 'checked'; } ?>> Support</td>
+                          <td><input type="checkbox" value="1" name="cside_support" <?php if ($arr1[10] == "1"){ echo 'checked'; } ?>> Support</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_settings" <?php if ($arr1[6] == "1"){ echo 'checked'; } ?>> Settings</td>
+                          <td><input type="checkbox" value="1" name="cside_guide" <?php if ($arr1[11] == "1"){ echo 'checked'; } ?>> Guide</td>
                         </tr>
                         <tr><td></td>
-                          <td><input type="checkbox" value="1" name="cside_guide" <?php if ($arr1[10] == "1"){ echo 'checked'; } ?>> Guide</td>
+                          <td><input type="checkbox" value="1" name="cside_profile" <?php if ($arr1[12] == "1"){ echo 'checked'; } ?>> Profile</td>
+                        </tr>
+                        <tr><td></td>
+                          <td><input type="checkbox" value="1" name="cside_settings" <?php if ($arr1[13] == "1"){ echo 'checked'; } ?>> Settings</td>
                         </tr>
                       </table><br>
 
@@ -326,7 +330,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                       </table><br>
                       <table>
                         <tr><td><b>Cards &nbsp;</b></td>
-                          <td><input type="checkbox" value="1" name="cdash_start" <?php if ($arr3[4] == "1"){ echo 'checked'; } ?>> Introduction (disable this card after your first login)</td>
+                          <td class="text-<?php echo $theme_color; ?>"><input type="checkbox" value="1" name="cdash_start" <?php if ($arr3[4] == "1"){ echo 'checked'; } ?>> Introduction (disable this card after your first login)</td>
                         </tr>
                         <tr><td></td>
                           <td><input type="checkbox" value="1" name="cdash_chart1" <?php if ($arr3[5] == "1"){ echo 'checked'; } ?>> Item Activity Flow Chart</td>
@@ -366,7 +370,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                         </tr>
                         <tr><td></td>
                           <td><input type="checkbox" value="1" name="prof_status" <?php if ($arr4[1] == "1"){ echo 'checked'; } ?>> Status 
-                            (<span class="badge badge-success">Online</span> / <span class="badge badge-secondary">Offline</span> or disable to set to <span class="badge badge-dark"><i>Private</i></span>)</td>
+                            (Enabled: <span class="badge badge-success">Online</span> / <span class="badge badge-secondary">Offline</span>. Disabled: <span class="badge badge-dark"><i>Private</i></span>)</td>
                         </tr>
                         <tr><td></td>
                           <td><input type="checkbox" value="1" name="prof_fullname" <?php if ($arr4[2] == "1"){ echo 'checked'; } ?>> Full Name</td>
@@ -441,6 +445,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                       <div class="dropdown-header text-<?php echo $theme_color; ?>">Select an action to perform:</div>
+                      <a class="dropdown-item" href="profile"><i class="fas fa-fw fa-user-edit"></i> Change Account information</a>
                       <a class="dropdown-item" href="?action=password"><i class="fas fa-fw fa-key"></i> Change password</a>
                       <div class="dropdown-divider"></div>
                       <div class="dropdown-header text-<?php echo $theme_color; ?>">Danger Area:</div>
@@ -531,6 +536,7 @@ $current_username = $rws[3]; // from esssentials to compare with user view reque
                   <?php } else { ?>
                     <p>Click on the <i class="fas fa-ellipsis-v fa-sm fa-fw text-<?php echo $theme_color; ?>"></i> of this card to perform actions on this account.</p> You can perform these actions:
                     <ul>
+                      <li>Change your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-user-edit"></i> account information</span>.</li>
                       <li>Change your <span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-key"></i> password</span>.</li>
                       <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-archive"></i> Deactivate</span> your account.</li>
                       <li><span class="font-weight-bold text-<?php echo $theme_color; ?>"><i class="fas fa-fw fa-trash-alt"></i> Delete</span> your account <u>permanently</u>.</li>

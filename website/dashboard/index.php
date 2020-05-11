@@ -22,7 +22,7 @@ include 'essentials.php';
     <?php include 'site-header.php'; ?> <!-- Sidebars are stored here -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid right-click-support-dashboard">
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -88,6 +88,12 @@ include 'essentials.php';
 
         </div>
         <!-- /.container-fluid -->
+
+        <!-- Right click support -->
+        <div class="dropdown-menu dropdown-menu-sm" id="context-menu-dashboard">
+          <div class="dropdown-header text-<?php echo $theme_color; ?>">Perform an action:</div>
+          <a class="dropdown-item" href="settings?customize=dashboard"><i class="fas fa-palette"></i> Customize SMART Dashboard</a>
+        </div>
 
       </div>
       <!-- End of Main Content -->
